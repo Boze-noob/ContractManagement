@@ -1,4 +1,4 @@
-const rootRoute = "/";
+const rootRoute = "/rootRoute";
 
 const overviewPageDisplayName = "Overview";
 const overviewPageRoute = "/overview";

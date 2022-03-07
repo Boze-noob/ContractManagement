@@ -7,7 +7,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : super(
           AuthState(
             //TODO zakucano, vratit na checking
-            status: AuthStateStatus.Unauthenticated,
+            status: AuthStateStatus.Authenticated,
           ),
         ) {
     on<AuthCheckAuthenticationEvent>(_checkAuth);
@@ -33,10 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(
         state.copyWith(status: AuthStateStatus.Authenticated),
       );
-      print('result is positive');
-      print("state status is ${this.state.status}");
     } else {
-      print('error happen');
       emit(
         state.copyWith(status: AuthStateStatus.Error),
       );

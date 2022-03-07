@@ -13,14 +13,14 @@ class AuthSignInEvent extends AuthEvent {
 }
 
 class AuthRegisterEvent extends AuthEvent {
-  final String? email;
-  final String? password;
-  final String? role;
+  final String email;
+  final String password;
+  final String role;
 
   AuthRegisterEvent({
-    this.email,
-    this.password,
-    this.role,
+    required this.email,
+    required this.password,
+    required this.role,
   });
 }
 

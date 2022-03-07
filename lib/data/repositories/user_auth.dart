@@ -4,7 +4,7 @@ abstract class IUserAuth {
   Future<bool> isAuthenticated();
   Future<bool> signIn(String email, String password);
   Future<bool> signOut();
-  Future<bool> register(String? email, String? password, String? role);
+  Future<bool> register(String email, String password, String role);
 }
 
 class UserAuthRepo extends IUserAuth {
@@ -20,9 +20,9 @@ class UserAuthRepo extends IUserAuth {
   }
 
   @override
-  Future<bool> register(String? email, String? password, String? role) async {
+  Future<bool> register(String email, String password, String role) async {
     try {
-      final uid = await _userAuth.signInWithEmailAndPassword(email: email!, password: password!);
+      final uid = await _userAuth.signInWithEmailAndPassword(email: email, password: password);
       UserModel userModel = UserModel(id: uid.user!.uid, email: email, password: password, role: role);
       await account.storeUserToDatabase(userModel);
       return true;
