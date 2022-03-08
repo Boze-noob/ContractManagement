@@ -1,4 +1,5 @@
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/common/enumerations/role_type.dart';
 import 'package:contract_management/ui/pages/companies/widgets/companies_table.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,6 @@ class CompaniesPage extends StatefulWidget {
 }
 
 class _CompaniesPageState extends State<CompaniesPage> {
-  String dropdownValue = 'One';
-
   //TODO potrebno validaciju odradit
   @override
   Widget build(BuildContext context) {
@@ -58,73 +57,85 @@ class _CompaniesPageState extends State<CompaniesPage> {
                           onTap: () => showDialog(
                             context: context,
                             builder: (context) => CustomDialog(
-                              child: Container(
-                                width: context.screenWidth / 2,
-                                child: Form(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(
-                                          height: 16,
-                                        ),
-                                        CustomText(
-                                          text: 'Enter required parameters',
-                                          size: 22,
-                                          weight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                        SizedBox(
-                                          height: 16,
-                                        ),
-                                        TextFormField(
-                                          decoration: InputDecoration(icon: const Icon(Icons.email), hintText: 'Enter email', labelText: 'Email', fillColor: active),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextFormField(
-                                          obscureText: true,
-                                          decoration: const InputDecoration(
-                                            icon: const Icon(Icons.password),
-                                            hintText: 'Enter password',
-                                            labelText: 'Password',
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        DropdownButton<String>(
-                                          value: dropdownValue,
-                                          icon: const Icon(Icons.arrow_downward),
-                                          elevation: 16,
-                                          style: const TextStyle(color: Colors.deepPurple),
-                                          underline: Container(
-                                            height: 2,
-                                            color: Colors.deepPurpleAccent,
-                                          ),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              dropdownValue = newValue!;
-                                            });
-                                          },
-                                          items: <String>['One', 'Two', 'Free', 'Four'].map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
+                                buttonText: 'Create account',
+                                child: Container(
+                                  width: context.screenWidth / 2,
+                                  child: Form(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                                      child: BlocListener<CreateUserBloc, CreateUserState>(
+                                        listener: (context, state) {
+                                          if (state.status == CreateUserStateStatus.error) {
+                                            print('error happen in creating');
+                                            if (state.errorMessage != null) showInfoMessage(state.errorMessage!, context);
+                                          }
+                                        },
+                                        child: BlocBuilder<CreateUserBloc, CreateUserState>(
+                                          builder: (context, state) {
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(
+                                                  height: 16,
+                                                ),
+                                                CustomText(
+                                                  text: 'Enter required parameters',
+                                                  size: 22,
+                                                  weight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                                SizedBox(
+                                                  height: 16,
+                                                ),
+                                                TextFormField(
+                                                  decoration: InputDecoration(
+                                                    icon: const Icon(Icons.email),
+                                                    hintText: 'Enter email',
+                                                    labelText: 'Email',
+                                                    fillColor: active,
+                                                  ),
+                                                  onChanged: (text) => context.createUserBloc.add(
+                                                    CreateUserUpdateModelEvent(
+                                                      userModel: state.userModel.copyWith(email: text),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                TextFormField(
+                                                  obscureText: true,
+                                                  decoration: const InputDecoration(
+                                                    icon: const Icon(Icons.password),
+                                                    hintText: 'Enter password',
+                                                    labelText: 'Password',
+                                                  ),
+                                                  onChanged: (text) => context.createUserBloc.add(
+                                                    CreateUserUpdateModelEvent(
+                                                      userModel: state.userModel.copyWith(password: text),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                RadioRow(),
+                                                SizedBox(
+                                                  height: 30,
+                                                ),
+                                              ],
                                             );
-                                          }).toList(),
+                                          },
                                         ),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
+                                onButtonPressed: () {
+                                  context.createUserBloc.add(
+                                    CreateUserSubmitEvent(),
+                                  );
+                                }),
                           ),
                         ),
                       ),
@@ -139,6 +150,72 @@ class _CompaniesPageState extends State<CompaniesPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RadioRow extends StatefulWidget {
+  const RadioRow({Key? key}) : super(key: key);
+
+  @override
+  _RadioRowState createState() => _RadioRowState();
+}
+
+class _RadioRowState extends State<RadioRow> {
+  String _selectedRoleType = RoleType.getValue(0).translate();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      ListTile(
+        title: Text(RoleType.admin.translate()),
+        leading: Radio<String>(
+          value: RoleType.admin.translate(),
+          groupValue: _selectedRoleType,
+          onChanged: (String? value) {
+            setState(() {
+              updateRoleInModel(value!, context);
+              _selectedRoleType = value;
+            });
+          },
+        ),
+      ),
+      ListTile(
+        title: Text(RoleType.client.translate()),
+        leading: Radio<String>(
+          value: RoleType.client.translate(),
+          groupValue: _selectedRoleType,
+          onChanged: (String? value) {
+            setState(() {
+              updateRoleInModel(value!, context);
+              _selectedRoleType = value;
+            });
+          },
+        ),
+      ),
+      ListTile(
+        title: Text(RoleType.company.translate()),
+        leading: Radio<String>(
+          value: RoleType.company.translate(),
+          groupValue: _selectedRoleType,
+          onChanged: (String? value) {
+            setState(
+              () {
+                updateRoleInModel(value!, context);
+                _selectedRoleType = value;
+              },
+            );
+          },
+        ),
+      ),
+    ]);
+  }
+
+  updateRoleInModel(String role, BuildContext context) {
+    context.createUserBloc.add(
+      CreateUserUpdateModelEvent(
+        userModel: context.createUserBloc.state.userModel.copyWith(role: role),
       ),
     );
   }

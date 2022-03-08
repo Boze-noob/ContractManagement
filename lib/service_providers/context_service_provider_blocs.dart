@@ -20,6 +20,11 @@ class ContextServiceProviderBlocs extends StatelessWidget {
             userAuth: context.serviceProvider.userAuth,
           ),
         ),
+        BlocProvider(
+          create: (BuildContext context) => CreateUserBloc(
+            accountRepo: context.serviceProvider.account,
+          ),
+        )
       ],
       child: child,
     );

@@ -12,7 +12,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ) {
     on<AuthCheckAuthenticationEvent>(_checkAuth);
     on<AuthSignInEvent>(_signIn);
-    on<AuthRegisterEvent>(_register);
     on<AuthSignOutEvent>(_signOut);
   }
 
@@ -28,23 +27,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await userAuth.signIn(
       event.email,
       event.password,
-    );
-    if (result) {
-      emit(
-        state.copyWith(status: AuthStateStatus.Authenticated),
-      );
-    } else {
-      emit(
-        state.copyWith(status: AuthStateStatus.Error),
-      );
-    }
-  }
-
-  void _register(AuthRegisterEvent event, Emitter<AuthState> emit) async {
-    final result = await userAuth.register(
-      event.email,
-      event.password,
-      event.role,
     );
     if (result) {
       emit(

@@ -1,19 +1,19 @@
 class UserModel {
   final String id;
-  final String? email;
-  final String? password;
-  final String? role;
+  final String email;
+  final String password;
+  final String role;
 
   UserModel({
     required this.id,
-    this.email,
-    this.password,
-    this.role,
+    required this.email,
+    required this.password,
+    required this.role,
   });
 
   UserModel copyWith({
     final String? id,
-    final String? firsName,
+    final String? email,
     final String? password,
     final String? role,
   }) =>
@@ -23,4 +23,13 @@ class UserModel {
         password: password != null ? password : this.password,
         role: role != null ? role : this.role,
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'vehicleId': id,
+      'email': email,
+      'password': password,
+      'role': role,
+    };
+  }
 }
