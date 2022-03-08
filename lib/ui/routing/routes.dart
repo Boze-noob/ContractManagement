@@ -3,8 +3,8 @@ const rootRoute = "/rootRoute";
 const overviewPageDisplayName = "Overview";
 const overviewPageRoute = "/overview";
 
-const requestsPageDisplayName = "Request";
-const requestsPageRoute = "/request";
+const requestsPageDisplayName = "Requests";
+const requestsPageRoute = "/requests";
 
 const contractsPageDisplayName = "Contracts";
 const contractsPageRoute = "/contracts";

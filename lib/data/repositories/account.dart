@@ -3,7 +3,7 @@ import 'package:contract_management/data/firebase/firebaseFirestoreClass.dart';
 
 abstract class IAccount {
   bool storeUserToDatabase(UserModel userModel);
-  Future<String?> createAccount(String email, String password, String role);
+  Future<String?> createAccount(String email, String password, String displayName, String role);
 }
 
 class AccountRepo implements IAccount {
@@ -19,10 +19,10 @@ class AccountRepo implements IAccount {
   }
 
   @override
-  Future<String?> createAccount(String email, String password, String role) async {
+  Future<String?> createAccount(String email, String password, String role, String displayName) async {
     try {
       final uid = await firebaseAuthInstance.createUserWithEmailAndPassword(email: email, password: password);
-      UserModel userModel = UserModel(id: uid.user!.uid, email: email, password: password, role: role);
+      UserModel userModel = UserModel(id: uid.user!.uid, email: email, password: password, displayName: displayName, role: role);
       storeUserToDatabase(userModel);
       return null;
     } catch (error) {

@@ -8,7 +8,7 @@ class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
   }) : super(
           CreateUserState(
             status: CreateUserStateStatus.init,
-            userModel: UserModel(id: '', email: '', password: '', role: RoleType.getValue(0).translate()),
+            userModel: UserModel(id: '', email: '', password: '', displayName: '', role: RoleType.getValue(0).translate()),
           ),
         ) {
     on<CreateUserUpdateModelEvent>(_updateState);
@@ -16,7 +16,6 @@ class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
   }
 
   void _updateState(CreateUserUpdateModelEvent event, Emitter<CreateUserState> emit) async {
-    print('updating user state');
     emit(
       state.copyWith(
         userModel: event.userModel,
@@ -25,11 +24,15 @@ class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
   }
 
   void _submit(CreateUserSubmitEvent event, Emitter<CreateUserState> emit) async {
-    print('submitting user state');
     emit(
       state.copyWith(status: CreateUserStateStatus.submitting),
     );
-    final result = await accountRepo.createAccount(state.userModel.email, state.userModel.password, state.userModel.role);
+    final result = await accountRepo.createAccount(
+      state.userModel.email,
+      state.userModel.password,
+      state.userModel.role,
+      state.userModel.displayName,
+    );
     if (result == null) {
       emit(
         state.copyWith(status: CreateUserStateStatus.submitSuccess),

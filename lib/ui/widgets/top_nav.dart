@@ -105,6 +105,22 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                         SizedBox(
                                           height: 10,
                                         ),
+                                        TextFormField(
+                                          decoration: InputDecoration(
+                                            icon: const Icon(Icons.email),
+                                            hintText: 'Enter display name',
+                                            labelText: 'Display name',
+                                            fillColor: active,
+                                          ),
+                                          onChanged: (text) => context.createUserBloc.add(
+                                            CreateUserUpdateModelEvent(
+                                              userModel: state.userModel.copyWith(displayName: text),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
                                         RadioRow(),
                                         SizedBox(
                                           height: 30,
