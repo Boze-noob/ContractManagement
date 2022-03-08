@@ -174,9 +174,17 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
             SizedBox(
               width: 24,
             ),
-            CustomText(
-              text: "Daniel Buhač",
-              color: lightGrey,
+            BlocBuilder<CurrentUserBloc, CurrentUserState>(
+              builder: (context, state) {
+                if (state.userModel != null) {
+                  return CustomText(
+                    text: state.userModel!.displayName,
+                    color: lightGrey,
+                  );
+                } else {
+                  return Text(' ');
+                }
+              },
             ),
             SizedBox(
               width: 16,

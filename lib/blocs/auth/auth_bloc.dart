@@ -7,7 +7,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : super(
           AuthState(
             //TODO zakucano, vratit na checking
-            status: AuthStateStatus.Authenticated,
+            status: AuthStateStatus.Unauthenticated,
           ),
         ) {
     on<AuthCheckAuthenticationEvent>(_checkAuth);

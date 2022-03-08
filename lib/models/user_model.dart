@@ -37,4 +37,14 @@ class UserModel {
       'role': role,
     };
   }
+
+  factory UserModel.fromMap(dynamic map) {
+    return UserModel(
+      id: map['id'],
+      email: map['email'],
+      password: map['password'],
+      displayName: map['displayName'],
+      role: map['role'],
+    );
+  }
 }

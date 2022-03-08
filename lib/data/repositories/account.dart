@@ -3,6 +3,7 @@ import 'package:contract_management/data/firebase/firebaseFirestoreClass.dart';
 
 abstract class IAccount {
   bool storeUserToDatabase(UserModel userModel);
+  Future<UserModel?> getUserFromDatabase();
   Future<String?> createAccount(String email, String password, String displayName, String role);
 }
 
@@ -16,6 +17,17 @@ class AccountRepo implements IAccount {
     //TODO vidit sta je sa ovim usklicnikom, moze li se slusat u auth blocu ili provjeravat jeli current user null ili nije(automatski generirat uid ako jest
     bool result = firebaseFirestoreClass.storeData('users', userModel.id, userModel.toMap());
     return result;
+  }
+
+  @override
+  Future<UserModel?> getUserFromDatabase() async {
+    final String userId = firebaseAuthInstance.currentUser!.uid;
+    var userModelJson = await firebaseFirestoreClass.getData('users', userId);
+    if (userModelJson != null) {
+      return UserModel.fromMap(userModelJson);
+    } else {
+      return null;
+    }
   }
 
   @override

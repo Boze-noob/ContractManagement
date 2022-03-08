@@ -10,4 +10,14 @@ class FirebaseFirestoreClass {
       return false;
     }
   }
+
+  Future getData(String collection, String document) async{
+    try {
+      var jsonData = await FirebaseFirestore.instance.collection(collection).doc(document).get();
+      return jsonData;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }
