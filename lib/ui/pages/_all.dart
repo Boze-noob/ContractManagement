@@ -6,3 +6,4 @@ export 'common/_all.dart';
 export 'contracts/_all.dart';
 export 'overview/_all.dart';
 export 'requests/_all.dart';
+export 'my_profile/_all.dart';

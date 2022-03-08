@@ -9,4 +9,5 @@ extension BuildContextExtensions on BuildContext {
   //Blocs
   CreateUserBloc get createUserBloc => read<CreateUserBloc>();
   AuthBloc get authBloc => read<AuthBloc>();
+  EditProfileBloc get editProfileBloc => read<EditProfileBloc>();
 }

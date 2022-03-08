@@ -18,6 +18,9 @@ const clientsPageRoute = "/clients";
 const authenticationPageDisplayName = "Log out";
 const authenticationPageRoute = "/auth";
 
+const myProfilePageDisplayName = "My profile";
+const myProfilePageRoute = "/myProfile";
+
 const navigationWrapperRoute = "/navigationWrapper";
 
 const activeContracts = "Active contracts";
