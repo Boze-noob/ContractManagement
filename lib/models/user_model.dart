@@ -1,14 +1,14 @@
 class UserModel {
   final String id;
   final String email;
-  final String password;
+  final String? password;
   final String displayName;
   final String role;
 
   UserModel({
     required this.id,
     required this.email,
-    required this.password,
+    this.password,
     required this.displayName,
     required this.role,
   });
@@ -32,7 +32,6 @@ class UserModel {
     return {
       'id': id,
       'email': email,
-      'password': password,
       'displayName': displayName,
       'role': role,
     };
@@ -42,7 +41,6 @@ class UserModel {
     return UserModel(
       id: map['id'],
       email: map['email'],
-      password: map['password'],
       displayName: map['displayName'],
       role: map['role'],
     );

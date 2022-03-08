@@ -29,7 +29,8 @@ class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
     );
     final result = await accountRepo.createAccount(
       state.userModel.email,
-      state.userModel.password,
+      //default password user can change it later
+      state.userModel.password ?? 'Password1!',
       state.userModel.role,
       state.userModel.displayName,
     );
