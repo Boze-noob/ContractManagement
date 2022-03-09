@@ -6,7 +6,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required this.userAuth})
       : super(
           AuthState(
-            //TODO zakucano, vratit na checking
             status: AuthStateStatus.Unauthenticated,
           ),
         ) {
@@ -16,10 +15,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _checkAuth(AuthCheckAuthenticationEvent event, Emitter<AuthState> emit) async {
-    final state = this.state;
+    print('Usli smo u check auth function');
     emit(state.copyWith(status: AuthStateStatus.Checking));
     final isAuthenticated = await userAuth.isAuthenticated();
+    print('isAuthenticated je $isAuthenticated');
     emit(state.copyWith(status: isAuthenticated ? AuthStateStatus.Authenticated : AuthStateStatus.Unauthenticated));
+    print('trenutni state je ${state.status}');
   }
 
   void _signIn(AuthSignInEvent event, Emitter<AuthState> emit) async {
@@ -27,14 +28,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await userAuth.signIn(
       event.email,
       event.password,
+      event.rememberMe,
     );
-    if (result) {
+    if (result == null) {
       emit(
         state.copyWith(status: AuthStateStatus.Authenticated),
       );
     } else {
       emit(
-        state.copyWith(status: AuthStateStatus.Error),
+        state.copyWith(
+          status: AuthStateStatus.Error,
+          errorMessage: result,
+        ),
       );
       await Future.delayed(Duration(seconds: 1));
 

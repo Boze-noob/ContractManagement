@@ -13,6 +13,7 @@ class _ApplicationNavigationWrapperState extends State<ApplicationNavigationWrap
         if (authState.status == AuthStateStatus.Checking) {
           return const SplashPage();
         } else if (authState.status == AuthStateStatus.Unauthenticated) {
+          print('vracamo authentication page');
           return AuthenticationPage();
         } else if (authState.status == AuthStateStatus.Authenticated) {
           return SiteLayout();

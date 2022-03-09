@@ -25,3 +25,4 @@ export 'package:firebase_core/firebase_core.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:dotted_border/dotted_border.dart';
 export 'package:flutter/cupertino.dart';
+export 'package:hive/hive.dart';

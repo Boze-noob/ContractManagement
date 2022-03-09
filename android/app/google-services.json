@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1059163966516",
+    "project_id": "contractmanagement-d8f7f",
+    "storage_bucket": "contractmanagement-d8f7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059163966516:android:d7115c301a35f5ef450e61",
+        "android_client_info": {
+          "package_name": "com.applid.contract_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059163966516-rpu6ve9o84eqclog3rflae7e5f7rsj0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.applid.contract_management",
+            "certificate_hash": "e98aa4b3523d498f66f6e1f1e991e37fe5bcd349"
+          }
+        },
+        {
+          "client_id": "1059163966516-phac3j0ed2cpr0rnqirpu9h26982o8ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMS5iLnvKDe7iZFU6N0NgUzVNu1CWTMJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059163966516-phac3j0ed2cpr0rnqirpu9h26982o8ld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

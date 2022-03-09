@@ -2,11 +2,19 @@ import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class AuthenticationPage extends StatelessWidget {
+class AuthenticationPage extends StatefulWidget {
   AuthenticationPage({Key? key}) : super(key: key);
 
+  @override
+  State<AuthenticationPage> createState() => _AuthenticationPageState();
+}
+
+class _AuthenticationPageState extends State<AuthenticationPage> {
   TextEditingController _editTextEmail = TextEditingController();
+
   TextEditingController _editTextPassword = TextEditingController();
+
+  bool _rememberMeCheckBox = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +22,7 @@ class AuthenticationPage extends StatelessWidget {
       listener: (context, state) {
         if (state.status == AuthStateStatus.Error) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Error happen"),
+            content: Text(state.errorMessage ?? 'Error happen'),
           ));
         }
       },
@@ -77,7 +85,13 @@ class AuthenticationPage extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Checkbox(value: true, onChanged: (value) {}),
+                        Checkbox(
+                            value: _rememberMeCheckBox,
+                            onChanged: (value) {
+                              setState(() {
+                                _rememberMeCheckBox = !_rememberMeCheckBox;
+                              });
+                            }),
                         CustomText(
                           text: "Remeber Me",
                         ),
@@ -94,7 +108,7 @@ class AuthenticationPage extends StatelessWidget {
                     return InkWell(
                       onTap: () {
                         if (_editTextPassword.text.isNotEmpty && _editTextEmail.text.isNotEmpty) {
-                          context.read<AuthBloc>().add(AuthSignInEvent(email: _editTextEmail.text, password: _editTextPassword.text));
+                          context.read<AuthBloc>().add(AuthSignInEvent(email: _editTextEmail.text, password: _editTextPassword.text, rememberMe: _rememberMeCheckBox));
                         }
                       },
                       child: Container(
