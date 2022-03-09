@@ -225,8 +225,14 @@ class _EmailWidget extends StatelessWidget {
   }
 }
 
-class _PasswordWidget extends StatelessWidget {
+class _PasswordWidget extends StatefulWidget {
   const _PasswordWidget({Key? key}) : super(key: key);
+  @override
+  State<_PasswordWidget> createState() => _PasswordWidgetState();
+}
+
+class _PasswordWidgetState extends State<_PasswordWidget> {
+  bool _isPasswordVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -268,8 +274,15 @@ class _PasswordWidget extends StatelessWidget {
                     color: Colors.grey,
                     fontFamily: AppFonts.quicksandRegular,
                   ),
+                  suffixIcon: IconButton(
+                    icon: _isPasswordVisible == false ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                    onPressed: () => setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    }),
+                  ),
                   border: OutlineInputBorder(),
                 ),
+                obscureText: _isPasswordVisible,
               ),
             ),
           ],
@@ -289,7 +302,7 @@ class _ButtonRowWidget extends StatelessWidget {
       children: [
         Button(
           child: Text(
-            'Cancel',
+            'Clear',
             style: const TextStyle(
               fontSize: 14,
               fontFamily: AppFonts.quicksandBold,

@@ -11,13 +11,22 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future getData(String collection, String document) async{
+  Future getData(String collection, String document) async {
     try {
       var jsonData = await FirebaseFirestore.instance.collection(collection).doc(document).get();
       return jsonData;
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future getDataWithFilter(String collection, String fieldName, String fieldValue) async {
+    try {
+      var jsonData = FirebaseFirestore.instance.collection(collection).where(fieldName, isEqualTo: fieldValue);
+      return jsonData;
+    } catch (e) {
+      print(e);
     }
   }
 }
