@@ -1,4 +1,1 @@
-
-abstract class IClients{
-
-}
+abstract class IClients {}
