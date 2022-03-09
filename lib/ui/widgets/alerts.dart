@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-void showInfoMessage(String message, BuildContext context) {
+void showInfoMessage(String message, BuildContext context, {int duration = 3}) {
   ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
-      duration: const Duration(seconds: 3),
+      duration: Duration(seconds: duration),
     ),
   );
 }

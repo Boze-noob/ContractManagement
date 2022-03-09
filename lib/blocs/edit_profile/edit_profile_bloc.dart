@@ -22,10 +22,15 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         ),
       );
 
-  void _init(EditProfileInitEvent event, Emitter<EditProfileState> emit) {
-    emit(state.copyWith(
-      userModel: event.userModel,
-    ));
+  void _init(EditProfileInitEvent event, Emitter<EditProfileState> emit) async {
+    emit(state.copyWith(status: EditProfileStateStatus.loading));
+    await Future.delayed(Duration(seconds: 1));
+    emit(
+      state.copyWith(
+        userModel: event.userModel,
+        status: EditProfileStateStatus.init,
+      ),
+    );
   }
 
   void _updateState(EditProfileUpdateEvent event, Emitter<EditProfileState> emit) async {
@@ -40,5 +45,14 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     emit(
       state.copyWith(status: EditProfileStateStatus.submitting),
     );
+    final result = await accountRepo.editAccount(state.userModel);
+    if (result)
+      emit(state.copyWith(
+        status: EditProfileStateStatus.submitSuccess,
+      ));
+    else
+      emit(state.copyWith(
+        status: EditProfileStateStatus.error,
+      ));
   }
 }

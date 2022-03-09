@@ -9,8 +9,11 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Image.asset('assets/images/logo.jpg'
-          )
+          child: Loader(
+            width: 100,
+            height: 100,
+            color: active,
+          ),
         ),
       ),
     );

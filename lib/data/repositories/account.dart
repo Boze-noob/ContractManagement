@@ -1,15 +1,16 @@
 import 'package:contract_management/_all.dart';
-import 'package:contract_management/data/firebase/firebaseFirestoreClass.dart';
 
 abstract class IAccount {
   bool storeUserToDatabase(UserModel userModel);
   Future<UserModel?> getUserFromDatabase();
   Future<String?> createAccount(String email, String password, String displayName, String role);
+  Future<bool> editAccount(UserModel userModel);
 }
 
 class AccountRepo implements IAccount {
   AccountRepo();
   FirebaseFirestoreClass firebaseFirestoreClass = FirebaseFirestoreClass();
+  FirebaseAuthClass firebaseAuthClass = FirebaseAuthClass();
   FirebaseAuth firebaseAuthInstance = FirebaseAuth.instance;
 
   @override
@@ -33,13 +34,29 @@ class AccountRepo implements IAccount {
   @override
   Future<String?> createAccount(String email, String password, String role, String displayName) async {
     try {
-      final uid = await firebaseAuthInstance.createUserWithEmailAndPassword(email: email, password: password);
-      UserModel userModel = UserModel(id: uid.user!.uid, email: email, password: password, displayName: displayName, role: role);
+      final account = await firebaseAuthClass.createUser(email, password);
+      UserModel userModel = UserModel(id: account.user!.uid, email: email, password: password, displayName: displayName, role: role);
       storeUserToDatabase(userModel);
       return null;
     } catch (error) {
       print(error.toString());
       return error.toString();
     }
+  }
+
+  @override
+  Future<bool> editAccount(UserModel userModel) async {
+    final fireStoreResult = firebaseFirestoreClass.storeData('users', userUid, userModel.toMap());
+    bool firebaseAuthResult = false;
+    if (userModel.password != null) {
+      firebaseAuthResult = await firebaseAuthClass.changeUserPassword(userModel.password!);
+    }
+    await firebaseAuthClass.changeUserEmail(userModel.email);
+
+    //TODO malo bolje ovu logiku edita rijesit
+    if (fireStoreResult || firebaseAuthResult) {
+      return true;
+    } else
+      return false;
   }
 }

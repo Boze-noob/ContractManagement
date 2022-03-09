@@ -2,6 +2,7 @@ import 'package:contract_management/_all.dart';
 
 enum EditProfileStateStatus {
   init,
+  loading,
   submitting,
   submitSuccess,
   error,

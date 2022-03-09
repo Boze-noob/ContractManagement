@@ -36,6 +36,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(
         state.copyWith(status: AuthStateStatus.Error),
       );
+      await Future.delayed(Duration(seconds: 1));
+
+      emit(
+        state.copyWith(status: AuthStateStatus.Unauthenticated),
+      );
     }
   }
 
