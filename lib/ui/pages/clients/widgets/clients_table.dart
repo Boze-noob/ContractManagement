@@ -14,75 +14,97 @@ class Clientstable extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
-      child: BlocBuilder<ClientsBloc, ClientsState>(
-        builder: (context, state) {
-          return DataTable2(
-            columnSpacing: 12,
-            horizontalMargin: 12,
-            minWidth: 600,
-            columns: [
-              DataColumn2(
-                label: Text("Name"),
-                size: ColumnSize.L,
-              ),
-              DataColumn(
-                label: Text('Location'),
-              ),
-              DataColumn(
-                label: Text('Rating'),
-              ),
-              DataColumn(
-                label: Text('Action'),
-              ),
-            ],
-            rows: List<DataRow>.generate(
-              state.clients.length,
-              (index) => DataRow(
-                cells: [
-                  DataCell(
-                    CustomText(text: state.clients[index].displayName),
+      child: BlocListener<ClientsBloc, ClientsState>(
+        listener: (context, state) {
+          if (state.status == ClientsStateStatus.error) {
+            showInfoMessage('Error happen', context);
+          } else if (state.status == ClientsStateStatus.deletedSuccessfully) {
+            showInfoMessage('Deleted successfully', context);
+          }
+        },
+        child: BlocBuilder<ClientsBloc, ClientsState>(
+          builder: (context, state) {
+            if (state.status == ClientsStateStatus.loading)
+              return Loader();
+            else
+              return DataTable2(
+                columnSpacing: 12,
+                horizontalMargin: 12,
+                minWidth: 700,
+                columns: [
+                  DataColumn2(
+                    label: Text("Name"),
+                    size: ColumnSize.L,
                   ),
-                  DataCell(
-                    CustomText(text: state.clients[index].location),
+                  DataColumn(
+                    label: Text('Location'),
                   ),
-                  DataCell(
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.deepOrange,
-                          size: 18,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        CustomText(
-                          text: state.clients[index].rating ?? 'Default',
-                        )
-                      ],
-                    ),
+                  DataColumn(
+                    label: Text('Rating'),
                   ),
-                  DataCell(
-                    Container(
-                      decoration: BoxDecoration(
-                        color: light,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: active, width: .5),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      child: CustomText(
-                        text: "Block",
-                        color: active.withOpacity(.7),
-                        weight: FontWeight.bold,
-                      ),
-                    ),
+                  DataColumn(
+                    label: Text(''),
                   ),
                 ],
-              ),
-            ),
-          );
-        },
+                rows: List<DataRow>.generate(
+                  state.clients.length,
+                  (index) => DataRow(
+                    cells: [
+                      DataCell(
+                        CustomText(text: state.clients[index].displayName),
+                      ),
+                      DataCell(
+                        CustomText(text: state.clients[index].location),
+                      ),
+                      DataCell(
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.deepOrange,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            CustomText(
+                              text: state.clients[index].rating ?? 'Default',
+                            )
+                          ],
+                        ),
+                      ),
+                      DataCell(Row(
+                        children: [
+                          Button(
+                            child: CustomText(
+                              text: 'View',
+                            ),
+                            textColor: black,
+                            shrinkWrap: true,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Button(
+                            child: CustomText(
+                              text: 'Delete',
+                              color: delete,
+                            ),
+                            shrinkWrap: true,
+                            borderRadius: 40,
+                            onTap: () => context.clientsBloc.add(
+                              ClientsDeleteEvent(clientId: state.clients[index].id),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ],
+                  ),
+                ),
+              );
+          },
+        ),
       ),
     );
   }

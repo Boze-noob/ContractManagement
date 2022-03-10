@@ -10,8 +10,9 @@ extension BuildContextExtensions on BuildContext {
   double get textSizeL => 20;
 
   //Blocs
+  AuthBloc get authBloc => read<AuthBloc>();
+  ClientsBloc get clientsBloc => read<ClientsBloc>();
   CreateUserBloc get createUserBloc => read<CreateUserBloc>();
   CurrentUserBloc get currentUserBloc => read<CurrentUserBloc>();
-  AuthBloc get authBloc => read<AuthBloc>();
   EditProfileBloc get editProfileBloc => read<EditProfileBloc>();
 }

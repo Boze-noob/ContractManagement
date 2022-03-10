@@ -13,6 +13,8 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
     authStreamSubscription = authBloc.stream.listen((state) {
       if (state.status == AuthStateStatus.Authenticated) {
         add(CurrentUserGetEvent());
+      } else if (state.status == AuthStateStatus.Unauthenticated) {
+        initialState();
       }
     });
   }
@@ -36,6 +38,7 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
         ),
       );
     } else {
+      print("Current user error");
       emit(state.copyWith(
         status: CurrentUserStateStatus.error,
       ));

@@ -13,6 +13,8 @@ class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
         ) {
     on<ClientsInitEvent>(_initClients);
     on<ClientsLoadEvent>(_loadClients);
+    on<ClientsAddEvent>(_addClient);
+    on<ClientsDeleteEvent>(_deleteClient);
   }
 
   void _initClients(ClientsInitEvent event, Emitter<ClientsState> emit) async {}
@@ -27,11 +29,18 @@ class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
     );
   }
 
-  void _addClients(ClientsLoadEvent event, Emitter<ClientsState> emit) async {
+  void _addClient(ClientsAddEvent event, Emitter<ClientsState> emit) async {
     emit(state.copyWith(status: ClientsStateStatus.loading));
   }
 
-  void _deleteClients(ClientsLoadEvent event, Emitter<ClientsState> emit) async {
+  void _deleteClient(ClientsDeleteEvent event, Emitter<ClientsState> emit) async {
     emit(state.copyWith(status: ClientsStateStatus.loading));
+
+    final result = await clientsRepo.deleteClient(event.clientId);
+
+    if (result)
+      emit(state.copyWith(status: ClientsStateStatus.deletedSuccessfully));
+    else
+      emit(state.copyWith(status: ClientsStateStatus.error));
   }
 }

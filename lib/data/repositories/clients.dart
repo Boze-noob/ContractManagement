@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:contract_management/_all.dart';
 
 abstract class IClients {
   Future<List<UserModel>?> getClients();
+  Future<bool> deleteClient(String uid);
 }
 
 class ClientsRepo implements IClients {
@@ -14,13 +13,16 @@ class ClientsRepo implements IClients {
   @override
   Future<List<UserModel>?> getClients() async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter("users", "role", "Client");
-    print("Data is :--------");
-    print(jsonData.toString());
     if (jsonData == null) {
       return null;
     } else {
-      print('We enter into else part of getClients');
       return jsonData.map<UserModel>((json) => UserModel.fromMap(json))?.toList();
     }
+  }
+
+  @override
+  Future<bool> deleteClient(String userId) async {
+    final result = await firebaseFirestoreClass.deleteData('users', userId);
+    return result;
   }
 }

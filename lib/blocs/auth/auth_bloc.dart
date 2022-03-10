@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:contract_management/_all.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -15,12 +17,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _checkAuth(AuthCheckAuthenticationEvent event, Emitter<AuthState> emit) async {
-    print('Usli smo u check auth function');
     emit(state.copyWith(status: AuthStateStatus.Checking));
     final isAuthenticated = await userAuth.isAuthenticated();
-    print('isAuthenticated je $isAuthenticated');
     emit(state.copyWith(status: isAuthenticated ? AuthStateStatus.Authenticated : AuthStateStatus.Unauthenticated));
-    print('trenutni state je ${state.status}');
   }
 
   void _signIn(AuthSignInEvent event, Emitter<AuthState> emit) async {

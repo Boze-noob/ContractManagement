@@ -26,7 +26,7 @@ abstract class ServiceProvider {
 
     accountRepo = AccountRepo();
     clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    userAuth = UserAuthRepo(account: accountRepo);
+    userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
   }
 
   Future initFirebase() async {

@@ -4,6 +4,7 @@ enum ClientsStateStatus {
   init,
   loading,
   loaded,
+  deletedSuccessfully,
   error,
 }
 

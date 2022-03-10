@@ -9,8 +9,12 @@ abstract class IUserAuth {
 class UserAuthRepo implements IUserAuth {
   final FirebaseAuth _userAuth = FirebaseAuth.instance;
   final IAccount account;
+  final FirebaseFirestoreClass firebaseFirestoreClass;
 
-  UserAuthRepo({required this.account});
+  UserAuthRepo({
+    required this.account,
+    required this.firebaseFirestoreClass,
+  });
 
   @override
   Future<bool> isAuthenticated() async {
@@ -30,7 +34,14 @@ class UserAuthRepo implements IUserAuth {
         var box = await Hive.openBox('authBox');
         box.put('auth', true);
       }
-      return null;
+      //TODO check this
+      //"Current user bloc" is here because I can't delete user from FirebaseAuth only from database, so I'm checking if user is in database here
+      //One of possible solutions is using firebase cloud function
+      final result = await firebaseFirestoreClass.getData('users', _userAuth.currentUser!.uid);
+      if (result == null)
+        return 'User doesn\'t exist in database';
+      else
+        return null;
     } catch (error) {
       print(error.toString());
       return error.toString();
