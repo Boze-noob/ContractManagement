@@ -41,8 +41,8 @@ class UserModel {
       'id': id,
       'email': email,
       'displayName': displayName,
-      'rating': rating,
-      'location': location,
+      'rating': rating ?? null,
+      'location': location ?? null,
       'role': role,
     };
   }
@@ -52,8 +52,8 @@ class UserModel {
       id: map['id'],
       email: map['email'],
       displayName: map['displayName'],
-      rating: map['rating'],
-      location: map['location'],
+      rating: map['rating'] ?? null,
+      location: map['location'] ?? null,
       role: map['role'],
     );
   }

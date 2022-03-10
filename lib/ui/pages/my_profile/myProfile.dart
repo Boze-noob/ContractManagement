@@ -15,7 +15,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EditProfileBloc(accountRepo: context.serviceProvider.account)
+      create: (context) => EditProfileBloc(accountRepo: context.serviceProvider.accountRepo)
         ..add(
           EditProfileInitEvent(
             userModel: context.currentUserBloc.state.userModel ?? UserModel(displayName: '', email: '', role: '', id: ''),
@@ -93,6 +93,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                   height: 15,
                                 ),
                                 _EmailWidget(),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                _LocationWidget(),
                                 SizedBox(
                                   height: 30,
                                 ),
@@ -210,6 +214,56 @@ class _EmailWidget extends StatelessWidget {
                 ),
                 decoration: InputDecoration(
                   labelText: 'Email',
+                  labelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontFamily: AppFonts.quicksandRegular,
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _LocationWidget extends StatelessWidget {
+  const _LocationWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              width: 100,
+              child: CustomText(
+                text: 'Location:',
+                size: context.textSizeM,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: TextFormField(
+                initialValue: state.userModel.location,
+                // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
+                onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(location: text))),
+                style: TextStyle(
+                  fontFamily: AppFonts.quicksandBold,
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Location',
                   labelStyle: const TextStyle(
                     color: Colors.grey,
                     fontFamily: AppFonts.quicksandRegular,

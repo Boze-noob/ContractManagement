@@ -6,7 +6,7 @@ abstract class IUserAuth {
   Future<bool> signOut();
 }
 
-class UserAuthRepo extends IUserAuth {
+class UserAuthRepo implements IUserAuth {
   final FirebaseAuth _userAuth = FirebaseAuth.instance;
   final IAccount account;
 
@@ -14,10 +14,11 @@ class UserAuthRepo extends IUserAuth {
 
   @override
   Future<bool> isAuthenticated() async {
-    var box = await Hive.openBox('authBox');
-    bool? isUserAuth = box.get('auth');
-    print(isUserAuth);
-    return isUserAuth != null ? true : false;
+    //var box = await Hive.openBox('authBox');
+    //bool? isUserAuth = box.get('auth');
+    //print(isUserAuth);
+
+    return _userAuth.currentUser != null ? true : false;
   }
 
   @override
@@ -25,7 +26,6 @@ class UserAuthRepo extends IUserAuth {
     try {
       await _userAuth.signInWithEmailAndPassword(email: email, password: password);
       if (rememberMe) {
-        print('We enter into remember me in repo');
         //FirebaseAuth does not work for flutter web so I stored info about auth in hive, mobile works fine
         var box = await Hive.openBox('authBox');
         box.put('auth', true);

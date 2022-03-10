@@ -22,13 +22,13 @@ class ContextServiceProviderBlocs extends StatelessWidget {
         ),
         BlocProvider(
           create: (BuildContext context) => CreateUserBloc(
-            accountRepo: context.serviceProvider.account,
+            accountRepo: context.serviceProvider.accountRepo,
           ),
         ),
         BlocProvider(
           lazy: false,
           create: (BuildContext context) => CurrentUserBloc(
-            accountRepo: context.serviceProvider.account,
+            accountRepo: context.serviceProvider.accountRepo,
             authBloc: context.authBloc,
           ),
         ),

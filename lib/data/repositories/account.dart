@@ -52,11 +52,9 @@ class AccountRepo implements IAccount {
       firebaseAuthResult = await firebaseAuthClass.changeUserPassword(userModel.password!);
     }
     await firebaseAuthClass.changeUserEmail(userModel.email);
-
-    //TODO malo bolje ovu logiku edita rijesit
-    if (fireStoreResult || firebaseAuthResult) {
-      return true;
-    } else
+    if (!fireStoreResult && !firebaseAuthResult) {
       return false;
+    } else
+      return true;
   }
 }

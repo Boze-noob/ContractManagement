@@ -14,31 +14,39 @@ class Clientstable extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
-      child: DataTable2(
-          columnSpacing: 12,
-          horizontalMargin: 12,
-          minWidth: 600,
-          columns: [
-            DataColumn2(
-              label: Text("Name"),
-              size: ColumnSize.L,
-            ),
-            DataColumn(
-              label: Text('Location'),
-            ),
-            DataColumn(
-              label: Text('Rating'),
-            ),
-            DataColumn(
-              label: Text('Action'),
-            ),
-          ],
-          rows: List<DataRow>.generate(
-              15,
-              (index) => DataRow(cells: [
-                    DataCell(CustomText(text: "Client name")),
-                    DataCell(CustomText(text: "New York")),
-                    DataCell(Row(
+      child: BlocBuilder<ClientsBloc, ClientsState>(
+        builder: (context, state) {
+          return DataTable2(
+            columnSpacing: 12,
+            horizontalMargin: 12,
+            minWidth: 600,
+            columns: [
+              DataColumn2(
+                label: Text("Name"),
+                size: ColumnSize.L,
+              ),
+              DataColumn(
+                label: Text('Location'),
+              ),
+              DataColumn(
+                label: Text('Rating'),
+              ),
+              DataColumn(
+                label: Text('Action'),
+              ),
+            ],
+            rows: List<DataRow>.generate(
+              state.clients.length,
+              (index) => DataRow(
+                cells: [
+                  DataCell(
+                    CustomText(text: state.clients[index].displayName),
+                  ),
+                  DataCell(
+                    CustomText(text: state.clients[index].location),
+                  ),
+                  DataCell(
+                    Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
@@ -50,23 +58,32 @@ class Clientstable extends StatelessWidget {
                           width: 5,
                         ),
                         CustomText(
-                          text: "4.5",
+                          text: state.clients[index].rating ?? 'Default',
                         )
                       ],
-                    )),
-                    DataCell(Container(
-                        decoration: BoxDecoration(
-                          color: light,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: active, width: .5),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        child: CustomText(
-                          text: "Block",
-                          color: active.withOpacity(.7),
-                          weight: FontWeight.bold,
-                        ))),
-                  ]))),
+                    ),
+                  ),
+                  DataCell(
+                    Container(
+                      decoration: BoxDecoration(
+                        color: light,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: active, width: .5),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      child: CustomText(
+                        text: "Block",
+                        color: active.withOpacity(.7),
+                        weight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

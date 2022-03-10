@@ -23,10 +23,11 @@ class FirebaseFirestoreClass {
 
   Future getDataWithFilter(String collection, String fieldName, String fieldValue) async {
     try {
-      var jsonData = FirebaseFirestore.instance.collection(collection).where(fieldName, isEqualTo: fieldValue);
-      return jsonData;
+      final jsonData = await FirebaseFirestore.instance.collection(collection).where(fieldName, isEqualTo: fieldValue).get();
+      return jsonData.docs;
     } catch (e) {
       print(e);
+      return null;
     }
   }
 }
