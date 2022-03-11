@@ -23,7 +23,7 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future getDataWithFilter(String collection, String fieldName, String fieldValue) async {
+  Future getDataWithFilter(String collection, String fieldName, dynamic fieldValue) async {
     try {
       final jsonData = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get();
       return jsonData.docs;

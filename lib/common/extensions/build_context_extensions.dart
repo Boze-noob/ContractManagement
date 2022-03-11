@@ -15,6 +15,7 @@ extension BuildContextExtensions on BuildContext {
   ClientsBloc get clientsBloc => read<ClientsBloc>();
   CreateUserBloc get createUserBloc => read<CreateUserBloc>();
   CompaniesBloc get companiesBloc => read<CompaniesBloc>();
+  ContractsBloc get contractsBloc => read<ContractsBloc>();
   CurrentUserBloc get currentUserBloc => read<CurrentUserBloc>();
   EditProfileBloc get editProfileBloc => read<EditProfileBloc>();
 }

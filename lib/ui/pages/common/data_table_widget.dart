@@ -7,19 +7,30 @@ class DataTableWidget extends StatelessWidget {
   final String secondColumnName;
   final String thirdColumnName;
   final String fourthColumnName;
+  final String fifthColumnName;
   final String action;
+  final List dataList;
 
-  const DataTableWidget({
+  DataTableWidget({
     Key? key,
     required this.firstColumnName,
     required this.secondColumnName,
     required this.thirdColumnName,
     required this.fourthColumnName,
+    required this.fifthColumnName,
     required this.action,
+    required this.dataList,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (dataList.isEmpty)
+      return CustomText(
+        text: 'No data to display',
+        size: context.textSizeXL,
+        color: Colors.black,
+        weight: FontWeight.bold,
+      );
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -30,58 +41,66 @@ class DataTableWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
       child: DataTable2(
-          columnSpacing: 12,
-          horizontalMargin: 12,
-          minWidth: 600,
-          columns: [
-            DataColumn2(
-              label: Text(firstColumnName),
-              size: ColumnSize.L,
-            ),
-            DataColumn(
-              label: Text(secondColumnName),
-            ),
-            DataColumn(
-              label: Text(thirdColumnName),
-            ),
-            DataColumn(
-              label: Text(fourthColumnName),
-            ),
-          ],
-          rows: List<DataRow>.generate(
-              15,
-              (index) => DataRow(cells: [
-                    DataCell(CustomText(text: "Client name")),
-                    DataCell(CustomText(text: "New York")),
-                    DataCell(Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.deepOrange,
-                          size: 18,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        CustomText(
-                          text: "4.5",
-                        )
-                      ],
-                    )),
-                    DataCell(Container(
-                        decoration: BoxDecoration(
-                          color: light,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: active, width: .5),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        child: CustomText(
-                          text: action,
-                          color: active.withOpacity(.7),
-                          weight: FontWeight.bold,
-                        ))),
-                  ]))),
+        columnSpacing: 12,
+        horizontalMargin: 12,
+        minWidth: 600,
+        columns: [
+          DataColumn2(
+            label: Text(firstColumnName),
+            size: ColumnSize.L,
+          ),
+          DataColumn(
+            label: Text(secondColumnName),
+          ),
+          DataColumn(
+            label: Text(thirdColumnName),
+          ),
+          DataColumn(
+            label: Text(fourthColumnName),
+          ),
+          DataColumn(
+            label: Text(fifthColumnName),
+          ),
+        ],
+        rows: List<DataRow>.generate(
+          dataList!.length,
+          (index) => DataRow(
+            cells: [
+              DataCell(
+                CustomText(text: dataList![index].name),
+              ),
+              DataCell(
+                CustomText(text: dataList![index].clientName),
+              ),
+              DataCell(
+                CustomText(
+                  text: dataList![index].location,
+                ),
+              ),
+              DataCell(
+                CustomText(
+                  text: dataList![index].company,
+                ),
+              ),
+              DataCell(
+                Container(
+                  decoration: BoxDecoration(
+                    color: light,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: active, width: .5),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: CustomText(
+                    text: action,
+                    color: active.withOpacity(.7),
+                    weight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

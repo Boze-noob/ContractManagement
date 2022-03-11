@@ -16,7 +16,7 @@ class Clientstable extends StatelessWidget {
       builder: (context, state) {
         if (state.status == ClientsStateStatus.loading)
           return Loader();
-        else
+        else if (state.clients.isNotEmpty)
           return Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -156,6 +156,13 @@ class Clientstable extends StatelessWidget {
               ),
             ),
           );
+        return Container(
+          child: CustomText(
+            text: 'No clients yet',
+            size: context.textSizeXL,
+            weight: FontWeight.bold,
+          ),
+        );
       },
     );
   }
