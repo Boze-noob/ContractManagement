@@ -17,7 +17,7 @@ class ContextServiceProviderBlocs extends StatelessWidget {
         BlocProvider<AuthBloc>(
           lazy: false,
           create: (BuildContext context) => AuthBloc(
-            userAuth: context.serviceProvider.userAuth,
+            userAuthRepo: context.serviceProvider.userAuth,
           )..add(AuthCheckAuthenticationEvent()),
         ),
         BlocProvider(

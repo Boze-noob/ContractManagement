@@ -14,4 +14,6 @@ class EditProfileUpdateEvent extends EditProfileEvent {
   EditProfileUpdateEvent({required this.userModel});
 }
 
+class EditProfileDeleteEvent extends EditProfileEvent {}
+
 class EditProfileSubmitEvent extends EditProfileEvent {}

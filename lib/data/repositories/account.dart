@@ -5,6 +5,7 @@ abstract class IAccount {
   Future<UserModel?> getUserFromDatabase();
   Future<String?> createAccount(String email, String password, String displayName, String role);
   Future<bool> editAccount(UserModel userModel);
+  Future<String?> deleteCurrentUser();
 }
 
 class AccountRepo implements IAccount {
@@ -56,5 +57,12 @@ class AccountRepo implements IAccount {
       return false;
     } else
       return true;
+  }
+
+  @override
+  Future<String?> deleteCurrentUser() async {
+    final result = await firebaseFirestoreClass.deleteData('users', firebaseAuthInstance.currentUser!.uid);
+    await firebaseAuthClass.deleteCurrentUser();
+    return result;
   }
 }

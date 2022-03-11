@@ -28,6 +28,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
           } else if (state.status == EditProfileStateStatus.submitSuccess) {
             showInfoMessage("Profile successfully updated", context, duration: 5);
             context.currentUserBloc.add(CurrentUserGetEvent());
+          } else if (state.status == EditProfileStateStatus.userSuccessfullyDeleted) {
+            //This part is possible to do with stream subscription but I like it this way in this situation where I put Bloc Provider "locally"
+            context.authBloc.add(AuthInitEvent());
           }
         },
         child: Column(
@@ -344,7 +347,6 @@ class _PasswordWidgetState extends State<_PasswordWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<EditProfileBloc, EditProfileState>(
       builder: (context, state) {
-        print(state.userModel.displayName);
         return Row(
           children: [
             SizedBox(
@@ -406,6 +408,21 @@ class _ButtonRowWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        Button(
+          child: CustomText(
+            text: 'Delete account',
+            color: delete,
+            weight: FontWeight.bold,
+            size: context.textSizeM,
+          ),
+          color: Colors.grey.withOpacity(0.2),
+          borderRadius: 20,
+          shrinkWrap: true,
+          onTap: () => context.editProfileBloc.add(
+            EditProfileDeleteEvent(),
+          ),
+        ),
+        Spacer(),
         Button(
           child: Text(
             'Clear',

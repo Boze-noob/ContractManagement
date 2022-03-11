@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
+import 'package:get/get.dart';
 
 import '../../common/enumerations/role_type.dart';
 
@@ -197,9 +198,14 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                 margin: EdgeInsets.all(2),
                 child: CircleAvatar(
                   backgroundColor: light,
-                  child: Icon(
-                    Icons.person_outline,
+                  child: IconButton(
+                    icon: Icon(Icons.person_outline),
                     color: dark,
+                    onPressed: () {
+                      menuController.changeActiveItemTo(myProfilePageDisplayName);
+                      if (ResponsiveWidget.isSmallScreen(context)) Get.back();
+                      navigationController.navigateTo(myProfilePageRoute);
+                    },
                   ),
                 ),
               ),

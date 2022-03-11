@@ -10,6 +10,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     on<EditProfileInitEvent>(_init);
     on<EditProfileUpdateEvent>(_updateState);
     on<EditProfileSubmitEvent>(_submit);
+    on<EditProfileDeleteEvent>(_deleteUser);
   }
 
   static EditProfileState initialState() => EditProfileState(
@@ -39,6 +40,21 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         userModel: event.userModel,
       ),
     );
+  }
+
+  void _deleteUser(EditProfileDeleteEvent event, Emitter<EditProfileState> emit) async {
+    final result = await accountRepo.deleteCurrentUser();
+    if (result == null)
+      emit(
+        state.copyWith(status: EditProfileStateStatus.userSuccessfullyDeleted),
+      );
+    else
+      emit(
+        state.copyWith(
+          status: EditProfileStateStatus.error,
+          errorMessage: result,
+        ),
+      );
   }
 
   void _submit(EditProfileSubmitEvent event, Emitter<EditProfileState> emit) async {

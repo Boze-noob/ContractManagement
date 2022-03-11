@@ -31,4 +31,8 @@ class FirebaseAuthClass {
     final account = await firebaseAuthInstance.createUserWithEmailAndPassword(email: email, password: password);
     return account;
   }
+
+  Future deleteCurrentUser() async {
+    await firebaseAuthInstance.currentUser!.delete();
+  }
 }
