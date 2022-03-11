@@ -16,6 +16,13 @@ class _ContractsPageState extends State<ContractsPage> {
   final contractController = Get.put(ContractsMenuController());
 
   @override
+  void initState() {
+    super.initState();
+    //function is called when page is build
+    WidgetsBinding.instance?.addPostFrameCallback((_) => contractController.changeActiveItemTo(activeContracts));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ContractsBloc(contractsRepo: context.serviceProvider.contractsRepo)
