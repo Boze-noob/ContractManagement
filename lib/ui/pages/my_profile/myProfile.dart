@@ -96,6 +96,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                 SizedBox(
                                   height: 15,
                                 ),
+                                _PhoneNumberWidget(),
+                                SizedBox(
+                                  height: 15,
+                                ),
                                 _LocationWidget(),
                                 SizedBox(
                                   height: 30,
@@ -165,6 +169,54 @@ class _DisplayNameWidget extends StatelessWidget {
               ),
               decoration: InputDecoration(
                 labelText: 'Display name',
+                labelStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontFamily: AppFonts.quicksandRegular,
+                ),
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+        ]);
+      },
+    );
+  }
+}
+
+class _PhoneNumberWidget extends StatelessWidget {
+  const _PhoneNumberWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      builder: (context, state) {
+        return Row(children: [
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            width: 100,
+            child: CustomText(
+              text: 'Phone number:',
+              size: context.textSizeM,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: TextFormField(
+              initialValue: state.userModel.phoneNumber,
+              // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
+              onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(phoneNumber: text))),
+              style: TextStyle(
+                fontFamily: AppFonts.quicksandBold,
+                fontSize: 14,
+                color: Colors.black,
+              ),
+              decoration: InputDecoration(
+                labelText: 'Phone number',
                 labelStyle: const TextStyle(
                   color: Colors.grey,
                   fontFamily: AppFonts.quicksandRegular,

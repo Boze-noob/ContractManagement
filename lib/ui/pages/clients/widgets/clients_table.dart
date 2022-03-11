@@ -82,6 +82,57 @@ class Clientstable extends StatelessWidget {
                             ),
                             textColor: black,
                             shrinkWrap: true,
+                            borderRadius: 40,
+                            onTap: () => showDialog(
+                              context: context,
+                              builder: (context) => CustomDialog(
+                                buttonText: 'Close',
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomText(
+                                        text: 'Client details',
+                                        size: context.textSizeXL,
+                                        weight: FontWeight.bold,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      CustomText(
+                                        text: 'Display name: ' + state.clients[index].displayName,
+                                        size: context.textSizeM,
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomText(
+                                        text: 'Email: ' + state.clients[index].email,
+                                        size: context.textSizeM,
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomText(
+                                        text: 'Role: ' + state.clients[index].role,
+                                        size: context.textSizeM,
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomText(
+                                        text: 'Phone number: ',
+                                        size: context.textSizeM,
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           SizedBox(
                             width: 10,

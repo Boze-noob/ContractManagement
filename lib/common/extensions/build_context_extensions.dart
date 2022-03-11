@@ -8,6 +8,7 @@ extension BuildContextExtensions on BuildContext {
   double get textSizeS => 12;
   double get textSizeM => 16;
   double get textSizeL => 20;
+  double get textSizeXL => 23;
 
   //Blocs
   AuthBloc get authBloc => read<AuthBloc>();
