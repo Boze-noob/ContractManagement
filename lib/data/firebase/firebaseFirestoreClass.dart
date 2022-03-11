@@ -33,12 +33,13 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future<bool> deleteData(String collection, String document) async {
+  Future<String?> deleteData(String collection, String document) async {
+    String? errorMessage;
     try {
-      await fireStoreInstance.collection(collection).doc(document).delete().catchError((onError) => print(onError));
-      return true;
+      await fireStoreInstance.collection(collection).doc(document).delete().catchError((onError) => errorMessage = onError);
+      return errorMessage;
     } catch (e) {
-      return false;
+      return e.toString();
     }
   }
 }
