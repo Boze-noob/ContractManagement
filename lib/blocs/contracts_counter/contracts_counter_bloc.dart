@@ -36,6 +36,5 @@ class ContractsCounterBloc extends Bloc<ContractsCounterEvent, ContractsCounterS
           errorMessage: 'Error happen',
         ),
       );
-    print('Number of active contracts is ${state.contractsCounterModel.active}');
   }
 }

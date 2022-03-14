@@ -34,8 +34,6 @@ class OverviewPage extends StatelessWidget {
               }),
               child: BlocBuilder<ContractsCounterBloc, ContractsCounterState>(
                 builder: (context, state) {
-                  print('Status is ${state.status}');
-                  print('Number of active contracts is ${state.contractsCounterModel.active}');
                   return ListView(
                     children: [
                       if (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context))
@@ -52,7 +50,7 @@ class OverviewPage extends StatelessWidget {
                           model: state.contractsCounterModel,
                         ),
                       if (!ResponsiveWidget.isSmallScreen(context)) RevenueSectionLarge() else RevenueSectionSmall(),
-                      AvailableDriversTable(),
+                      AvailableCompaniesTable(),
                     ],
                   );
                 },

@@ -1,4 +1,4 @@
-export 'available_drivers_table.dart';
+export 'available_companies_table.dart';
 export 'bar_chart.dart';
 export 'info_card.dart';
 export 'info_card_small.dart';
