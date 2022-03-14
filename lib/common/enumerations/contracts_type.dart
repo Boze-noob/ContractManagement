@@ -1,10 +1,10 @@
-class ContractsType {
-  static const active = ContractsType._(0);
-  static const completed = ContractsType._(1);
-  static const terminated = ContractsType._(2);
-  static const request = ContractsType._(3);
+class ContractType {
+  static const active = ContractType._(0);
+  static const completed = ContractType._(1);
+  static const terminated = ContractType._(2);
+  static const request = ContractType._(3);
 
-  static List<ContractsType> get values => [
+  static List<ContractType> get values => [
         active,
         completed,
         terminated,
@@ -28,7 +28,7 @@ class ContractsType {
 
   final int index;
 
-  const ContractsType._(this.index);
+  const ContractType._(this.index);
   static List<int> get indexes => values.map<int>((x) => x.index).toList();
-  static ContractsType getValue(int index) => ContractsType._(index);
+  static ContractType getValue(int index) => ContractType._(index);
 }

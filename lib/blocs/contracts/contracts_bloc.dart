@@ -15,13 +15,17 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
         contracts: List.empty(),
       );
 
+  void _init(ContractsInitEvent event, Emitter<ContractsState> emit) {
+    initialState();
+  }
+
   void _load(ContractsLoadEvent event, Emitter<ContractsState> emit) async {
     emit(
       state.copyWith(status: ContractsStateStatus.loading),
     );
 
     final contracts = await contractsRepo.load(
-      event.contractsType,
+      event.contractType,
     );
     if (contracts != null) {
       emit(
@@ -31,9 +35,5 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       emit(
         state.copyWith(status: ContractsStateStatus.error, errorMessage: 'No data found'),
       );
-  }
-
-  void _init(ContractsInitEvent event, Emitter<ContractsState> emit) {
-    initialState();
   }
 }

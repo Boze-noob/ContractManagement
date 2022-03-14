@@ -75,18 +75,62 @@ class AvailableCompaniesTable extends StatelessWidget {
                             )
                           ],
                         )),
-                        DataCell(Container(
-                            decoration: BoxDecoration(
-                              color: light,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: active, width: .5),
+                        DataCell(
+                          GestureDetector(
+                            onTap: () => showDialog(
+                              context: context,
+                              builder: (context) => CustomDialog(
+                                //TODO dodati listu requestova za company
+                                child: Expanded(
+                                  child: Column(
+                                    children: [
+                                      CustomText(
+                                        text: 'Send contract to company',
+                                        weight: FontWeight.bold,
+                                        size: context.textSizeL,
+                                        color: black,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: 2,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () => showDialog(
+                                                context: context,
+                                                builder: (context) => CustomDialog(
+                                                      buttonText: 'Send',
+                                                      message: 'Do you want to send request?',
+                                                      onButtonPressed: () => null,
+                                                    )),
+                                            child: ListTile(
+                                              title: Text('2'),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            child: CustomText(
-                              text: "Send contract",
-                              color: active.withOpacity(.7),
-                              weight: FontWeight.bold,
-                            ))),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: light,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: active, width: .5),
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              child: CustomText(
+                                text: "Send contract",
+                                color: active.withOpacity(.7),
+                                weight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

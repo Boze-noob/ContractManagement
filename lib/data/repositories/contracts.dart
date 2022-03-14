@@ -1,7 +1,7 @@
 import 'package:contract_management/_all.dart';
 
 abstract class IContracts {
-  Future<List<ContractsModel>?> load(ContractsType contractStatus);
+  Future<List<ContractsModel>?> load(ContractType contractStatus);
   Future<ContractsCounterModel?> loadContractsCount();
 }
 
@@ -13,7 +13,7 @@ class ContractsRepo implements IContracts {
   });
 
   @override
-  Future<List<ContractsModel>?> load(ContractsType contractStatus) async {
+  Future<List<ContractsModel>?> load(ContractType contractStatus) async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter(
       'contracts',
       'contractStatus',
@@ -26,10 +26,10 @@ class ContractsRepo implements IContracts {
   Future<ContractsCounterModel?> loadContractsCount() async {
     try {
       ContractsCounterModel contractsCounterModel = ContractsCounterModel(
-        active: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractsType.active.index),
-        completed: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractsType.completed.index),
-        terminated: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractsType.terminated.index),
-        requests: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractsType.request.index),
+        active: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractType.active.index),
+        completed: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractType.completed.index),
+        terminated: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractType.terminated.index),
+        requests: await firebaseFirestoreClass.getNumberOfSpecificField('contracts', 'contractStatus', ContractType.request.index),
       );
       return contractsCounterModel;
     } catch (e) {

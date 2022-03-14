@@ -27,7 +27,7 @@ class _ContractsPageState extends State<ContractsPage> {
     return BlocProvider(
       create: (context) => ContractsBloc(contractsRepo: context.serviceProvider.contractsRepo)
         ..add(
-          ContractsLoadEvent(contractsType: ContractsType.active),
+          ContractsLoadEvent(contractType: ContractType.active),
         ),
       child: BlocConsumer<ContractsBloc, ContractsState>(
         listener: (context, state) {
@@ -60,7 +60,7 @@ class _ContractsPageState extends State<ContractsPage> {
                         child: InkWell(
                           onTap: () {
                             controller.changeActiveItemTo(activeContracts);
-                            context.contractsBloc.add(ContractsLoadEvent(contractsType: ContractsType.getValue(0)));
+                            context.contractsBloc.add(ContractsLoadEvent(contractType: ContractType.getValue(0)));
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -82,7 +82,7 @@ class _ContractsPageState extends State<ContractsPage> {
                         child: InkWell(
                           onTap: () {
                             controller.changeActiveItemTo(completedContracts);
-                            context.contractsBloc.add(ContractsLoadEvent(contractsType: ContractsType.getValue(1)));
+                            context.contractsBloc.add(ContractsLoadEvent(contractType: ContractType.getValue(1)));
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
@@ -104,7 +104,7 @@ class _ContractsPageState extends State<ContractsPage> {
                         child: InkWell(
                           onTap: () {
                             controller.changeActiveItemTo(terminatedContracts);
-                            context.contractsBloc.add(ContractsLoadEvent(contractsType: ContractsType.getValue(2)));
+                            context.contractsBloc.add(ContractsLoadEvent(contractType: ContractType.getValue(2)));
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
