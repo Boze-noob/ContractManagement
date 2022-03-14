@@ -1,5 +1,3 @@
-import 'package:contract_management/_all.dart';
-
 class UserModel {
   final String id;
   final String email;

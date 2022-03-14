@@ -1,3 +1,5 @@
+import 'package:contract_management/_all.dart';
+
 enum ContractsCounterStateStatus {
   init,
   loading,
@@ -7,27 +9,23 @@ enum ContractsCounterStateStatus {
 
 class ContractsCounterState {
   final ContractsCounterStateStatus status;
-  final int active;
-  final int completed;
-  final int terminated;
+  final ContractsCounterModel contractsCounterModel;
+  final String? errorMessage;
 
   ContractsCounterState({
     required this.status,
-    required this.active,
-    required this.completed,
-    required this.terminated,
+    required this.contractsCounterModel,
+    this.errorMessage,
   });
 
   ContractsCounterState copyWith({
     ContractsCounterStateStatus? status,
-    int? active,
-    int? completed,
-    int? terminated,
+    ContractsCounterModel? contractsCounterModel,
+    String? errorMessage,
   }) =>
       ContractsCounterState(
         status: status ?? this.status,
-        active: active ?? this.active,
-        completed: completed ?? this.completed,
-        terminated: terminated ?? this.terminated,
+        contractsCounterModel: contractsCounterModel ?? this.contractsCounterModel,
+        errorMessage: errorMessage ?? this.errorMessage,
       );
 }

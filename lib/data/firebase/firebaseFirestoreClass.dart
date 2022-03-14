@@ -33,6 +33,18 @@ class FirebaseFirestoreClass {
     }
   }
 
+  Future getNumberOfSpecificField(String collection, String fieldName, dynamic fieldValue) async {
+    try {
+      num counter = 0;
+      await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().then((value) => counter = value.size);
+      print('Returining counter $counter for field $fieldValue');
+      return counter;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<String?> deleteData(String collection, String document) async {
     String? errorMessage;
     try {

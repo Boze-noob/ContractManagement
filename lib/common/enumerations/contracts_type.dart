@@ -2,11 +2,13 @@ class ContractsType {
   static const active = ContractsType._(0);
   static const completed = ContractsType._(1);
   static const terminated = ContractsType._(2);
+  static const request = ContractsType._(3);
 
   static List<ContractsType> get values => [
         active,
         completed,
         terminated,
+        request,
       ];
 
   String translate() {
@@ -17,6 +19,8 @@ class ContractsType {
         return "completed";
       case 2:
         return "terminated";
+      case 3:
+        return "request";
       default:
         return " ";
     }

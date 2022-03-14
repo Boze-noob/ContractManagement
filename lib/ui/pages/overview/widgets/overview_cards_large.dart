@@ -3,6 +3,11 @@ import 'package:contract_management/_all.dart';
 import 'package:contract_management/_all.dart';
 
 class OverviewCardsLargeScreen extends StatelessWidget {
+  final ContractsCounterModel model;
+  OverviewCardsLargeScreen({
+    required this.model,
+  });
+
   void onTap() {
     menuController.changeActiveItemTo('Contracts');
     navigationController.navigateTo('/contracts');
@@ -16,7 +21,7 @@ class OverviewCardsLargeScreen extends StatelessWidget {
       children: [
         InfoCard(
           title: "Active contracts",
-          value: "7",
+          value: model.active.toString(),
           onTap: () => onTap(),
           topColor: Colors.orange,
         ),
@@ -25,7 +30,7 @@ class OverviewCardsLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Completed contracts",
-          value: "17",
+          value: model.completed.toString(),
           topColor: Colors.lightGreen,
           onTap: () => onTap(),
         ),
@@ -34,7 +39,7 @@ class OverviewCardsLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Terminated contracts",
-          value: "3",
+          value: model.terminated.toString(),
           topColor: Colors.redAccent,
           onTap: () => onTap(),
         ),
@@ -43,7 +48,7 @@ class OverviewCardsLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Requests",
-          value: "12",
+          value: model.requests.toString(),
           onTap: () {
             menuController.changeActiveItemTo('Request');
             navigationController.navigateTo('/request');
