@@ -5,6 +5,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case overviewPageRoute:
       return _getPageRoute(OverviewPage());
+    case createRequestPageRoute:
+      return _getPageRoute(ClientRequestPage());
     case requestsPageRoute:
       return _getPageRoute(RequestsPage());
     case contractsPageRoute:

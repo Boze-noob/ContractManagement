@@ -25,6 +25,8 @@ class MenuController extends GetxController {
     switch (itemName) {
       case overviewPageDisplayName:
         return _customIcon(Icons.trending_up, itemName);
+      case createRequestDisplayName:
+        return _customIcon(Icons.create, itemName);
       case requestsPageDisplayName:
         return _customIcon(Icons.mail, itemName);
       case contractsPageDisplayName:

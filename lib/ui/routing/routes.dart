@@ -3,6 +3,9 @@ const rootRoute = "/rootRoute";
 const overviewPageDisplayName = "Overview";
 const overviewPageRoute = "/overview";
 
+const createRequestDisplayName = "Create request";
+const createRequestPageRoute = "/createRequest";
+
 const requestsPageDisplayName = "Requests";
 const requestsPageRoute = "/requests";
 
@@ -36,6 +39,7 @@ class MenuItem {
 
 List<MenuItem> sideMenuItemRoutes = [
   MenuItem(overviewPageDisplayName, overviewPageRoute),
+  MenuItem(createRequestDisplayName, createRequestPageRoute),
   MenuItem(requestsPageDisplayName, requestsPageRoute),
   MenuItem(contractsPageDisplayName, contractsPageRoute),
   MenuItem(companiesPageDisplayName, companiesPageRoute),
