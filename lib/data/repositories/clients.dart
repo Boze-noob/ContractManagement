@@ -3,6 +3,7 @@ import 'package:contract_management/_all.dart';
 abstract class IClients {
   Future<List<UserModel>?> getClients();
   Future<String?> deleteClient(String uid);
+  Future<bool> sendClientRequest(ClientRequestModel clientRequestModel);
 }
 
 class ClientsRepo implements IClients {
@@ -24,5 +25,10 @@ class ClientsRepo implements IClients {
   Future<String?> deleteClient(String userId) async {
     final result = await firebaseFirestoreClass.deleteData('users', userId);
     return result;
+  }
+
+  @override
+  Future<bool> sendClientRequest(ClientRequestModel clientRequestModel) async {
+    return await firebaseFirestoreClass.storeData('requests', null, clientRequestModel.toMap());
   }
 }

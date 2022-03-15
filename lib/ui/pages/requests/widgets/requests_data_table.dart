@@ -2,16 +2,16 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
-class DataTableWidget extends StatelessWidget {
+class RequestsDataTableWidget extends StatelessWidget {
   final String firstColumnName;
   final String secondColumnName;
   final String thirdColumnName;
   final String fourthColumnName;
   final String fifthColumnName;
   final String action;
-  final List dataList;
+  final List<ClientRequestModel> clientRequestsList;
 
-  DataTableWidget({
+  RequestsDataTableWidget({
     Key? key,
     required this.firstColumnName,
     required this.secondColumnName,
@@ -19,12 +19,12 @@ class DataTableWidget extends StatelessWidget {
     required this.fourthColumnName,
     required this.fifthColumnName,
     required this.action,
-    required this.dataList,
+    required this.clientRequestsList,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (dataList.isEmpty)
+    if (clientRequestsList.isEmpty)
       return CustomText(
         text: 'No data to display',
         size: context.textSizeXL,
@@ -63,23 +63,23 @@ class DataTableWidget extends StatelessWidget {
           ),
         ],
         rows: List<DataRow>.generate(
-          dataList.length,
+          clientRequestsList.length,
           (index) => DataRow(
             cells: [
               DataCell(
-                CustomText(text: dataList[index].name),
+                CustomText(text: clientRequestsList[index].displayName),
               ),
               DataCell(
-                CustomText(text: dataList[index].clientName),
+                CustomText(text: clientRequestsList[index].email),
               ),
               DataCell(
                 CustomText(
-                  text: dataList[index].location,
+                  text: clientRequestsList[index].location,
                 ),
               ),
               DataCell(
                 CustomText(
-                  text: dataList[index].company,
+                  text: clientRequestsList[index].createdDateTime.toLocal().toString(),
                 ),
               ),
               DataCell(

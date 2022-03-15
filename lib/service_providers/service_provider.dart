@@ -1,5 +1,6 @@
 import 'package:contract_management/_all.dart';
 import 'package:contract_management/data/repositories/companies.dart';
+import 'package:contract_management/data/repositories/request.dart';
 import 'package:flutter/foundation.dart';
 
 class DevelopmentServiceProvider extends ServiceProvider {}
@@ -10,6 +11,7 @@ abstract class ServiceProvider {
   late IClients clientsRepo;
   late ICompanies companiesRepo;
   late IContracts contractsRepo;
+  late IRequest requestRepo;
 
   late FirebaseAuthClass firebaseAuthClass;
   late FirebaseFirestoreClass firebaseFirestoreClass;
@@ -31,6 +33,7 @@ abstract class ServiceProvider {
     clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    requestRepo = RequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
   }
 

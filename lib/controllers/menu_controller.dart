@@ -9,7 +9,6 @@ class MenuController extends GetxController {
   var hoverItem = "".obs;
 
   changeActiveItemTo(String itemName) {
-    print("we changed active item to $itemName");
     activeItem.value = itemName;
   }
 

@@ -1,7 +1,7 @@
 import 'package:contract_management/_all.dart';
 
 abstract class IAccount {
-  bool storeUserToDatabase(UserModel userModel);
+  Future<bool> storeUserToDatabase(UserModel userModel);
   Future<UserModel?> getUserFromDatabase();
   Future<String?> createAccount(String email, String password, String displayName, String role);
   Future<bool> editAccount(UserModel userModel);
@@ -15,9 +15,9 @@ class AccountRepo implements IAccount {
   FirebaseAuth firebaseAuthInstance = FirebaseAuth.instance;
 
   @override
-  bool storeUserToDatabase(UserModel userModel) {
+  Future<bool> storeUserToDatabase(UserModel userModel) async {
     //TODO vidit sta je sa ovim usklicnikom, moze li se slusat u auth blocu ili provjeravat jeli current user null ili nije(automatski generirat uid ako jest
-    bool result = firebaseFirestoreClass.storeData('users', userModel.id, userModel.toMap());
+    bool result = await firebaseFirestoreClass.storeData('users', userModel.id, userModel.toMap());
     return result;
   }
 
@@ -47,7 +47,7 @@ class AccountRepo implements IAccount {
 
   @override
   Future<bool> editAccount(UserModel userModel) async {
-    final fireStoreResult = firebaseFirestoreClass.storeData('users', userUid, userModel.toMap());
+    final fireStoreResult = await firebaseFirestoreClass.storeData('users', userUid, userModel.toMap());
     bool firebaseAuthResult = false;
     if (userModel.password != null) {
       firebaseAuthResult = await firebaseAuthClass.changeUserPassword(userModel.password!);

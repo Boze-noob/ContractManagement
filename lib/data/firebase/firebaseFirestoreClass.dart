@@ -1,12 +1,14 @@
-import 'dart:io';
-
 import 'package:contract_management/_all.dart';
 
 class FirebaseFirestoreClass {
-  bool storeData(String collection, String document, var model) {
+  Future<bool> storeData(String collection, String? document, var model) async {
+    bool completed = true;
     try {
-      fireStoreInstance.collection(collection).doc(document).set(model);
-      return true;
+      if (document != null)
+        await fireStoreInstance.collection(collection).doc(document).set(model).catchError((onError) => completed = false);
+      else
+        await fireStoreInstance.collection(collection).add(model);
+      return completed;
     } catch (e) {
       print(e);
       return false;
@@ -37,7 +39,6 @@ class FirebaseFirestoreClass {
     try {
       num counter = 0;
       await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().then((value) => counter = value.size);
-      print('Returining counter $counter for field $fieldValue');
       return counter;
     } catch (e) {
       print(e);
@@ -52,6 +53,20 @@ class FirebaseFirestoreClass {
       return errorMessage;
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  Future getAllDataFromCollection(String collection, String? sortFieldName) async {
+    try {
+      final jsonData;
+      if (sortFieldName == null)
+        jsonData = await fireStoreInstance.collection(collection).get();
+      else
+        jsonData = await fireStoreInstance.collection(collection).orderBy(sortFieldName).get();
+      return jsonData.docs;
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 }
