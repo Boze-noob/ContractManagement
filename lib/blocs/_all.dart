@@ -8,3 +8,4 @@ export 'contracts_counter/_all.dart';
 export 'companies/_all.dart';
 export 'current_user/_all.dart';
 export 'requests/_all.dart';
+export 'revenue/_all.dart';
