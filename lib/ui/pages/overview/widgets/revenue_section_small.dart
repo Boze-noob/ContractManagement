@@ -3,6 +3,10 @@ import 'package:contract_management/constants/style.dart';
 import 'package:contract_management/_all.dart';
 
 class RevenueSectionSmall extends StatelessWidget {
+  final RevenueModel revenueModel;
+
+  RevenueSectionSmall(this.revenueModel);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +31,7 @@ class RevenueSectionSmall extends StatelessWidget {
                   weight: FontWeight.bold,
                   color: lightGrey,
                 ),
-                Container(width: 600, height: 200, child: SimpleBarChart.withSampleData()),
+                Container(width: 600, height: 200, child: SimpleBarChart.withSampleData(revenueModel)),
               ],
             ),
           ),
@@ -44,12 +48,12 @@ class RevenueSectionSmall extends StatelessWidget {
                 Row(
                   children: [
                     RevenueInfo(
-                      title: "Toda\'s revenue",
-                      amount: "230",
+                      title: "Today\'s revenue",
+                      amount: revenueModel.dailyRevenue.toString(),
                     ),
                     RevenueInfo(
                       title: "Last 7 days",
-                      amount: "1,100",
+                      amount: revenueModel.totalWeeklyRevenue.toString(),
                     ),
                   ],
                 ),
@@ -57,11 +61,11 @@ class RevenueSectionSmall extends StatelessWidget {
                   children: [
                     RevenueInfo(
                       title: "Last 30 days",
-                      amount: "3,230",
+                      amount: revenueModel.weeklyRevenue.toString(),
                     ),
                     RevenueInfo(
                       title: "Last 12 months",
-                      amount: "11,300",
+                      amount: revenueModel.yearlyRevenue.toString(),
                     ),
                   ],
                 ),

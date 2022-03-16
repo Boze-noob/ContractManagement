@@ -1,35 +1,57 @@
+//TODO uncomment revenueListDateTime
 class RevenueModel {
-  final String todayRevenue;
-  final String weeklyRevenue;
-  final String monthlyRevenue;
-  final String yearlyRevenue;
+  final int dailyRevenue;
+  final int totalWeeklyRevenue;
+  final List<int> weeklyRevenue;
+  // final List<DateTime> revenueListDateTime;
+  final int monthlyRevenue;
+  final int yearlyRevenue;
 
   RevenueModel({
-    required this.todayRevenue,
+    required this.dailyRevenue,
+    required this.totalWeeklyRevenue,
     required this.weeklyRevenue,
+    // required this.revenueListDateTime,
     required this.monthlyRevenue,
     required this.yearlyRevenue,
   });
 
   RevenueModel copyWith({
-    String? todayRevenue,
-    String? weeklyRevenue,
-    String? monthlyRevenue,
-    String? yearlyRevenue,
+    int? dailyRevenue,
+    int? totalWeeklyRevenue,
+    List<int>? weeklyRevenue,
+    List<DateTime>? revenueListDateTime,
+    int? monthlyRevenue,
+    int? yearlyRevenue,
   }) =>
       RevenueModel(
-        todayRevenue: todayRevenue ?? this.todayRevenue,
+        dailyRevenue: dailyRevenue ?? this.dailyRevenue,
+        totalWeeklyRevenue: totalWeeklyRevenue ?? this.totalWeeklyRevenue,
         weeklyRevenue: weeklyRevenue ?? this.weeklyRevenue,
+        // revenueListDateTime: revenueListDateTime ?? this.revenueListDateTime,
         monthlyRevenue: monthlyRevenue ?? this.monthlyRevenue,
         yearlyRevenue: yearlyRevenue ?? this.yearlyRevenue,
       );
 
+  Map<String, dynamic> toMap() {
+    return {
+      'dailyRevenue': dailyRevenue,
+      'totalWeeklyRevenue': totalWeeklyRevenue,
+      'weeklyRevenue': weeklyRevenue,
+      //'revenueListDateTime': revenueListDateTime,
+      'monthlyRevenue': monthlyRevenue,
+      'yearlyRevenue': yearlyRevenue,
+    };
+  }
+
   factory RevenueModel.fromMap(dynamic map) {
     return RevenueModel(
-        todayRevenue : map['todayRevenue'];
-        weeklyRevenue : map['weeklyRevenue'];
-        monthlyRevenue : map['monthlyRevenue'];
-        yearlyRevenue : map['yearlyRevenue'];
+      dailyRevenue: map['dailyRevenue'],
+      totalWeeklyRevenue: map['totalWeeklyRevenue'],
+      weeklyRevenue: List<int>.from(map['weeklyRevenue']),
+      //revenueListDateTime: List<DateTime>.from(map['revenueListDateTime']),
+      monthlyRevenue: map['monthlyRevenue'],
+      yearlyRevenue: map['yearlyRevenue'],
     );
   }
 }

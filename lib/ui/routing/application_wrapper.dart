@@ -16,7 +16,6 @@ class _ApplicationNavigationWrapperState extends State<ApplicationNavigationWrap
         //"Current user bloc" is here because I can't delete user from FirebaseAuth only from database, so I'm checking if user is in database here
         //One of possible solutions is using firebase cloud function
         else if (authState.status == AuthStateStatus.Unauthenticated) {
-          print('vracamo authentication page-----------------------');
           return AuthenticationPage();
         } else if (authState.status == AuthStateStatus.Authenticated) {
           return SiteLayout();

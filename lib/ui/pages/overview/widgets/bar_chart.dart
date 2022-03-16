@@ -1,6 +1,7 @@
 /// Bar chart example
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart';
+import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/constants/style.dart';
 
@@ -11,11 +12,10 @@ class SimpleBarChart extends StatelessWidget {
   SimpleBarChart(this.seriesList, {this.animate});
 
   /// Creates a [BarChart] with sample data and no transition.
-  factory SimpleBarChart.withSampleData() {
+  factory SimpleBarChart.withSampleData(RevenueModel revenueModel) {
     return new SimpleBarChart(
-      _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
+      _createSampleData(revenueModel),
+      animate: true,
     );
   }
 
@@ -28,15 +28,16 @@ class SimpleBarChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
+  static List<charts.Series<OrdinalSales, String>> _createSampleData(RevenueModel revenueModel) {
+    //TODO add dynamic date time
     final data = [
-      new OrdinalSales('Today', 55),
-      new OrdinalSales('Yesterday', 25),
-      new OrdinalSales('2 days', 100),
-      new OrdinalSales('24 Jun', 75),
-      new OrdinalSales('23 Jun', 15),
-      new OrdinalSales('22 Jun', 85),
-      new OrdinalSales('21 Jun', 45),
+      new OrdinalSales('Today', revenueModel.weeklyRevenue[0]),
+      new OrdinalSales('Yesterday', revenueModel.weeklyRevenue[1]),
+      new OrdinalSales('2 days', revenueModel.weeklyRevenue[2]),
+      new OrdinalSales('24 Jun', revenueModel.weeklyRevenue[3]),
+      new OrdinalSales('23 Jun', revenueModel.weeklyRevenue[4]),
+      new OrdinalSales('22 Jun', revenueModel.weeklyRevenue[5]),
+      new OrdinalSales('21 Jun', revenueModel.weeklyRevenue[6]),
     ];
 
     return [
