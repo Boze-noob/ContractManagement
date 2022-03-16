@@ -47,3 +47,15 @@ List<MenuItem> sideMenuItemRoutes = [
   MenuItem(myProfilePageDisplayName, myProfilePageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];
+
+List<MenuItem> clientMenuItemRoutes = [
+  MenuItem(createRequestDisplayName, createRequestPageRoute),
+  MenuItem(myProfilePageDisplayName, myProfilePageRoute),
+  MenuItem(authenticationPageDisplayName, authenticationPageRoute),
+];
+
+List<MenuItem> companyMenuItemRoutes = [
+  MenuItem(contractsPageDisplayName, contractsPageRoute),
+  MenuItem(myProfilePageDisplayName, myProfilePageRoute),
+  MenuItem(authenticationPageDisplayName, authenticationPageRoute),
+];

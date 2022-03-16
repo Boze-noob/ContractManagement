@@ -48,7 +48,7 @@ class SideMenu extends StatelessWidget {
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: sideMenuItemRoutes
+            children: getMenuItems(context)
                 .map(
                   (item) => SideMenuItem(
                     itemName: item.name,
@@ -69,9 +69,23 @@ class SideMenu extends StatelessWidget {
                   ),
                 )
                 .toList(),
-          )
+          ),
         ],
       ),
     );
+  }
+}
+
+List getMenuItems(BuildContext context) {
+  final role = context.currentUserBloc.state.userModel!.role;
+  if (role == RoleType.admin.translate()) {
+    menuController.changeActiveItemTo(overviewPageDisplayName);
+    return sideMenuItemRoutes;
+  } else if (role == RoleType.client.translate()) {
+    menuController.changeActiveItemTo(createRequestDisplayName);
+    return clientMenuItemRoutes;
+  } else {
+    menuController.changeActiveItemTo(createRequestDisplayName);
+    return clientMenuItemRoutes;
   }
 }

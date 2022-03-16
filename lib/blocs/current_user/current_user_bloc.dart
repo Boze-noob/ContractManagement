@@ -37,8 +37,12 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
           status: CurrentUserStateStatus.success,
         ),
       );
+      emit(
+        state.copyWith(
+          status: CurrentUserStateStatus.init,
+        ),
+      );
     } else {
-      print("Current user error");
       emit(state.copyWith(
         status: CurrentUserStateStatus.error,
       ));
