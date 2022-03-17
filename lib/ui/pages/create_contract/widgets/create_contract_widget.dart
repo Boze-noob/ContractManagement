@@ -109,6 +109,7 @@ class __ContractNameState extends State<_ContractName> {
         return Padding(
           padding: EdgeInsets.only(right: context.screenWidth / 2),
           child: TextFormField(
+            initialValue: state.createContractModel.contractName,
             // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
             onChanged: (text) => context.createContractBloc.add(CreateContractUpdateEvent(createContractModel: state.createContractModel.copyWith(contractName: text))),
             style: TextStyle(
@@ -146,6 +147,7 @@ class __ContractDescriptionState extends State<_ContractDescription> {
         return Padding(
           padding: EdgeInsets.only(right: context.screenWidth / 2),
           child: TextFormField(
+            initialValue: state.createContractModel.contractDescription,
             // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
             onChanged: (text) => context.createContractBloc.add(CreateContractUpdateEvent(createContractModel: state.createContractModel.copyWith(contractDescription: text))),
             style: TextStyle(
