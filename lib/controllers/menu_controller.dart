@@ -28,6 +28,8 @@ class MenuController extends GetxController {
         return _customIcon(Icons.create, itemName);
       case requestsPageDisplayName:
         return _customIcon(Icons.mail, itemName);
+      case crateContractPageDisplayName:
+        return _customIcon(Icons.my_library_add, itemName);
       case contractsPageDisplayName:
         return _customIcon(Icons.my_library_books_rounded, itemName);
       case companiesPageDisplayName:

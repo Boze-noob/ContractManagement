@@ -2,7 +2,9 @@ import 'package:contract_management/_all.dart';
 
 abstract class IContracts {
   Future<List<ContractsModel>?> load(ContractType contractStatus);
+  Future<List<CreateContractModel>?> loadContractsTemplates();
   Future<ContractsCounterModel?> loadContractsCount();
+  Future<bool> storeDate(CreateContractModel createContractModel);
 }
 
 class ContractsRepo implements IContracts {
@@ -35,5 +37,17 @@ class ContractsRepo implements IContracts {
     } catch (e) {
       return null;
     }
+  }
+
+  @override
+  Future<bool> storeDate(CreateContractModel createContractModel) async {
+    //Better practice is to let firebase to create document uid but for simplicity I will use contractName
+    return await firebaseFirestoreClass.storeData('contractTemplates', createContractModel.contractName, createContractModel.toMap());
+  }
+
+  @override
+  Future<List<CreateContractModel>?> loadContractsTemplates() async {
+    final jsonData = await firebaseFirestoreClass.getAllDataFromCollection('contractTemplates', null);
+    return jsonData.map<CreateContractModel>((json) => CreateContractModel.fromMap(json))?.toList() ?? jsonData;
   }
 }

@@ -10,6 +10,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(ClientRequestPage());
     case requestsPageRoute:
       return _getPageRoute(RequestsPage());
+    case createContractPageRoute:
+      return _getPageRoute(CreateContractPage());
     case contractsPageRoute:
       return _getPageRoute(ContractsPage());
     case companiesPageRoute:

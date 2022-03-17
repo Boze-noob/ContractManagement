@@ -5,6 +5,7 @@ export 'client_request/_all.dart';
 export 'companies/companies.dart';
 export 'common/_all.dart';
 export 'contracts/_all.dart';
+export 'create_contract/_all.dart';
 export 'overview/_all.dart';
 export 'requests/_all.dart';
 export 'my_profile/_all.dart';

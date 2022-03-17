@@ -9,6 +9,9 @@ const createRequestPageRoute = "/createRequest";
 const requestsPageDisplayName = "Requests";
 const requestsPageRoute = "/requests";
 
+const crateContractPageDisplayName = "CreateContract";
+const createContractPageRoute = "/createContract";
+
 const contractsPageDisplayName = "Contracts";
 const contractsPageRoute = "/contracts";
 
@@ -30,6 +33,9 @@ const activeContracts = "Active contracts";
 const terminatedContracts = "Terminated contracts";
 const completedContracts = "Completed contracts";
 
+const allContracts = 'All contracts';
+const createContract = 'Create contract';
+
 class MenuItem {
   final String name;
   final String route;
@@ -41,6 +47,7 @@ List<MenuItem> sideMenuItemRoutes = [
   MenuItem(overviewPageDisplayName, overviewPageRoute),
   MenuItem(createRequestDisplayName, createRequestPageRoute),
   MenuItem(requestsPageDisplayName, requestsPageRoute),
+  MenuItem(crateContractPageDisplayName, createContractPageRoute),
   MenuItem(contractsPageDisplayName, contractsPageRoute),
   MenuItem(companiesPageDisplayName, companiesPageRoute),
   MenuItem(clientsPageDisplayName, clientsPageRoute),

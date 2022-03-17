@@ -49,8 +49,6 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
       emit(
         state.copyWith(status: ClientRequestStateStatus.submitSuccessfully),
       );
-      //Added cuz message
-      Future.delayed(Duration(seconds: 4));
       initialState();
     } else
       emit(
