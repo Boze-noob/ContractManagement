@@ -147,25 +147,46 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                   color: dark,
                 ),
                 onPressed: () {}),
-            Stack(
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      color: dark.withOpacity(.7),
-                    ),
-                    onPressed: () {}),
-                Positioned(
-                  top: 7,
-                  right: 7,
-                  child: Container(
-                    width: 12,
-                    height: 12,
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
+            BlocProvider(
+              create: (context) => GetContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo)
+                ..add(
+                  GetContractForCurrentCompanyRequest(
+                    companyId: context.currentUserBloc.state.userModel!.displayName,
                   ),
-                )
-              ],
+                ),
+              child: BlocBuilder<GetContractRequestBloc, GetContractRequestState>(
+                builder: (context, state) {
+                  print(context.currentUserBloc.state.userModel!.displayName.toString());
+                  return Stack(
+                    children: [
+                      IconButton(
+                          icon: Icon(
+                            Icons.notifications,
+                            color: dark.withOpacity(.7),
+                          ),
+                          onPressed: () {}),
+                      (() {
+                        if (state.model.isNotEmpty) {
+                          print('print show it');
+                          return Positioned(
+                            top: 7,
+                            right: 7,
+                            child: Container(
+                              width: 12,
+                              height: 12,
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
+                            ),
+                          );
+                        } else {
+                          print('dont show');
+                          return SizedBox();
+                        }
+                      }()),
+                    ],
+                  );
+                },
+              ),
             ),
             Container(
               width: 1,

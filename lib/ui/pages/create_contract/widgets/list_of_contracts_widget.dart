@@ -102,6 +102,8 @@ class ListOfContracts extends StatelessWidget {
                                                               contractRequestModel: ContractRequestModel(
                                                                 contractId: state.createContractModel[i].contractName,
                                                                 companyId: companiesState.companies[index].displayName,
+                                                                //TODO zakucano
+                                                                message: 'Šaljemo vam zahtjev za kontrakt',
                                                               ),
                                                             ),
                                                           ),

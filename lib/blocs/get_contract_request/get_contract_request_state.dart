@@ -9,10 +9,12 @@ enum GetContractRequestStateStatus {
 
 class GetContractRequestState {
   final GetContractRequestStateStatus status;
+  final List<ContractRequestModel> model;
   final String? errorMessage;
 
   GetContractRequestState({
     required this.status,
+    required this.model,
     this.errorMessage,
   });
 
@@ -23,6 +25,7 @@ class GetContractRequestState {
   }) =>
       GetContractRequestState(
         status: status ?? this.status,
+        model: model ?? this.model,
         errorMessage: errorMessage ?? this.errorMessage,
       );
 }
