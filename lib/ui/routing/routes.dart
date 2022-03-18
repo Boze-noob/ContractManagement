@@ -9,7 +9,7 @@ const createRequestPageRoute = "/createRequest";
 const requestsPageDisplayName = "Requests";
 const requestsPageRoute = "/requests";
 
-const crateContractPageDisplayName = "CreateContract";
+const crateContractPageDisplayName = "Create Contract";
 const createContractPageRoute = "/createContract";
 
 const contractsPageDisplayName = "Contracts";

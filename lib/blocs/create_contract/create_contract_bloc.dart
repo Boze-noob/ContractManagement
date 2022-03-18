@@ -17,11 +17,17 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
           contractItems: List.empty(),
           contractDescription: '',
         ),
-        isChecked: List<bool>.filled(ContractItemsType.values.length, false),
       );
 
   void _init(CreateContractInitEvent event, Emitter<CreateContractState> emit) {
-    initialState();
+    emit(CreateContractState(
+      status: CreateContractStateStatus.init,
+      createContractModel: CreateContractModel(
+        contractName: '',
+        contractItems: List.empty(),
+        contractDescription: '',
+      ),
+    ));
   }
 
   void _update(CreateContractUpdateEvent event, Emitter<CreateContractState> emit) {
@@ -37,8 +43,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     emit(state.copyWith(status: CreateContractStateStatus.submitting));
     final result = await contractsRepo.storeDate(state.createContractModel);
     if (result) {
-      emit(state.copyWith(status: CreateContractStateStatus.submitSuccessfully));
-      initialState();
+      emit(state.copyWith(status: CreateContractStateStatus.successfullySubmitted));
     } else
       emit(state.copyWith(errorMessage: 'Error happen'));
   }

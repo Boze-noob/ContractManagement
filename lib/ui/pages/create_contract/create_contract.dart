@@ -1,7 +1,6 @@
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/blocs/navigator/navigator_state.dart' as navigatorState;
-import 'package:contract_management/blocs/navigator/navigator_bloc.dart';
 
 class CreateContractPage extends StatefulWidget {
   const CreateContractPage({
@@ -13,17 +12,9 @@ class CreateContractPage extends StatefulWidget {
 }
 
 class _CreateContractPageState extends State<CreateContractPage> {
-  final contractController = Get.put(CreateContractsMenuController());
-
-  @override
-  void initState() {
-    super.initState();
-    //function is called when page is build
-    WidgetsBinding.instance?.addPostFrameCallback((_) => contractController.changeActiveItemTo(allContracts));
-  }
-
   @override
   Widget build(BuildContext context) {
+    //Mainly we used getX for navigation but in this case I wanted to try with bloc
     return BlocProvider(
       create: (context) => NavigatorBloc(),
       child: BlocProvider(
@@ -34,7 +25,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
             listener: (context, state) {
               if (state.status == CreateContractStateStatus.error)
                 showInfoMessage(state.errorMessage ?? 'Error happen', context);
-              else if (state.status == CreateContractStateStatus.submitSuccessfully) {
+              else if (state.status == CreateContractStateStatus.successfullySubmitted) {
                 showInfoMessage('Successfully create new contract', context);
                 context.contractsTemplateListBloc.add(ContractsTemplateListInitEvent());
               }
@@ -71,6 +62,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
                               child: InkWell(
                                 onTap: () {
                                   context.navigatorBloc.add(NavigatorUpdateEvent(0));
+                                  context.createContractBloc.add(CreateContractInitEvent());
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -91,7 +83,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  context.navigatorBloc.add(NavigatorUpdateEvent(0));
+                                  context.navigatorBloc.add(NavigatorUpdateEvent(1));
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 10),

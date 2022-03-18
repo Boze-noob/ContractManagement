@@ -10,11 +10,13 @@ class CreateContractWidget extends StatefulWidget {
 
 class _CreateContractWidgetState extends State<CreateContractWidget> {
   late List<bool> _isChecked;
+  late bool _btnFlag;
 
   @override
   void initState() {
     super.initState();
     _isChecked = List<bool>.filled(ContractItemsType.values.length, false);
+    _btnFlag = context.createContractBloc.state.createContractModel.contractItems.isEmpty;
   }
 
   @override
@@ -44,6 +46,9 @@ class _CreateContractWidgetState extends State<CreateContractWidget> {
         ),
         BlocBuilder<CreateContractBloc, CreateContractState>(
           builder: (context, state) {
+            for (int position in state.createContractModel.contractItems) {
+              _isChecked[position] = true;
+            }
             return ListView.builder(
               itemCount: ContractItemsType.values.length,
               shrinkWrap: true,
@@ -82,12 +87,16 @@ class _CreateContractWidgetState extends State<CreateContractWidget> {
         SizedBox(
           height: 50,
         ),
-        Button(
-          text: 'Create contract',
-          borderRadius: 20,
-          color: active,
-          shrinkWrap: true,
-          onTap: () => context.createContractBloc.add(CreateContractSubmitEvent()),
+        BlocBuilder<CreateContractBloc, CreateContractState>(
+          builder: (context, state) {
+            return Button(
+              text: _btnFlag ? 'Create contract' : 'Update contract',
+              borderRadius: 20,
+              color: active,
+              shrinkWrap: true,
+              onTap: () => context.createContractBloc.add(CreateContractSubmitEvent()),
+            );
+          },
         ),
       ],
     );

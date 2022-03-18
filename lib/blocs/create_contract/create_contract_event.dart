@@ -12,3 +12,9 @@ class CreateContractUpdateEvent extends CreateContractEvent {
 }
 
 class CreateContractSubmitEvent extends CreateContractEvent {}
+
+class CreateContractDeleteEvent extends CreateContractEvent {
+  final String contractName;
+
+  CreateContractDeleteEvent({required this.contractName});
+}

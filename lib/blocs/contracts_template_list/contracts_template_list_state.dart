@@ -3,6 +3,7 @@ import 'package:contract_management/_all.dart';
 enum ContractsTemplateStateStatus {
   initializing,
   init,
+  successfullyDeleted,
   error,
 }
 
