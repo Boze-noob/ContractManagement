@@ -50,29 +50,35 @@ class CustomDialog extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            bottom: -25,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Button(
-                  margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                  onTap: () {
-                    if (onButtonPressed != null) {
-                      onButtonPressed!();
-                    }
-                    if (onClose != null) {
-                      onClose!();
-                    }
-                    Get.back();
-                  },
-                  color: active,
-                  child: Text(buttonText ?? 'Ok'.toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: AppFonts.quicksandRegular)),
+          (() {
+            if (buttonText != null) {
+              return Positioned(
+                bottom: -25,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Button(
+                      margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+                      onTap: () {
+                        if (onButtonPressed != null) {
+                          onButtonPressed!();
+                        }
+                        if (onClose != null) {
+                          onClose!();
+                        }
+                        Get.back();
+                      },
+                      color: active,
+                      child: Text(buttonText!, style: TextStyle(color: Colors.white, fontFamily: AppFonts.quicksandRegular)),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              );
+            } else {
+              return SizedBox();
+            }
+          }())
         ],
       ),
     );

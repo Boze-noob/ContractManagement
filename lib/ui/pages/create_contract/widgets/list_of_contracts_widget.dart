@@ -1,5 +1,6 @@
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ListOfContracts extends StatelessWidget {
   ListOfContracts() : super();
@@ -48,6 +49,86 @@ class ListOfContracts extends StatelessWidget {
                             onPressed: () {
                               context.createContractBloc.add(CreateContractUpdateEvent(createContractModel: state.createContractModel[i]));
                             },
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          IconButton(
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) => Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 200),
+                                child: CustomDialog(
+                                  child: BlocProvider(
+                                    create: (context) => SendContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo),
+                                    child: BlocProvider(
+                                      create: (context) => CompaniesBloc(companiesRepo: context.serviceProvider.companiesRepo)..add(CompaniesGetCompaniesWithoutContract()),
+                                      child: BlocBuilder<CompaniesBloc, CompaniesState>(
+                                        builder: (context, companiesState) {
+                                          return BlocListener<SendContractRequestBloc, SendContractRequestState>(
+                                            listener: (context, state) async {
+                                              if (state.status == SendContractRequestStateStatus.error)
+                                                showInfoMessage(state.errorMessage ?? 'Error happen', context);
+                                              else if (state.status == SendContractRequestStateStatus.successfullySubmitted) {
+                                                showInfoMessage('Successfully sent', context);
+                                                await Future.delayed(Duration(seconds: 1));
+                                                Get.back();
+                                              }
+                                            },
+                                            child: Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(20.0),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    CustomText(
+                                                      text: 'Pick company to which you want to send contract',
+                                                      size: context.textSizeL,
+                                                      weight: FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 15,
+                                                    ),
+                                                    ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: companiesState.companies.length,
+                                                      itemBuilder: (BuildContext context, int index) {
+                                                        //It would be nice to make it as RadioListTile but for simplicity I used gesture detector
+                                                        return GestureDetector(
+                                                          onTap: () => context.sendContractRequestBloc.add(
+                                                            SendContractRequestSubmitEvent(
+                                                              contractRequestModel: ContractRequestModel(
+                                                                contractId: state.createContractModel[i].contractName,
+                                                                companyId: companiesState.companies[index].displayName,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          child: ListTile(
+                                                            title: CustomText(
+                                                              text: companiesState.companies[index].displayName,
+                                                              size: context.textSizeM,
+                                                              weight: FontWeight.bold,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            icon: Icon(Icons.send),
                           ),
                           SizedBox(
                             width: 15,

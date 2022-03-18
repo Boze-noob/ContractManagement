@@ -1,5 +1,4 @@
 import 'package:contract_management/_all.dart';
-import 'package:contract_management/data/repositories/companies.dart';
 
 class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
   ICompanies companiesRepo;
@@ -9,6 +8,7 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
     on<CompaniesInitEvent>(_init);
     on<CompaniesGetEvent>(_get);
     on<CompaniesDeleteEvent>(_delete);
+    on<CompaniesGetCompaniesWithoutContract>(_getWithoutContract);
   }
 
   static CompaniesState initialState() => CompaniesState(
@@ -39,5 +39,15 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
       emit(
         state.copyWith(status: CompaniesStateStatus.error, errorMessage: result),
       );
+  }
+
+  void _getWithoutContract(CompaniesGetCompaniesWithoutContract event, Emitter<CompaniesState> emit) async {
+    emit(state.copyWith(status: CompaniesStateStatus.loading));
+    final result = await companiesRepo.getCompaniesWithoutContract();
+
+    if (result != null) {
+      emit(state.copyWith(status: CompaniesStateStatus.loaded, companies: result));
+    } else
+      emit(state.copyWith(status: CompaniesStateStatus.error));
   }
 }

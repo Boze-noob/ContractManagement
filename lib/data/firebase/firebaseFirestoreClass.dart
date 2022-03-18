@@ -35,6 +35,16 @@ class FirebaseFirestoreClass {
     }
   }
 
+  Future getDataWithTwoFilters(String collection, String fieldName, dynamic fieldValue, String fieldName2, String? fieldValue2) async {
+    try {
+      final jsonData = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).where(fieldName2, isEqualTo: fieldValue2).get();
+      return jsonData.docs;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future getNumberOfSpecificField(String collection, String fieldName, dynamic fieldValue) async {
     try {
       num counter = 0;
