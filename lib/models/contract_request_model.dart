@@ -30,9 +30,9 @@ class ContractRequestModel {
 
   factory ContractRequestModel.fromMap(dynamic map) {
     return ContractRequestModel(
-      contractId: 'contractId',
-      companyId: 'companyId',
-      message: 'message',
+      contractId: map['contractId'],
+      companyId: map['companyId'],
+      message: map['message'],
     );
   }
 }

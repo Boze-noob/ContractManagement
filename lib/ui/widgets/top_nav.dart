@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 import 'package:get/get.dart';
 
-import '../../common/enumerations/role_type.dart';
-
 AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => AppBar(
       leading: !ResponsiveWidget.isSmallScreen(context)
           ? Row(
@@ -147,47 +145,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                   color: dark,
                 ),
                 onPressed: () {}),
-            BlocProvider(
-              create: (context) => GetContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo)
-                ..add(
-                  GetContractForCurrentCompanyRequest(
-                    companyId: context.currentUserBloc.state.userModel!.displayName,
-                  ),
-                ),
-              child: BlocBuilder<GetContractRequestBloc, GetContractRequestState>(
-                builder: (context, state) {
-                  print(context.currentUserBloc.state.userModel!.displayName.toString());
-                  return Stack(
-                    children: [
-                      IconButton(
-                          icon: Icon(
-                            Icons.notifications,
-                            color: dark.withOpacity(.7),
-                          ),
-                          onPressed: () {}),
-                      (() {
-                        if (state.model.isNotEmpty) {
-                          print('print show it');
-                          return Positioned(
-                            top: 7,
-                            right: 7,
-                            child: Container(
-                              width: 12,
-                              height: 12,
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
-                            ),
-                          );
-                        } else {
-                          print('dont show');
-                          return SizedBox();
-                        }
-                      }()),
-                    ],
-                  );
-                },
-              ),
-            ),
+            _NotificationBellWidget(),
             Container(
               width: 1,
               height: 22,
@@ -302,5 +260,148 @@ class _RadioRowState extends State<RadioRow> {
         userModel: context.createUserBloc.state.userModel.copyWith(role: role),
       ),
     );
+  }
+}
+
+//Napravit poseban endpoint gdje ce bit sve obavijesti za nekog usera
+class _NotificationBellWidget extends StatefulWidget {
+  const _NotificationBellWidget({Key? key}) : super(key: key);
+
+  @override
+  _NotificationBellWidgetState createState() => _NotificationBellWidgetState();
+}
+
+class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => GetContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo)
+        ..add(
+          GetContractForCurrentCompanyRequest(
+            companyId: context.currentUserBloc.state.userModel!.displayName,
+          ),
+        ),
+      child: BlocBuilder<GetContractRequestBloc, GetContractRequestState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              IconButton(
+                  icon: Icon(
+                    Icons.notifications,
+                    color: dark.withOpacity(.7),
+                  ),
+                  onPressed: () {
+                    _showOverlay(context, state);
+                  }),
+              (() {
+                if (state.model.isNotEmpty) {
+                  return Positioned(
+                    top: 7,
+                    right: 7,
+                    child: Container(
+                      width: 12,
+                      height: 12,
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
+                    ),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              }()),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  void _showOverlay(BuildContext context, GetContractRequestState state) async {
+    OverlayState? overlayState = Overlay.of(context);
+    late OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(builder: (context) {
+      return Positioned(
+          right: 70,
+          top: 50,
+          child: Container(
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: active,
+                ),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              child: (() {
+                if (state.model.length == 0)
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                    child: Column(
+                      children: [
+                        CustomText(
+                          text: 'No notifications',
+                          textAlign: TextAlign.center,
+                          weight: FontWeight.bold,
+                          size: context.textSizeL,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Button(
+                          child: CustomText(
+                            text: 'Close',
+                            size: 16,
+                            color: active,
+                          ),
+                          textColor: active,
+                          shrinkWrap: true,
+                          onTap: () => overlayEntry.remove(),
+                          color: Colors.transparent,
+                        )
+                      ],
+                    ),
+                  );
+                else
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListView.builder(
+                            itemCount: state.model.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Material(
+                                child: ListTile(
+                                  leading: Icon(Icons.notifications),
+                                  title: CustomText(
+                                    text: state.model[index].message,
+                                    color: Colors.black,
+                                    weight: FontWeight.normal,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  minLeadingWidth: 10,
+                                ),
+                              );
+                            }),
+                        Button(
+                          child: CustomText(
+                            text: 'Close',
+                            size: 16,
+                            color: active,
+                          ),
+                          textColor: active,
+                          shrinkWrap: true,
+                          onTap: () => overlayEntry.remove(),
+                          color: Colors.transparent,
+                        )
+                      ],
+                    ),
+                  );
+              }())));
+    });
+
+    // Inserting the OverlayEntry into the Overlay
+    overlayState?.insert(overlayEntry);
   }
 }
