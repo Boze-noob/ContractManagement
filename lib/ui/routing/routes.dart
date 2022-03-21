@@ -27,6 +27,9 @@ const authenticationPageRoute = "/auth";
 const myProfilePageDisplayName = "My profile";
 const myProfilePageRoute = "/myProfile";
 
+const myContractPageDisplayName = "My contract";
+const myContractPageRoute = "/myContract";
+
 const navigationWrapperRoute = "/navigationWrapper";
 
 const activeContracts = "Active contracts";
@@ -52,6 +55,7 @@ List<MenuItem> sideMenuItemRoutes = [
   MenuItem(companiesPageDisplayName, companiesPageRoute),
   MenuItem(clientsPageDisplayName, clientsPageRoute),
   MenuItem(myProfilePageDisplayName, myProfilePageRoute),
+  MenuItem(myContractPageDisplayName, myContractPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];
 

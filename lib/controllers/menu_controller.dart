@@ -38,6 +38,8 @@ class MenuController extends GetxController {
         return _customIcon(Icons.people_alt_outlined, itemName);
       case myProfilePageDisplayName:
         return _customIcon(Icons.person, itemName);
+      case myContractPageDisplayName:
+        return _customIcon(Icons.my_library_books_outlined, itemName);
       case authenticationPageDisplayName:
         return _customIcon(Icons.exit_to_app, itemName);
       default:
