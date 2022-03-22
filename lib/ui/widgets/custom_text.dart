@@ -6,6 +6,7 @@ class CustomText extends StatelessWidget {
   final Color? color;
   final FontWeight? weight;
   final TextAlign? textAlign;
+  final double? paddingAllValue;
 
   const CustomText({
     Key? key,
@@ -14,18 +15,22 @@ class CustomText extends StatelessWidget {
     this.color,
     this.weight,
     this.textAlign,
+    this.paddingAllValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text ?? ' ',
-      style: TextStyle(
-        fontSize: size ?? 16,
-        color: color ?? Colors.black,
-        fontWeight: weight ?? FontWeight.normal,
+    return Padding(
+      padding: EdgeInsets.all(paddingAllValue ?? 0),
+      child: Text(
+        text ?? ' ',
+        style: TextStyle(
+          fontSize: size ?? 16,
+          color: color ?? Colors.black,
+          fontWeight: weight ?? FontWeight.normal,
+        ),
+        textAlign: textAlign,
       ),
-      textAlign: textAlign,
     );
   }
 }
