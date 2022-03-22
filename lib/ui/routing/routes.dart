@@ -66,7 +66,7 @@ List<MenuItem> clientMenuItemRoutes = [
 ];
 
 List<MenuItem> companyMenuItemRoutes = [
-  MenuItem(contractsPageDisplayName, contractsPageRoute),
   MenuItem(myProfilePageDisplayName, myProfilePageRoute),
+  MenuItem(myContractPageDisplayName, myContractPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];

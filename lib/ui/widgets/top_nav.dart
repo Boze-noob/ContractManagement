@@ -33,25 +33,23 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                   weight: FontWeight.bold,
                 )),
             Expanded(child: Container()),
-            IconButton(
-                icon: Icon(
-                  Icons.person_add,
-                  color: dark,
-                ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => CustomDialog(
-                        buttonText: 'Create account',
-                        child: Container(
-                          width: context.screenWidth / 2,
-                          child: Form(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
-                              child: BlocListener<NotificationsBloc, NotificationsState>(
-                                listener: (context, state) {
-                                  if (state.status == NotificationStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
-                                },
+            Visibility(
+              visible: RoleType.values[0].translate() == context.currentUserBloc.state.userModel!.role ? true : false,
+              child: IconButton(
+                  icon: Icon(
+                    Icons.person_add,
+                    color: dark,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                          buttonText: 'Create account',
+                          child: Container(
+                            width: context.screenWidth / 2,
+                            child: Form(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
                                 child: BlocListener<CreateUserBloc, CreateUserState>(
                                   listener: (context, state) {
                                     if (state.status == CreateUserStateStatus.error) {
@@ -136,14 +134,14 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                               ),
                             ),
                           ),
-                        ),
-                        onButtonPressed: () {
-                          context.createUserBloc.add(
-                            CreateUserSubmitEvent(),
-                          );
-                        }),
-                  );
-                }),
+                          onButtonPressed: () {
+                            context.createUserBloc.add(
+                              CreateUserSubmitEvent(),
+                            );
+                          }),
+                    );
+                  }),
+            ),
             IconButton(
                 icon: Icon(
                   Icons.settings,
@@ -279,58 +277,52 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NotificationsBloc(notificationsRepo: context.serviceProvider.notificationsRepo)
-        ..add(
-          NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id),
-        ),
-      child: BlocProvider(
-        create: (context) => NotificationsBloc(notificationsRepo: context.serviceProvider.notificationsRepo)..add(NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id)),
-        child: BlocListener<NotificationsBloc, NotificationsState>(
-          listener: (context, state) {
-            if (state.status == NotificationStateStatus.successfullyDeleted) {
-              context.notificationsBloc.add(NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id));
-            }
-          },
-          child: BlocBuilder<NotificationsBloc, NotificationsState>(
-            builder: (context, state) {
-              return Stack(
-                children: [
-                  IconButton(
-                      icon: Icon(
-                        Icons.notifications,
-                        color: dark.withOpacity(.7),
-                      ),
-                      onPressed: () {
-                        _showOverlay(parentContext: context, state: state, onCloseDialog: () => context.notificationsBloc.add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id)));
-                      }),
-                  (() {
-                    if (state.status == NotificationStateStatus.loading) {
-                      return Loader(
-                        width: 10,
-                        height: 10,
-                        color: active,
+      create: (context) => NotificationsBloc(notificationsRepo: context.serviceProvider.notificationsRepo)..add(NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id)),
+      child: BlocListener<NotificationsBloc, NotificationsState>(
+        listener: (context, state) {
+          if (state.status == NotificationStateStatus.successfullyDeleted) {
+            context.notificationsBloc.add(NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id));
+          }
+        },
+        child: BlocBuilder<NotificationsBloc, NotificationsState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.notifications,
+                      color: dark.withOpacity(.7),
+                    ),
+                    onPressed: () {
+                      _showOverlay(parentContext: context, state: state, onCloseDialog: () => context.notificationsBloc.add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id)));
+                    }),
+                (() {
+                  if (state.status == NotificationStateStatus.loading) {
+                    return Loader(
+                      width: 10,
+                      height: 10,
+                      color: active,
+                    );
+                  } else {
+                    if (state.model.isNotEmpty) {
+                      return Positioned(
+                        top: 7,
+                        right: 7,
+                        child: Container(
+                          width: 12,
+                          height: 12,
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
+                        ),
                       );
                     } else {
-                      if (state.model.isNotEmpty) {
-                        return Positioned(
-                          top: 7,
-                          right: 7,
-                          child: Container(
-                            width: 12,
-                            height: 12,
-                            padding: EdgeInsets.all(4),
-                            decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
-                          ),
-                        );
-                      } else {
-                        return SizedBox();
-                      }
+                      return SizedBox();
                     }
-                  }()),
-                ],
-              );
-            },
-          ),
+                  }
+                }()),
+              ],
+            );
+          },
         ),
       ),
     );
