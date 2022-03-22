@@ -66,6 +66,16 @@ class FirebaseFirestoreClass {
     }
   }
 
+  Future<String?> deleteDataWithSpecificField(String collection, String fieldName, dynamic fieldValue) async {
+    String? errorMessage;
+    var snapshot = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().catchError((onError) => errorMessage = onError);
+    snapshot.docs.every((element) {
+      element.reference.delete();
+      return true;
+    });
+    return errorMessage;
+  }
+
   Future getAllDataFromCollection(String collection, String? sortFieldName) async {
     try {
       final jsonData;

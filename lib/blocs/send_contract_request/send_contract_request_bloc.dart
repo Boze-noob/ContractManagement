@@ -18,7 +18,7 @@ class SendContractRequestBloc extends Bloc<SendContractRequestEvent, SendContrac
   void _submit(SendContractRequestSubmitEvent event, Emitter<SendContractRequestState> emit) async {
     final result = await contractsRepo.sendContractRequest(event.contractRequestModel);
     if (result)
-      emit(state.copyWith(status: SendContractRequestStateStatus.successfullySubmitted));
+      emit(state.copyWith(status: SendContractRequestStateStatus.successfullySubmitted, contractRequestModel: event.contractRequestModel));
     else
       emit(state.copyWith(status: SendContractRequestStateStatus.error, errorMessage: 'Error happen'));
   }

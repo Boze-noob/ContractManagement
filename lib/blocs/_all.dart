@@ -11,6 +11,7 @@ export 'companies/_all.dart';
 export 'current_user/_all.dart';
 export 'get_contract_request/_all.dart';
 export 'navigator/_all.dart';
+export 'notifications/_all.dart';
 export 'requests/_all.dart';
 export 'revenue/_all.dart';
 export 'send_contract_request/_all.dart';
