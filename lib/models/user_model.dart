@@ -8,6 +8,7 @@ class UserModel {
   final String? location;
   final String role;
   final String? contractId;
+  final String? contractSignature;
 
   UserModel({
     required this.id,
@@ -19,6 +20,7 @@ class UserModel {
     this.location,
     required this.role,
     this.contractId,
+    this.contractSignature,
   });
 
   UserModel copyWith({
@@ -31,6 +33,7 @@ class UserModel {
     final String? location,
     final String? role,
     final String? contractId,
+    final String? contractSignature,
   }) =>
       UserModel(
         id: id != null ? id : this.id,
@@ -42,6 +45,7 @@ class UserModel {
         location: location != null ? location : this.location,
         role: role != null ? role : this.role,
         contractId: contractId != null ? contractId : this.contractId,
+        contractSignature: contractSignature != null ? contractSignature : this.contractSignature,
       );
 
   Map<String, dynamic> toMap() {
@@ -54,6 +58,7 @@ class UserModel {
       'location': location ?? null,
       'role': role,
       'contractId': contractId ?? null,
+      'contractSignature': contractSignature ?? null,
     };
   }
 
@@ -67,6 +72,7 @@ class UserModel {
       location: map['location'] ?? null,
       role: map['role'],
       contractId: map['contractId'] ?? null,
+      contractSignature: map['contractSignature'] ?? null,
     );
   }
 }

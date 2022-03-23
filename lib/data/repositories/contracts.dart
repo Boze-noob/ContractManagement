@@ -7,6 +7,7 @@ abstract class IContracts {
   Future<ContractsCounterModel?> loadContractsCount();
   Future<bool> storeDate(CreateContractModel createContractModel);
   Future<String?> deleteContract(String contractName);
+  Future<String?> deleteContractRequest(String companyId);
   Future<bool> sendContractRequest(ContractRequestModel contractRequestModel);
   Future<ContractRequestModel?> getContractRequest(String companyId);
 }
@@ -76,5 +77,10 @@ class ContractsRepo implements IContracts {
   Future<CreateContractModel?> loadSingleContractTemplate(String contractDisplayName) async {
     final jsonData = await firebaseFirestoreClass.getData('contractTemplates', contractDisplayName);
     return CreateContractModel.fromMap(jsonData);
+  }
+
+  @override
+  Future<String?> deleteContractRequest(String companyId) async {
+    return await firebaseFirestoreClass.deleteData('contractRequests', companyId);
   }
 }
