@@ -3,11 +3,12 @@ import 'package:contract_management/_all.dart';
 abstract class IContracts {
   Future<List<ContractsModel>?> load(ContractType contractStatus);
   Future<List<CreateContractModel>?> loadContractsTemplates();
+  Future<CreateContractModel?> loadSingleContractTemplate(String contractDisplayName);
   Future<ContractsCounterModel?> loadContractsCount();
   Future<bool> storeDate(CreateContractModel createContractModel);
   Future<String?> deleteContract(String contractName);
   Future<bool> sendContractRequest(ContractRequestModel contractRequestModel);
-  Future<List<ContractRequestModel>?> getContractRequest(String companyId);
+  Future<ContractRequestModel?> getContractRequest(String companyId);
 }
 
 class ContractsRepo implements IContracts {
@@ -65,8 +66,15 @@ class ContractsRepo implements IContracts {
   }
 
   @override
-  Future<List<ContractRequestModel>?> getContractRequest(String companyId) async {
+  Future<ContractRequestModel?> getContractRequest(String companyId) async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter('contractRequests', 'companyId', companyId);
-    return jsonData.map<ContractRequestModel>((json) => ContractRequestModel.fromMap(json))?.toList() ?? null;
+    var list = jsonData.map<ContractRequestModel>((json) => ContractRequestModel.fromMap(json))?.toList() ?? null;
+    return list[0];
+  }
+
+  @override
+  Future<CreateContractModel?> loadSingleContractTemplate(String contractDisplayName) async {
+    final jsonData = await firebaseFirestoreClass.getData('contractTemplates', contractDisplayName);
+    return CreateContractModel.fromMap(jsonData);
   }
 }

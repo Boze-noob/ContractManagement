@@ -164,6 +164,7 @@ class __ContractDescriptionState extends State<_ContractDescription> {
               fontSize: 14,
               color: Colors.black,
             ),
+            maxLines: 8,
             decoration: InputDecoration(
               labelText: 'Contract description',
               labelStyle: const TextStyle(
