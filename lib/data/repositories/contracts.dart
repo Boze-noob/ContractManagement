@@ -61,7 +61,7 @@ class ContractsRepo implements IContracts {
 
   @override
   Future<bool> sendContractRequest(ContractRequestModel contractRequestModel) async {
-    return await firebaseFirestoreClass.storeData('contractRequests', null, contractRequestModel.toMap());
+    return await firebaseFirestoreClass.storeData('contractRequests', contractRequestModel.companyId, contractRequestModel.toMap());
   }
 
   @override

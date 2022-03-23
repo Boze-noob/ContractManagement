@@ -71,7 +71,7 @@ class _ContractsPageState extends State<ContractsPage> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: controller.activeItem == activeContracts ? Colors.white : Colors.black,
+                                color: controller.activeItem.toString() == activeContracts ? Colors.white : Colors.black,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -93,7 +93,7 @@ class _ContractsPageState extends State<ContractsPage> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: controller.activeItem == completedContracts ? Colors.white : Colors.black,
+                                color: controller.activeItem.toString() == completedContracts ? Colors.white : Colors.black,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -115,7 +115,7 @@ class _ContractsPageState extends State<ContractsPage> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: controller.activeItem == terminatedContracts ? Colors.white : Colors.black,
+                                color: controller.activeItem.toString() == terminatedContracts ? Colors.white : Colors.black,
                               ),
                               textAlign: TextAlign.center,
                             ),
