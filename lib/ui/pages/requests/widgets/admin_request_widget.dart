@@ -21,7 +21,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
           child: Column(
             children: [
               Obx(
-                    () => Row(
+                () => Row(
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
@@ -45,6 +45,9 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                       BlocBuilder<AdminRequestsBloc, AdminRequestsState>(
                         builder: (context, state) {
                           //TODO add table here
+                          return Container(
+                            child: Text('Hello world'),
+                          );
                           /*
                           return RequestsDataTableWidget(
                             firstColumnName: 'Display name',

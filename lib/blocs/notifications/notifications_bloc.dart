@@ -1,14 +1,23 @@
+import 'dart:async';
+
 import 'package:contract_management/_all.dart';
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   INotifications notificationsRepo;
+  late StreamSubscription currentUserSubscription;
   NotificationsBloc({
     required this.notificationsRepo,
+    required CurrentUserBloc currentUserBloc,
   }) : super(initialState()) {
     on<NotificationsInitEvent>(_init);
     on<NotificationsLoadEvent>(_load);
     on<NotificationsSendEvent>(_send);
     on<NotificationsDeleteEvent>(_delete);
+    currentUserSubscription = currentUserBloc.stream.listen((state) {
+      if (state.status == CurrentUserStateStatus.success) {
+        add(NotificationsLoadEvent(userId: state.userModel!.id));
+      }
+    });
   }
 
   static initialState() => NotificationsState(status: NotificationStateStatus.init, model: List.empty());
@@ -43,6 +52,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       emit(state.copyWith(
         status: NotificationStateStatus.successfullyDeleted,
       ));
+      //TODO check this
+      emit(state.copyWith(status: NotificationStateStatus.loading));
+      final result = await notificationsRepo.getNotifications(event.userId);
+      if (result != null) emit(state.copyWith(model: result, status: NotificationStateStatus.loaded));
     } else
       emit(state.copyWith(status: NotificationStateStatus.error));
   }

@@ -20,9 +20,7 @@ class RequestRepo implements IRequest {
 
   @override
   Future<List<AdminRequestModel>?> getAdminRequests(String companyId) async {
-    //TODO add parameters
-    final jsonData = await firebaseFirestoreClass.getDataWithFilter(collection, fieldName, fieldValue);
+    final jsonData = await firebaseFirestoreClass.getDataWithFilter('adminRequests', 'companyId', companyId);
     return jsonData.map<AdminRequestModel>((json) => AdminRequestModel.fromMap(json))?.toList() ?? jsonData;
-
   }
 }

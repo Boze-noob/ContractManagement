@@ -10,6 +10,8 @@ abstract class IContracts {
   Future<String?> deleteContractRequest(String companyId);
   Future<bool> sendContractRequest(ContractRequestModel contractRequestModel);
   Future<ContractRequestModel?> getContractRequest(String companyId);
+  Future<CreateContractModel?> getCurrentActive(String contractId);
+  Future<String?> acceptContract(String companyId, String contractId, String signature);
 }
 
 class ContractsRepo implements IContracts {
@@ -69,8 +71,11 @@ class ContractsRepo implements IContracts {
   @override
   Future<ContractRequestModel?> getContractRequest(String companyId) async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter('contractRequests', 'companyId', companyId);
-    var list = jsonData.map<ContractRequestModel>((json) => ContractRequestModel.fromMap(json))?.toList() ?? null;
-    return list[0];
+    if (jsonData != null) {
+      var list = jsonData.map<ContractRequestModel>((json) => ContractRequestModel.fromMap(json))?.toList() ?? null;
+      return list != null ? list[0] : null;
+    } else
+      return null;
   }
 
   @override
@@ -82,5 +87,22 @@ class ContractsRepo implements IContracts {
   @override
   Future<String?> deleteContractRequest(String companyId) async {
     return await firebaseFirestoreClass.deleteData('contractRequests', companyId);
+  }
+
+  @override
+  Future<CreateContractModel?> getCurrentActive(String contractId) async {
+    final result = await firebaseFirestoreClass.getData('contractTemplates', contractId);
+    return CreateContractModel.fromMap(result);
+  }
+
+  @override
+  Future<String?> acceptContract(String companyId, String contractId, String signature) async {
+    List<String> fieldNames = [
+      'contractId',
+      'contractSignature',
+    ];
+    List<String> fieldValues = [contractId, signature];
+
+    return await firebaseFirestoreClass.updaterSpecificFields('users', companyId, fieldNames, fieldValues);
   }
 }

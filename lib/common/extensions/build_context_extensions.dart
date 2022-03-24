@@ -20,8 +20,9 @@ extension BuildContextExtensions on BuildContext {
   ContractsTemplateListBloc get contractsTemplateListBloc => read<ContractsTemplateListBloc>();
   CreateContractBloc get createContractBloc => read<CreateContractBloc>();
   CurrentUserBloc get currentUserBloc => read<CurrentUserBloc>();
+  DeleteContractRequestBloc get deleteContractRequestBloc => read<DeleteContractRequestBloc>();
   EditProfileBloc get editProfileBloc => read<EditProfileBloc>();
-  MyContractBloc get getContractRequestBloc => read<MyContractBloc>();
+  MyContractBloc get myContractBloc => read<MyContractBloc>();
   NavigatorBloc get navigatorBloc => read<NavigatorBloc>();
   NotificationsBloc get notificationsBloc => read<NotificationsBloc>();
   SendContractRequestBloc get sendContractRequestBloc => read<SendContractRequestBloc>();

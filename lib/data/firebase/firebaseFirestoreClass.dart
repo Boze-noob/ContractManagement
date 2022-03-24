@@ -89,4 +89,14 @@ class FirebaseFirestoreClass {
       return null;
     }
   }
+
+  Future updaterSpecificFields(String collection, String document, List<String> fieldName, List<String> fieldValue) async {
+    String? errorMessage;
+
+    for (int i = 0; i < fieldName.length; i++) {
+      FirebaseFirestore.instance.collection(collection).doc(document).update({fieldName[i]: fieldValue[i]}).catchError((onError) => errorMessage = onError.toString());
+      if (errorMessage != null) return errorMessage;
+    }
+    return errorMessage;
+  }
 }

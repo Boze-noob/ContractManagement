@@ -16,12 +16,25 @@ class _NewContractWidgetState extends State<NewContractWidget> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => MyContractBloc(contractsRepo: context.serviceProvider.contractsRepo)..add(MyContractGetEvent(companyId: context.currentUserBloc.state.userModel!.id)),
+          create: (context) => DeleteContractRequestBloc(context.serviceProvider.contractsRepo),
         ),
       ],
       child: BlocBuilder<MyContractBloc, MyContractState>(
         builder: (context, myContractState) {
-          if (myContractState.model.contractName.isEmpty)
+          if (myContractState.status == MyContractStateStatus.loading)
+            return Column(
+              children: [
+                SizedBox(
+                  height: context.screenHeight / 2.8,
+                ),
+                Loader(
+                  width: 100,
+                  height: 100,
+                  color: active,
+                ),
+              ],
+            );
+          else if (myContractState.model == null)
             return Column(
               children: [
                 SizedBox(
@@ -60,7 +73,7 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                           height: 15,
                         ),
                         Text(
-                          myContractState.model.contractName.toUpperCase(),
+                          myContractState.model!.contractName.toUpperCase(),
                           style: GoogleFonts.oleoScript(
                             height: 1.8,
                             fontWeight: FontWeight.normal,
@@ -74,7 +87,7 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
-                            myContractState.model.contractDescription,
+                            myContractState.model!.contractDescription,
                             style: GoogleFonts.oleoScript(
                               height: 1.8,
                               fontWeight: FontWeight.normal,
@@ -85,12 +98,12 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: myContractState.model.contractItems.length,
+                          itemCount: myContractState.model!.contractItems.length,
                           padding: EdgeInsets.only(left: 30),
                           itemBuilder: (context, i) {
                             return ListTile(
                               title: Text(
-                                ContractItemsType.getValue(myContractState.model.contractItems[i]).translate(),
+                                ContractItemsType.getValue(myContractState.model!.contractItems[i]).translate(),
                                 style: GoogleFonts.oleoScript(
                                   height: 0.7,
                                 ),
@@ -136,13 +149,35 @@ class _NewContractWidgetState extends State<NewContractWidget> {
               SizedBox(
                 height: 25,
               ),
-              Button(
-                text: 'Accept',
-                shrinkWrap: true,
-                color: active,
-                textColor: Colors.white,
-                borderRadius: 20,
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+              BlocListener<MyContractBloc, MyContractState>(
+                listener: (context, state) {
+                  if (state.status == MyContractStateStatus.contractAccepted) {
+                    print('we are getting current user----------------');
+                    showInfoMessage('Contract has been accepted', context);
+                    context.currentUserBloc.add(CurrentUserGetEvent());
+                  }
+                },
+                child: Button(
+                  text: 'Accept',
+                  shrinkWrap: true,
+                  color: active,
+                  textColor: Colors.white,
+                  borderRadius: 20,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                  onTap: () {
+                    if (signatureImage == null)
+                      showInfoMessage('Please sign the contract', context);
+                    else {
+                      //Better to do via streamSubscription maybe
+                      context.myContractBloc.add(MyContractAcceptRequestEvent(companyId: context.currentUserBloc.state.userModel!.id, contractId: myContractState.model!.contractName, signatureImg: signatureImage));
+                      print('we accepted contract------------');
+                      context.deleteContractRequestBloc.add(DeleteContractRequestDeleteEvent(companyId: context.currentUserBloc.state.userModel!.id));
+                      print('we deleted contract-------------');
+                      context.notificationsBloc.add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id));
+                      print('we deleted notifications--------');
+                    }
+                  },
+                ),
               ),
               SizedBox(
                 height: 30,
@@ -152,5 +187,13 @@ class _NewContractWidgetState extends State<NewContractWidget> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    context.myContractBloc.add(
+      MyContractGetRequestEvent(companyId: context.currentUserBloc.state.userModel!.id),
+    );
+    super.initState();
   }
 }

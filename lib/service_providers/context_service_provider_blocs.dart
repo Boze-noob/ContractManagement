@@ -32,6 +32,13 @@ class ContextServiceProviderBlocs extends StatelessWidget {
             authBloc: context.authBloc,
           ),
         ),
+        BlocProvider(
+          lazy: false,
+          create: (BuildContext context) => NotificationsBloc(
+            notificationsRepo: context.serviceProvider.notificationsRepo,
+            currentUserBloc: context.currentUserBloc,
+          ),
+        )
       ],
       child: child,
     );

@@ -1,132 +1,187 @@
+import 'dart:convert';
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
-class ActiveContractWidget extends StatelessWidget {
+class ActiveContractWidget extends StatefulWidget {
   const ActiveContractWidget({Key? key}) : super(key: key);
 
   @override
+  State<ActiveContractWidget> createState() => _ActiveContractWidgetState();
+}
+
+class _ActiveContractWidgetState extends State<ActiveContractWidget> {
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: Material(
-            clipBehavior: Clip.antiAlias,
-            shape: BeveledRectangleBorder(
-              side: BorderSide(
-                color: active.withOpacity(0.7),
+    return BlocBuilder<MyContractBloc, MyContractState>(
+      builder: (context, myContractState) {
+        if (myContractState.status == MyContractStateStatus.loading)
+          return Column(
+            children: [
+              SizedBox(
+                height: context.screenHeight / 2.8,
               ),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30.0),
-                bottomLeft: Radius.circular(30.0),
-                topLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+              Loader(
+                width: 100,
+                height: 100,
+                color: active,
               ),
-            ),
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Contract name'.toUpperCase(),
-                    style: GoogleFonts.oleoScript(
-                      height: 1.8,
-                      fontWeight: FontWeight.normal,
-                      fontSize: context.textSizeL,
+            ],
+          );
+        else if (myContractState.model == null)
+          return Column(
+            children: [
+              SizedBox(
+                height: context.screenHeight / 2.8,
+              ),
+              CustomText(
+                text: 'You do not have any active contracts yet',
+                color: Colors.black,
+                weight: FontWeight.bold,
+                size: context.textSizeXL,
+              )
+            ],
+          );
+        else
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Material(
+                  clipBehavior: Clip.antiAlias,
+                  shape: BeveledRectangleBorder(
+                    side: BorderSide(
+                      color: active.withOpacity(0.7),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.,',
-                      style: GoogleFonts.oleoScript(
-                        height: 1.8,
-                        fontWeight: FontWeight.normal,
-                        fontSize: context.textSizeL,
-                      ),
-                      textAlign: TextAlign.center,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30.0),
+                      bottomLeft: Radius.circular(30.0),
+                      topLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 3,
-                    padding: EdgeInsets.only(left: 30),
-                    itemBuilder: (context, i) {
-                      return ListTile(
-                        title: Text(
-                          ' - This is item that we sent you , thank you',
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          myContractState.model!.contractName.toUpperCase(),
                           style: GoogleFonts.oleoScript(
-                            height: 0.7,
+                            height: 1.8,
+                            fontWeight: FontWeight.normal,
+                            fontSize: context.textSizeL,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            myContractState.model!.contractDescription,
+                            style: GoogleFonts.oleoScript(
+                              height: 1.8,
+                              fontWeight: FontWeight.normal,
+                              fontSize: context.textSizeL,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    width: context.screenWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(1.0),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            right: 35,
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: myContractState.model!.contractItems.length,
+                          padding: EdgeInsets.only(left: 30),
+                          itemBuilder: (context, i) {
+                            return ListTile(
+                              title: Text(
+                                ContractItemsType.getValue(myContractState.model!.contractItems[i]).translate(),
+                                style: GoogleFonts.oleoScript(
+                                  height: 0.7,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          width: context.screenWidth,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(1.0),
                           ),
-                          child: Column(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 25),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(color: Colors.black38, width: 2.0),
-                                  ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 35,
                                 ),
-                                child: Text(
-                                  'My signature',
-                                  style: GoogleFonts.oleoScript(
-                                    fontSize: context.textSizeM,
-                                  ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 25),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(color: Colors.black38, width: 2.0),
+                                        ),
+                                      ),
+                                      child: BlocBuilder<CurrentUserBloc, CurrentUserState>(
+                                        builder: (context, currentUserState) {
+                                          if (currentUserState.userModel!.contractSignature != null)
+                                            return _imageBase64Decoded(currentUserState.userModel!.contractSignature!);
+                                          else
+                                            return Text(
+                                              currentUserState.userModel!.contractSignature ?? ' ',
+                                              style: GoogleFonts.oleoScript(
+                                                fontSize: context.textSizeM,
+                                              ),
+                                            );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    CustomText(
+                                      text: 'Your signature',
+                                      size: context.textSizeS,
+                                      color: Colors.black,
+                                      weight: FontWeight.normal,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              CustomText(
-                                text: 'Your signature',
-                                size: context.textSizeS,
-                                color: Colors.black,
-                                weight: FontWeight.normal,
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: 20,
+                        )
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 25,
-        ),
-      ],
+              SizedBox(
+                height: 25,
+              ),
+            ],
+          );
+      },
     );
   }
+
+  @override
+  void initState() {
+    context.myContractBloc.add(MyContractGetCurrentEvent(contractId: context.currentUserBloc.state.userModel!.contractId));
+    super.initState();
+  }
+}
+
+dynamic _imageBase64Decoded(String base64String) {
+  return Image.memory(base64Decode(base64String));
 }
