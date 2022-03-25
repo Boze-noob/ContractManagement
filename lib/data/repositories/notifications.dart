@@ -14,7 +14,7 @@ class NotificationsRepo implements INotifications {
   @override
   Future<List<NotificationModel>?> getNotifications(String userId) async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter('notifications', 'userId', userId);
-    return jsonData.map<NotificationModel>((json) => NotificationModel.fromMap(json))?.toList() ?? null;
+    return jsonData != null ? jsonData.map<NotificationModel>((json) => NotificationModel.fromMap(json))?.toList() : null;
   }
 
   @override

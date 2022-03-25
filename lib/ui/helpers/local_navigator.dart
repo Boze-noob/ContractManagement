@@ -21,7 +21,7 @@ String getInitialRouteName(BuildContext context) {
   else if (RoleType.client.translate() == role) {
     return createRequestPageRoute;
   } else if (RoleType.company.translate() == role)
-    return createRequestPageRoute;
+    return requestsPageRoute;
   else
     return overviewPageRoute;
 }

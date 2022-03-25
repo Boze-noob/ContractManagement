@@ -42,7 +42,6 @@ const createContract = 'Create contract';
 class MenuItem {
   final String name;
   final String route;
-
   MenuItem(this.name, this.route);
 }
 
@@ -66,6 +65,7 @@ List<MenuItem> clientMenuItemRoutes = [
 ];
 
 List<MenuItem> companyMenuItemRoutes = [
+  MenuItem(requestsPageDisplayName, requestsPageRoute),
   MenuItem(myProfilePageDisplayName, myProfilePageRoute),
   MenuItem(myContractPageDisplayName, myContractPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),

@@ -28,7 +28,7 @@ class NotificationsState {
   }) =>
       NotificationsState(
         status: status ?? this.status,
-        model: model ?? this.model,
+        model: model ?? List.empty(),
         errorMessage: errorMessage ?? this.errorMessage,
       );
 }

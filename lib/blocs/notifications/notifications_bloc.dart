@@ -59,4 +59,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     } else
       emit(state.copyWith(status: NotificationStateStatus.error));
   }
+
+  @override
+  Future<void> close() {
+    currentUserSubscription.cancel();
+    return super.close();
+  }
 }

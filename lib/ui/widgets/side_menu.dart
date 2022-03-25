@@ -85,7 +85,7 @@ List getMenuItems(BuildContext context) {
     menuController.changeActiveItemTo(createRequestDisplayName);
     return clientMenuItemRoutes;
   } else {
-    menuController.changeActiveItemTo(createRequestDisplayName);
+    menuController.changeActiveItemTo(requestsPageDisplayName);
     return companyMenuItemRoutes;
   }
 }

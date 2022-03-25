@@ -18,7 +18,7 @@ class FirebaseFirestoreClass {
   Future getData(String collection, String document) async {
     try {
       var jsonData = await FirebaseFirestore.instance.collection(collection).doc(document).get();
-      return jsonData.data() == null ? null : jsonData;
+      return jsonData.exists ? jsonData.data() : null;
     } catch (e) {
       print(e);
       return null;
@@ -28,7 +28,7 @@ class FirebaseFirestoreClass {
   Future getDataWithFilter(String collection, String fieldName, dynamic fieldValue) async {
     try {
       final jsonData = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().catchError((onError) => print('Error happen $onError'));
-      return jsonData.docs;
+      return jsonData.docs.isEmpty ? null : jsonData.docs;
     } catch (e) {
       print(e);
       return null;

@@ -92,7 +92,7 @@ class ContractsRepo implements IContracts {
   @override
   Future<CreateContractModel?> getCurrentActive(String contractId) async {
     final result = await firebaseFirestoreClass.getData('contractTemplates', contractId);
-    return CreateContractModel.fromMap(result);
+    return result != null ? CreateContractModel.fromMap(result) : null;
   }
 
   @override
