@@ -4,7 +4,7 @@ enum ClientRequestStateStatus {
   init,
   loading,
   submitting,
-  submitSuccessfully,
+  submittedSuccessfully,
   error,
 }
 

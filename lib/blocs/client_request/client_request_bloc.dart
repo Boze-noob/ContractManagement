@@ -47,7 +47,7 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
     final result = await clientsRepo.sendClientRequest(state.requestModel);
     if (result) {
       emit(
-        state.copyWith(status: ClientRequestStateStatus.submitSuccessfully),
+        state.copyWith(status: ClientRequestStateStatus.submittedSuccessfully),
       );
       initialState();
     } else

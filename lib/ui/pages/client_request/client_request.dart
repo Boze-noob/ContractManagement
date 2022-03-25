@@ -15,7 +15,7 @@ class ClientRequestPage extends StatelessWidget {
         listener: (context, state) {
           if (state.status == ClientRequestStateStatus.error)
             showInfoMessage(state.errorMessage ?? 'Error happen', context);
-          else if (state.status == ClientRequestStateStatus.submitSuccessfully) showInfoMessage('You have successfully created request', context, duration: 4);
+          else if (state.status == ClientRequestStateStatus.submittedSuccessfully) showInfoMessage('You have successfully created request', context, duration: 4);
         },
         child: Column(
           children: [

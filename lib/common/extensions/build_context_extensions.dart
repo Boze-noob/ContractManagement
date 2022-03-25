@@ -22,6 +22,7 @@ extension BuildContextExtensions on BuildContext {
   CurrentUserBloc get currentUserBloc => read<CurrentUserBloc>();
   DeleteContractRequestBloc get deleteContractRequestBloc => read<DeleteContractRequestBloc>();
   EditProfileBloc get editProfileBloc => read<EditProfileBloc>();
+  CompanyEditBloc get companyEditBloc => read<CompanyEditBloc>();
   MyContractBloc get myContractBloc => read<MyContractBloc>();
   NavigatorBloc get navigatorBloc => read<NavigatorBloc>();
   NotificationsBloc get notificationsBloc => read<NotificationsBloc>();

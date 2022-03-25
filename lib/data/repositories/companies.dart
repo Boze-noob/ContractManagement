@@ -4,7 +4,7 @@ abstract class ICompanies {
   Future<List<UserModel>?> getCompanies();
   Future<List<UserModel>?> getCompaniesWithoutContract();
   Future<String?> deleteCompany(String uid);
-  Future<String?> editCompany();
+  Future<bool> editCompany(UserModel model);
 }
 
 class CompaniesRepo implements ICompanies {
@@ -18,9 +18,8 @@ class CompaniesRepo implements ICompanies {
   }
 
   @override
-  Future<String?> editCompany() {
-    // TODO: implement editCompany
-    throw UnimplementedError();
+  Future<bool> editCompany(UserModel model) async {
+    return await firebaseFirestoreClass.storeData('users', model.id, model);
   }
 
   @override

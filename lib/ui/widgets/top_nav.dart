@@ -122,7 +122,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          RadioRow(),
+                                          _RoleWidget(),
                                           SizedBox(
                                             height: 30,
                                           ),
@@ -200,19 +200,20 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
       backgroundColor: Colors.transparent,
     );
 
-class RadioRow extends StatefulWidget {
-  const RadioRow({Key? key}) : super(key: key);
+class _RoleWidget extends StatefulWidget {
+  const _RoleWidget({Key? key}) : super(key: key);
 
   @override
-  _RadioRowState createState() => _RadioRowState();
+  _RoleWidgetState createState() => _RoleWidgetState();
 }
 
-class _RadioRowState extends State<RadioRow> {
+class _RoleWidgetState extends State<_RoleWidget> {
   String _selectedRoleType = RoleType.getValue(0).translate();
 
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
+      //It would be nice to do this via List.builder
       ListTile(
         title: Text(RoleType.admin.translate()),
         leading: Radio<String>(
@@ -243,6 +244,52 @@ class _RadioRowState extends State<RadioRow> {
         title: Text(RoleType.company.translate()),
         leading: Radio<String>(
           value: RoleType.company.translate(),
+          groupValue: _selectedRoleType,
+          onChanged: (String? value) {
+            setState(
+              () {
+                updateRoleInModel(value!, context);
+                _selectedRoleType = value;
+              },
+            );
+          },
+        ),
+      ),
+
+      ListTile(
+        title: Text(RoleType.orderEmployer.translate()),
+        leading: Radio<String>(
+          value: RoleType.orderEmployer.translate(),
+          groupValue: _selectedRoleType,
+          onChanged: (String? value) {
+            setState(
+              () {
+                updateRoleInModel(value!, context);
+                _selectedRoleType = value;
+              },
+            );
+          },
+        ),
+      ),
+      ListTile(
+        title: Text(RoleType.announcementEmployer.translate()),
+        leading: Radio<String>(
+          value: RoleType.announcementEmployer.translate(),
+          groupValue: _selectedRoleType,
+          onChanged: (String? value) {
+            setState(
+              () {
+                updateRoleInModel(value!, context);
+                _selectedRoleType = value;
+              },
+            );
+          },
+        ),
+      ),
+      ListTile(
+        title: Text(RoleType.orderVerifyEmployer.translate()),
+        leading: Radio<String>(
+          value: RoleType.orderVerifyEmployer.translate(),
           groupValue: _selectedRoleType,
           onChanged: (String? value) {
             setState(
