@@ -54,6 +54,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       emit(
         state.copyWith(status: ContractsStateStatus.terminated),
       );
-    else emit(state.copyWith(status: ContractsStateStatus.error, errorMessage: 'Error happen'));
+    else
+      emit(state.copyWith(status: ContractsStateStatus.error, errorMessage: 'Error happen'));
   }
 }
