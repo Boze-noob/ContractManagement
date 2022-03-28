@@ -20,25 +20,32 @@ class ContextServiceProviderBlocs extends StatelessWidget {
             userAuthRepo: context.serviceProvider.userAuth,
           )..add(AuthCheckAuthenticationEvent()),
         ),
-        BlocProvider(
+        BlocProvider<CreateUserBloc>(
           create: (BuildContext context) => CreateUserBloc(
             accountRepo: context.serviceProvider.accountRepo,
           ),
         ),
-        BlocProvider(
+        BlocProvider<CurrentUserBloc>(
           lazy: false,
           create: (BuildContext context) => CurrentUserBloc(
             accountRepo: context.serviceProvider.accountRepo,
             authBloc: context.authBloc,
           ),
         ),
-        BlocProvider(
+        BlocProvider<NotificationsBloc>(
           lazy: false,
           create: (BuildContext context) => NotificationsBloc(
             notificationsRepo: context.serviceProvider.notificationsRepo,
             currentUserBloc: context.currentUserBloc,
           ),
-        )
+        ),
+        BlocProvider<ContractsBloc>(
+          lazy: false,
+          create: (BuildContext context) => ContractsBloc(contractsRepo: context.serviceProvider.contractsRepo)
+            ..add(
+              ContractsCheckDateEvent(),
+            ),
+        ),
       ],
       child: child,
     );

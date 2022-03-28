@@ -8,7 +8,6 @@ class RequestsDataTableWidget extends StatelessWidget {
   final String thirdColumnName;
   final String fourthColumnName;
   final String fifthColumnName;
-  final String action;
   final List<ClientRequestModel> clientRequestsList;
 
   RequestsDataTableWidget({
@@ -18,7 +17,6 @@ class RequestsDataTableWidget extends StatelessWidget {
     required this.thirdColumnName,
     required this.fourthColumnName,
     required this.fifthColumnName,
-    required this.action,
     required this.clientRequestsList,
   }) : super(key: key);
 
@@ -91,7 +89,7 @@ class RequestsDataTableWidget extends StatelessWidget {
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: CustomText(
-                    text: action,
+                    text: 'Terminate',
                     color: active.withOpacity(.7),
                     weight: FontWeight.bold,
                   ),

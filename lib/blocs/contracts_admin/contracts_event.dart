@@ -9,3 +9,12 @@ class ContractsLoadEvent extends ContractsEvent {
 
   ContractsLoadEvent({required this.contractType});
 }
+
+class ContractsCheckDateEvent extends ContractsEvent {}
+
+class ContractsTerminateEvent extends ContractsEvent {
+  final ContractModel contractModel;
+  final String userRoleType;
+
+  ContractsTerminateEvent({required this.contractModel, required this.userRoleType});
+}

@@ -8,6 +8,8 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   }) : super(initialState()) {
     on<ContractsLoadEvent>(_load);
     on<ContractsInitEvent>(_init);
+    on<ContractsCheckDateEvent>(_checkDate);
+    on<ContractsTerminateEvent>(_terminate);
   }
 
   static ContractsState initialState() => ContractsState(
@@ -35,5 +37,23 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       emit(
         state.copyWith(status: ContractsStateStatus.error, errorMessage: 'No data found'),
       );
+  }
+
+  void _checkDate(ContractsCheckDateEvent event, Emitter<ContractsState> emit) async {
+    final contracts = await contractsRepo.loadContracts(ContractType.active);
+    if (contracts != null)
+      for (ContractModel contractModel in contracts) {
+        if (contractModel.completionDateTime == DateTime.now()) await contractsRepo.completeContract(contractModel);
+      }
+  }
+
+  void _terminate(ContractsTerminateEvent event, Emitter<ContractsState> emit) async {
+    emit(state.copyWith(status: ContractsStateStatus.loading));
+    final result = await contractsRepo.terminateContract(event.contractModel, event.userRoleType);
+    if (result == null)
+      emit(
+        state.copyWith(status: ContractsStateStatus.terminated),
+      );
+    else emit(state.copyWith(status: ContractsStateStatus.error, errorMessage: 'Error happen'));
   }
 }

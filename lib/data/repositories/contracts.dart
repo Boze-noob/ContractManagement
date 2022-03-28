@@ -4,6 +4,8 @@ abstract class IContracts {
   Future<List<ContractModel>?> loadContracts(ContractType contractStatus);
   Future<ContractsCounterModel?> loadContractsCount();
   Future<bool> createActiveContract(ContractModel contractModel);
+  Future<String> completeContract(ContractModel contractModel);
+  Future<String?> terminateContract(ContractModel contractModel, String userRoleType);
 
   Future<List<CreateContractModel>?> loadContractsTemplates();
   Future<CreateContractModel?> loadSingleContractTemplate(String contractDisplayName);
@@ -19,9 +21,11 @@ abstract class IContracts {
 
 class ContractsRepo implements IContracts {
   FirebaseFirestoreClass firebaseFirestoreClass;
+  INotifications notificationsRepo;
 
   ContractsRepo({
     required this.firebaseFirestoreClass,
+    required this.notificationsRepo,
   });
 
   @override
@@ -112,5 +116,35 @@ class ContractsRepo implements IContracts {
     List<String> fieldValues = [contractId, signature];
 
     return await firebaseFirestoreClass.updaterSpecificFields('users', companyId, fieldNames, fieldValues);
+  }
+
+  @override
+  Future<String> completeContract(ContractModel contractModel) async {
+    List<String> fieldNames = [
+      'contractId',
+      'contractSignature',
+    ];
+    List fieldValues = List.filled(2, null);
+    //All admins will receive this notification
+    await notificationsRepo.sendNotification(NotificationModel(userId: 'admin', message: 'Contract has been expired'));
+    await notificationsRepo.sendNotification(NotificationModel(userId: contractModel.companyId, message: 'Contract has been expired'));
+    await firebaseFirestoreClass.updaterSpecificFields('users', contractModel.companyId, fieldNames, fieldValues);
+    return await firebaseFirestoreClass.updateSpecificField('contracts', contractModel.companyId, 'contractStatus', ContractType.completed.index.toString());
+  }
+
+  @override
+  Future<String> terminateContract(ContractModel contractModel, String userRoleType) async {
+    if (userRoleType == RoleType.admin.translate())
+      await notificationsRepo.sendNotification(NotificationModel(userId: contractModel.companyId, message: 'Admin terminated your contract'));
+    else
+      await notificationsRepo.sendNotification(NotificationModel(userId: 'admin', message: 'Company ${contractModel.companyName} terminated its contract'));
+
+    List<String> fieldNames = [
+      'contractId',
+      'contractSignature',
+    ];
+    List fieldValues = List.filled(2, null);
+    await firebaseFirestoreClass.updaterSpecificFields('users', contractModel.companyId, fieldNames, fieldValues);
+    return await firebaseFirestoreClass.updateSpecificField('contracts', contractModel.companyId, 'contractStatus', ContractType.terminated.index.toString());
   }
 }

@@ -1,17 +1,18 @@
 import 'package:contract_management/_all.dart';
 
-//TODO will we add dateTime??
 class ContractModel {
   final String companyName;
   final String contractTemplateId;
   final String companyId;
   final ContractType contractStatus;
+  final DateTime? completionDateTime;
 
   ContractModel({
     required this.companyName,
     required this.contractTemplateId,
     required this.companyId,
     required this.contractStatus,
+    this.completionDateTime,
   });
 
   ContractModel copyWith({
@@ -28,11 +29,15 @@ class ContractModel {
       );
 
   Map<String, dynamic> toMap() {
+    DateTime now = DateTime.now();
+    DateTime completionDate = DateTime(now.year, now.month + 1, now.day);
+
     return {
       'companyName': companyName,
       'contractTemplateId': contractTemplateId,
       'companyId': companyId,
       'contractStatus': contractStatus.index,
+      'completionDateTime': completionDate,
     };
   }
 
@@ -42,6 +47,7 @@ class ContractModel {
       contractTemplateId: map['contractTemplateId'],
       companyId: map['companyId'],
       contractStatus: ContractType.getValue(map['contractStatus']),
+      completionDateTime: map['completionDateTime'].toDate(),
     );
   }
 }

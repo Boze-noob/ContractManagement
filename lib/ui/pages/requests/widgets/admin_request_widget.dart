@@ -50,7 +50,6 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                             secondColumnName: 'Email',
                             thirdColumnName: 'Location',
                             fourthColumnName: 'Date time',
-                            action: 'View request',
                             fifthColumnName: '',
                             clientRequestsList: state.clientRequestModel,
                           );

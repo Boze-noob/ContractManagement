@@ -5,6 +5,7 @@ enum ContractsStateStatus {
   loading,
   loaded,
   error,
+  terminated,
 }
 
 class ContractsState {

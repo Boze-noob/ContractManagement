@@ -32,8 +32,8 @@ abstract class ServiceProvider {
     accountRepo = AccountRepo();
     clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
-    contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     requestRepo = RequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     revenueRepo = RevenueRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);

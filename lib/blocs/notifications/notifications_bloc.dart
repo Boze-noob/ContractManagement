@@ -15,7 +15,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<NotificationsDeleteEvent>(_delete);
     currentUserSubscription = currentUserBloc.stream.listen((state) {
       if (state.status == CurrentUserStateStatus.success) {
-        add(NotificationsLoadEvent(userId: state.userModel!.id));
+        if (state.userModel!.role == RoleType.admin.translate()) {
+          add(NotificationsLoadEvent(userId: 'admin'));
+        } else
+          add(NotificationsLoadEvent(userId: state.userModel!.id));
       }
     });
   }

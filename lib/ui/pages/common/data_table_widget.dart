@@ -1,15 +1,18 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
+import 'package:intl/intl.dart';
 
 class DataTableWidget extends StatelessWidget {
   final String firstColumnName;
   final String secondColumnName;
   final String thirdColumnName;
   final String fourthColumnName;
+  final String fifthColumnName;
   final String action;
   //TODO not good practice to do it this way
   final List dataList;
+  final void Function(String contractId, String companyName) onTap;
 
   DataTableWidget({
     Key? key,
@@ -17,8 +20,10 @@ class DataTableWidget extends StatelessWidget {
     required this.secondColumnName,
     required this.thirdColumnName,
     required this.fourthColumnName,
+    required this.fifthColumnName,
     required this.action,
     required this.dataList,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -57,6 +62,9 @@ class DataTableWidget extends StatelessWidget {
           DataColumn(
             label: Text(fourthColumnName),
           ),
+          DataColumn(
+            label: Text(fifthColumnName),
+          ),
         ],
         rows: List<DataRow>.generate(
           dataList.length,
@@ -74,17 +82,25 @@ class DataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Container(
-                  decoration: BoxDecoration(
-                    color: light,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: active, width: .5),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: CustomText(
-                    text: action,
-                    color: active.withOpacity(.7),
-                    weight: FontWeight.bold,
+                CustomText(
+                  text: DateFormat('yyyy-MM-dd – kk:mm').format(dataList[index].completionDateTime),
+                ),
+              ),
+              DataCell(
+                GestureDetector(
+                  onTap: () => onTap(dataList[index].companyId),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: light,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: active, width: .5),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: CustomText(
+                      text: action,
+                      color: active.withOpacity(.7),
+                      weight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

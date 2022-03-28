@@ -1,5 +1,6 @@
 import 'package:contract_management/_all.dart';
 
+//TODO fix methods names to be more specific
 class FirebaseFirestoreClass {
   Future<bool> storeData(String collection, String? document, var model) async {
     bool completed = true;
@@ -90,7 +91,15 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future updaterSpecificFields(String collection, String document, List<String> fieldName, List<String> fieldValue) async {
+  Future updateSpecificField(String collection, String document, String fieldName, String? fieldValue) async {
+    String? errorMessage;
+    FirebaseFirestore.instance.collection(collection).doc(document).update({fieldName: fieldValue}).catchError((onError) => errorMessage = onError.toString());
+    if (errorMessage != null) return errorMessage;
+
+    return errorMessage;
+  }
+
+  Future updaterSpecificFields(String collection, String document, List<String> fieldName, List fieldValue) async {
     String? errorMessage;
 
     for (int i = 0; i < fieldName.length; i++) {
