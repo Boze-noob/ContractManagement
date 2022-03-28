@@ -24,7 +24,7 @@ class ContractsTemplateListBloc extends Bloc<ContractsTemplateListEvent, Contrac
   }
 
   void _delete(ContractsTemplateListDeleteEvent event, Emitter<ContractsTemplateListState> emit) async {
-    final result = await contractsRepo.deleteContract(event.contractName);
+    final result = await contractsRepo.deleteContractTemplate(event.contractName);
     if (result == null)
       emit(state.copyWith(status: ContractsTemplateStateStatus.successfullyDeleted));
     else

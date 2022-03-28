@@ -1,3 +1,5 @@
+//TODO will we add DateTime??
+
 class ContractRequestModel {
   final String contractId;
   final String companyId;

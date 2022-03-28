@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:contract_management/_all.dart';
 
 class AdminRequestWidget extends StatefulWidget {
@@ -12,10 +13,10 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AdminRequestsBloc(requestRepo: context.serviceProvider.requestRepo)..add(AdminRequestsGetEvent(companyId: context.currentUserBloc.state.userModel!.id)),
-      child: BlocListener<AdminRequestsBloc, AdminRequestsState>(
+      create: (context) => RequestsBloc(request: context.serviceProvider.requestRepo)..add(RequestsLoadEvent()),
+      child: BlocListener<RequestsBloc, RequestsState>(
         listener: (context, state) {
-          if (state.status == AdminRequestsStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
+          if (state.status == RequestsStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
         },
         child: Container(
           child: Column(
@@ -42,13 +43,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                   }),
                   child: ListView(
                     children: [
-                      BlocBuilder<AdminRequestsBloc, AdminRequestsState>(
+                      BlocBuilder<RequestsBloc, RequestsState>(
                         builder: (context, state) {
-                          //TODO add table here
-                          return Container(
-                            child: Text('Hello world'),
-                          );
-                          /*
                           return RequestsDataTableWidget(
                             firstColumnName: 'Display name',
                             secondColumnName: 'Email',
@@ -58,8 +54,6 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                             fifthColumnName: '',
                             clientRequestsList: state.clientRequestModel,
                           );
-
-                           */
                         },
                       )
                     ],

@@ -21,7 +21,6 @@ abstract class ServiceProvider {
   //...
 
   Future<void> init() async {
-    print('service provider------');
     await initFirebase();
     await initRepositories();
   }
@@ -32,7 +31,7 @@ abstract class ServiceProvider {
 
     accountRepo = AccountRepo();
     clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
     contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     requestRepo = RequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);

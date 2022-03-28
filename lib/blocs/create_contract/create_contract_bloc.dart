@@ -41,7 +41,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
 
   void _submit(CreateContractSubmitEvent event, Emitter<CreateContractState> emit) async {
     emit(state.copyWith(status: CreateContractStateStatus.submitting));
-    final result = await contractsRepo.storeDate(state.createContractModel);
+    final result = await contractsRepo.createContractTemplate(state.createContractModel);
     if (result) {
       emit(state.copyWith(status: CreateContractStateStatus.successfullySubmitted));
     } else

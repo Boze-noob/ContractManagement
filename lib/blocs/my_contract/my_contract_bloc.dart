@@ -42,7 +42,6 @@ class MyContractBloc extends Bloc<MyContractEvent, MyContractState> {
   }
 
   void _loadRequest(MyContractGetRequestEvent event, Emitter<MyContractState> emit) async {
-    print('loading request');
     emit(
       state.copyWith(status: MyContractStateStatus.loading),
     );
@@ -52,7 +51,6 @@ class MyContractBloc extends Bloc<MyContractEvent, MyContractState> {
     if (result != null) {
       final contractModel = await contractsRepo.loadSingleContractTemplate(result.contractId);
       if (contractModel != null) {
-        print('loadSingleContractTemplate != null');
         emit(
           state.copyWith(
             status: MyContractStateStatus.loaded,
@@ -82,6 +80,14 @@ class MyContractBloc extends Bloc<MyContractEvent, MyContractState> {
     final signatureBase64 = await imageBase64Encoded(event.signatureImg);
     final result = await contractsRepo.acceptContract(event.companyId, event.contractId, signatureBase64);
     if (result == null) {
+      createActiveContract(
+        ContractModel(
+          companyName: event.companyName,
+          contractTemplateId: event.contractId,
+          companyId: event.companyId,
+          contractStatus: ContractType.active,
+        ),
+      );
       emit(
         state.copyWith(
           status: MyContractStateStatus.contractAccepted,
@@ -102,5 +108,10 @@ class MyContractBloc extends Bloc<MyContractEvent, MyContractState> {
       }
     }
     return '';
+  }
+
+  //It would be better to do this on backend but its fine for school project :)
+  void createActiveContract(ContractModel contractModel) async {
+    await contractsRepo.createActiveContract(contractModel);
   }
 }

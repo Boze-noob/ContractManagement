@@ -9,8 +9,9 @@ abstract class ICompanies {
 
 class CompaniesRepo implements ICompanies {
   FirebaseFirestoreClass firebaseFirestoreClass;
+  FirebaseAuthClass firebaseAuthClass;
 
-  CompaniesRepo({required this.firebaseFirestoreClass});
+  CompaniesRepo({required this.firebaseFirestoreClass, required this.firebaseAuthClass});
 
   @override
   Future<String?> deleteCompany(String uid) async {
@@ -19,6 +20,7 @@ class CompaniesRepo implements ICompanies {
 
   @override
   Future<bool> editCompany(UserModel model) async {
+    if (model.email.isNotEmpty) await firebaseAuthClass.changeUserEmail(model.email);
     return await firebaseFirestoreClass.storeData('users', model.id, model.toMap());
   }
 

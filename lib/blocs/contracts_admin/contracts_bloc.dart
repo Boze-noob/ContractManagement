@@ -24,7 +24,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       state.copyWith(status: ContractsStateStatus.loading),
     );
 
-    final contracts = await contractsRepo.load(
+    final contracts = await contractsRepo.loadContracts(
       event.contractType,
     );
     if (contracts != null) {

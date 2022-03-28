@@ -47,14 +47,12 @@ class MenuItem {
 
 List<MenuItem> sideMenuItemRoutes = [
   MenuItem(overviewPageDisplayName, overviewPageRoute),
-  MenuItem(createRequestDisplayName, createRequestPageRoute),
   MenuItem(requestsPageDisplayName, requestsPageRoute),
   MenuItem(crateContractPageDisplayName, createContractPageRoute),
   MenuItem(contractsPageDisplayName, contractsPageRoute),
   MenuItem(companiesPageDisplayName, companiesPageRoute),
   MenuItem(clientsPageDisplayName, clientsPageRoute),
   MenuItem(myProfilePageDisplayName, myProfilePageRoute),
-  MenuItem(myContractPageDisplayName, myContractPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];
 

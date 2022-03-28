@@ -1,6 +1,5 @@
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class NewContractWidget extends StatefulWidget {
   const NewContractWidget({Key? key}) : super(key: key);
@@ -152,7 +151,6 @@ class _NewContractWidgetState extends State<NewContractWidget> {
               BlocListener<MyContractBloc, MyContractState>(
                 listener: (context, state) {
                   if (state.status == MyContractStateStatus.contractAccepted) {
-                    print('we are getting current user----------------');
                     showInfoMessage('Contract has been accepted', context);
                     context.currentUserBloc.add(CurrentUserGetEvent());
                   }
@@ -169,12 +167,16 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                       showInfoMessage('Please sign the contract', context);
                     else {
                       //Better to do via streamSubscription maybe
-                      context.myContractBloc.add(MyContractAcceptRequestEvent(companyId: context.currentUserBloc.state.userModel!.id, contractId: myContractState.model!.contractName, signatureImg: signatureImage));
-                      print('we accepted contract------------');
+                      context.myContractBloc.add(
+                        MyContractAcceptRequestEvent(
+                          companyId: context.currentUserBloc.state.userModel!.id,
+                          contractId: myContractState.model!.contractName,
+                          signatureImg: signatureImage,
+                          companyName: context.currentUserBloc.state.userModel!.displayName,
+                        ),
+                      );
                       context.deleteContractRequestBloc.add(DeleteContractRequestDeleteEvent(companyId: context.currentUserBloc.state.userModel!.id));
-                      print('we deleted contract-------------');
                       context.notificationsBloc.add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id));
-                      print('we deleted notifications--------');
                     }
                   },
                 ),

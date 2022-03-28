@@ -7,8 +7,8 @@ class DataTableWidget extends StatelessWidget {
   final String secondColumnName;
   final String thirdColumnName;
   final String fourthColumnName;
-  final String fifthColumnName;
   final String action;
+  //TODO not good practice to do it this way
   final List dataList;
 
   DataTableWidget({
@@ -17,7 +17,6 @@ class DataTableWidget extends StatelessWidget {
     required this.secondColumnName,
     required this.thirdColumnName,
     required this.fourthColumnName,
-    required this.fifthColumnName,
     required this.action,
     required this.dataList,
   }) : super(key: key);
@@ -58,28 +57,20 @@ class DataTableWidget extends StatelessWidget {
           DataColumn(
             label: Text(fourthColumnName),
           ),
-          DataColumn(
-            label: Text(fifthColumnName),
-          ),
         ],
         rows: List<DataRow>.generate(
           dataList.length,
           (index) => DataRow(
             cells: [
               DataCell(
-                CustomText(text: dataList[index].name),
+                CustomText(text: dataList[index].companyName),
               ),
               DataCell(
-                CustomText(text: dataList[index].clientName),
-              ),
-              DataCell(
-                CustomText(
-                  text: dataList[index].location,
-                ),
+                CustomText(text: dataList[index].contractTemplateId),
               ),
               DataCell(
                 CustomText(
-                  text: dataList[index].company,
+                  text: dataList[index].contractStatus.translate(),
                 ),
               ),
               DataCell(

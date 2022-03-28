@@ -9,7 +9,7 @@ enum ContractsStateStatus {
 
 class ContractsState {
   final ContractsStateStatus status;
-  final List<ContractsModel> contracts;
+  final List<ContractModel> contracts;
   final String? errorMessage;
   ContractsState({
     required this.status,
@@ -19,7 +19,7 @@ class ContractsState {
 
   ContractsState copyWith({
     ContractsStateStatus? status,
-    List<ContractsModel>? contracts,
+    List<ContractModel>? contracts,
     String? errorMessage,
   }) =>
       ContractsState(

@@ -17,11 +17,13 @@ class MyContractGetRequestEvent extends MyContractEvent {
 }
 
 class MyContractAcceptRequestEvent extends MyContractEvent {
+  final String companyName;
   final String companyId;
   final String contractId;
   final Image signatureImg;
 
   MyContractAcceptRequestEvent({
+    required this.companyName,
     required this.companyId,
     required this.contractId,
     required this.signatureImg,

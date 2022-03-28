@@ -138,11 +138,10 @@ class _ContractsPageState extends State<ContractsPage> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       children: [
                         DataTableWidget(
-                          firstColumnName: 'Name',
-                          secondColumnName: 'Client',
-                          thirdColumnName: 'Location',
-                          fourthColumnName: 'Company',
-                          fifthColumnName: 'Action',
+                          firstColumnName: 'Company name',
+                          secondColumnName: 'Contract template',
+                          thirdColumnName: 'Contract status',
+                          fourthColumnName: 'Action',
                           action: 'View',
                           dataList: state.contracts,
                         ),
