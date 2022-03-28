@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
 class CompaniesTable extends StatelessWidget {
+  //Not good practice
+  final BuildContext parentContext;
+
+  CompaniesTable({required this.parentContext});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CompaniesBloc, CompaniesState>(
@@ -150,101 +155,105 @@ class CompaniesTable extends StatelessWidget {
                           context: context,
                           builder: (context) => BlocProvider(
                             create: (context) => CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)..add(CompanyEditInitEvent(companyModel: state.companies[index])),
-                            child: CustomDialog(
-                                buttonText: 'Save',
-                                child: Container(
-                                  width: context.screenWidth / 2,
-                                  child: Form(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                                      child: BlocListener<CompanyEditBloc, CompanyEditState>(
-                                        listener: (context, state) {
-                                          if (state.status == CompanyEditStateStatus.error) {
-                                            showInfoMessage(state.errorMessage ?? 'Error happen', context);
-                                          } else if (state.status == CompanyEditStateStatus.submittedSuccessfully) {
-                                            showInfoMessage('Company updated', context);
-                                            context.companiesBloc.add(CompaniesGetEvent());
-                                          }
-                                        },
-                                        child: BlocBuilder<CompanyEditBloc, CompanyEditState>(
-                                          builder: (context, state) {
-                                            if (state.status == CompanyEditStateStatus.loading)
-                                              return Loader(
-                                                width: 80,
-                                                height: 80,
-                                                color: active,
-                                              );
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                SizedBox(
-                                                  height: 16,
-                                                ),
-                                                CustomText(
-                                                  text: 'Edit company parameters',
-                                                  size: 22,
-                                                  weight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                                SizedBox(
-                                                  height: 16,
-                                                ),
-                                                TextFormField(
-                                                  initialValue: state.companyModel.displayName,
-                                                  decoration: InputDecoration(
-                                                    icon: const Icon(Icons.email),
-                                                    hintText: 'Edit displayName',
-                                                    labelText: 'Display name',
-                                                    fillColor: active,
-                                                  ),
-                                                  onChanged: (text) => context.companyEditBloc.add(
-                                                    CompanyEditUpdateEvent(
-                                                      companyModel: state.companyModel.copyWith(displayName: text),
+                            child: Builder(
+                              builder: (context) {
+                                return CustomDialog(
+                                    buttonText: 'Save',
+                                    child: Container(
+                                      width: context.screenWidth / 2,
+                                      child: Form(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                                          child: BlocListener<CompanyEditBloc, CompanyEditState>(
+                                            listener: (context, state) {
+                                              if (state.status == CompanyEditStateStatus.error) {
+                                                showInfoMessage(state.errorMessage ?? 'Error happen', context);
+                                              } else if (state.status == CompanyEditStateStatus.submittedSuccessfully) {
+                                                showInfoMessage('Company updated', context);
+                                                parentContext.companiesBloc.add(CompaniesGetEvent());
+                                                print('prosli smo companies get poziv');
+                                              }
+                                            },
+                                            child: BlocBuilder<CompanyEditBloc, CompanyEditState>(
+                                              builder: (context, state) {
+                                                if (state.status == CompanyEditStateStatus.loading)
+                                                  return Loader(
+                                                    width: 80,
+                                                    height: 80,
+                                                    color: active,
+                                                  );
+                                                return Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 16,
                                                     ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TextFormField(
-                                                  initialValue: state.companyModel.rating,
-                                                  decoration: const InputDecoration(
-                                                    icon: const Icon(Icons.password),
-                                                    hintText: 'Edit rating',
-                                                    labelText: 'Rating',
-                                                  ),
-                                                  onChanged: (text) => context.companyEditBloc.add(
-                                                    CompanyEditUpdateEvent(
-                                                      companyModel: state.companyModel.copyWith(rating: text),
+                                                    CustomText(
+                                                      text: 'Edit company parameters',
+                                                      size: 22,
+                                                      weight: FontWeight.bold,
+                                                      color: Colors.black,
                                                     ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                _RoleWidget(
-                                                  onRoleUpdate: (role) => context.companyEditBloc.add(
-                                                    CompanyEditUpdateEvent(
-                                                      companyModel: state.companyModel.copyWith(role: role),
+                                                    SizedBox(
+                                                      height: 16,
                                                     ),
-                                                  ),
-                                                  role: state.companyModel.role,
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                                    TextFormField(
+                                                      initialValue: state.companyModel.displayName,
+                                                      decoration: InputDecoration(
+                                                        icon: const Icon(Icons.email),
+                                                        hintText: 'Edit displayName',
+                                                        labelText: 'Display name',
+                                                        fillColor: active,
+                                                      ),
+                                                      onChanged: (text) => context.companyEditBloc.add(
+                                                        CompanyEditUpdateEvent(
+                                                          companyModel: state.companyModel.copyWith(displayName: text),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    TextFormField(
+                                                      initialValue: state.companyModel.rating,
+                                                      decoration: const InputDecoration(
+                                                        icon: const Icon(Icons.password),
+                                                        hintText: 'Edit rating',
+                                                        labelText: 'Rating',
+                                                      ),
+                                                      onChanged: (text) => context.companyEditBloc.add(
+                                                        CompanyEditUpdateEvent(
+                                                          companyModel: state.companyModel.copyWith(rating: text),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    _RoleWidget(
+                                                      onRoleUpdate: (role) => context.companyEditBloc.add(
+                                                        CompanyEditUpdateEvent(
+                                                          companyModel: state.companyModel.copyWith(role: role),
+                                                        ),
+                                                      ),
+                                                      role: state.companyModel.role,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 30,
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                onButtonPressed: () {
-                                  context.companyEditBloc.add(CompanyEditSubmitEvent());
-                                  Navigator.of(context).pop();
-                                }),
+                                    onButtonPressed: () {
+                                      context.companyEditBloc.add(CompanyEditSubmitEvent());
+                                    });
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -300,19 +309,6 @@ class _RoleWidgetState extends State<_RoleWidget> {
     return Column(mainAxisSize: MainAxisSize.min, children: [
       //It would be nice to do this via List.builder
       ListTile(
-        title: Text(RoleType.admin.translate()),
-        leading: Radio<String>(
-          value: RoleType.admin.translate(),
-          groupValue: _selectedRoleType,
-          onChanged: (String? value) {
-            widget.onRoleUpdate(value!);
-            setState(() {
-              _selectedRoleType = value;
-            });
-          },
-        ),
-      ),
-      ListTile(
         title: Text(RoleType.client.translate()),
         leading: Radio<String>(
           value: RoleType.client.translate(),
@@ -329,52 +325,6 @@ class _RoleWidgetState extends State<_RoleWidget> {
         title: Text(RoleType.company.translate()),
         leading: Radio<String>(
           value: RoleType.company.translate(),
-          groupValue: _selectedRoleType,
-          onChanged: (String? value) {
-            widget.onRoleUpdate(value!);
-            setState(
-              () {
-                _selectedRoleType = value;
-              },
-            );
-          },
-        ),
-      ),
-
-      ListTile(
-        title: Text(RoleType.orderEmployer.translate()),
-        leading: Radio<String>(
-          value: RoleType.orderEmployer.translate(),
-          groupValue: _selectedRoleType,
-          onChanged: (String? value) {
-            widget.onRoleUpdate(value!);
-            setState(
-              () {
-                _selectedRoleType = value;
-              },
-            );
-          },
-        ),
-      ),
-      ListTile(
-        title: Text(RoleType.announcementEmployer.translate()),
-        leading: Radio<String>(
-          value: RoleType.announcementEmployer.translate(),
-          groupValue: _selectedRoleType,
-          onChanged: (String? value) {
-            widget.onRoleUpdate(value!);
-            setState(
-              () {
-                _selectedRoleType = value;
-              },
-            );
-          },
-        ),
-      ),
-      ListTile(
-        title: Text(RoleType.orderVerifyEmployer.translate()),
-        leading: Radio<String>(
-          value: RoleType.orderVerifyEmployer.translate(),
           groupValue: _selectedRoleType,
           onChanged: (String? value) {
             widget.onRoleUpdate(value!);

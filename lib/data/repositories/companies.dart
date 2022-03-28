@@ -19,7 +19,7 @@ class CompaniesRepo implements ICompanies {
 
   @override
   Future<bool> editCompany(UserModel model) async {
-    return await firebaseFirestoreClass.storeData('users', model.id, model);
+    return await firebaseFirestoreClass.storeData('users', model.id, model.toMap());
   }
 
   @override

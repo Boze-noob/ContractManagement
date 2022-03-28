@@ -42,24 +42,37 @@ class _CompaniesPageState extends State<CompaniesPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.mouse,
-                    },
-                  ),
-                  child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [
-                      SizedBox(
-                        height: 20,
+              BlocBuilder<CompaniesBloc, CompaniesState>(
+                builder: (context, state) {
+                  if (state.status == CompaniesStateStatus.loading)
+                    return Loader(
+                      width: 100,
+                      height: 100,
+                      color: active,
+                    );
+                  else
+                    return Expanded(
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: {
+                            PointerDeviceKind.touch,
+                            PointerDeviceKind.mouse,
+                          },
+                        ),
+                        child: ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            CompaniesTable(
+                              parentContext: context,
+                            ),
+                          ],
+                        ),
                       ),
-                      CompaniesTable(),
-                    ],
-                  ),
-                ),
+                    );
+                },
               ),
             ],
           ),

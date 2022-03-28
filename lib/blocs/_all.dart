@@ -1,6 +1,5 @@
 export 'admin_requests/_all.dart';
 export 'auth/_all.dart';
-export 'edit_profile/_all.dart';
 export 'create_user/_all.dart';
 export 'clients/_all.dart';
 export 'client_request/_all.dart';
@@ -15,6 +14,7 @@ export 'delete_contract_request/_all.dart';
 export 'my_contract/_all.dart';
 export 'navigator/_all.dart';
 export 'notifications/_all.dart';
+export 'profile_edit/_all.dart';
 export 'requests/_all.dart';
 export 'revenue/_all.dart';
 export 'send_contract_request/_all.dart';
