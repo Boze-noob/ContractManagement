@@ -177,6 +177,7 @@ class _ActiveContractWidgetState extends State<ActiveContractWidget> {
 
   @override
   void initState() {
+    print('getting new contract with id ${context.currentUserBloc.state.userModel!.contractId}');
     context.myContractBloc.add(MyContractGetCurrentEvent(contractId: context.currentUserBloc.state.userModel!.contractId));
     super.initState();
   }

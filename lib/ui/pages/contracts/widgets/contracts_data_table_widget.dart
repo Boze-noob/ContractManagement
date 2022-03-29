@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 import 'package:intl/intl.dart';
 
-class DataTableWidget extends StatelessWidget {
+class ContractsDataTableWidget extends StatelessWidget {
   final String firstColumnName;
   final String secondColumnName;
   final String thirdColumnName;
   final String fourthColumnName;
   final String fifthColumnName;
   final String action;
-  //TODO not good practice to do it this way
-  final List dataList;
-  final void Function(String contractId, String companyName) onTap;
+  final ContractsState contractsState;
+  final void Function(ContractModel contractModel) onTap;
 
-  DataTableWidget({
+  ContractsDataTableWidget({
     Key? key,
     required this.firstColumnName,
     required this.secondColumnName,
@@ -22,13 +21,14 @@ class DataTableWidget extends StatelessWidget {
     required this.fourthColumnName,
     required this.fifthColumnName,
     required this.action,
-    required this.dataList,
+    required this.contractsState,
     required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (dataList.isEmpty)
+    print("length of contract is ${contractsState.contracts.length}------------");
+    if (contractsState.contracts.isEmpty)
       return CustomText(
         text: 'No data to display',
         size: context.textSizeXL,
@@ -67,28 +67,28 @@ class DataTableWidget extends StatelessWidget {
           ),
         ],
         rows: List<DataRow>.generate(
-          dataList.length,
+          contractsState.contracts.length,
           (index) => DataRow(
             cells: [
               DataCell(
-                CustomText(text: dataList[index].companyName),
+                CustomText(text: contractsState.contracts[index].companyName),
               ),
               DataCell(
-                CustomText(text: dataList[index].contractTemplateId),
+                CustomText(text: contractsState.contracts[index].contractTemplateId),
               ),
               DataCell(
                 CustomText(
-                  text: dataList[index].contractStatus.translate(),
+                  text: contractsState.contracts[index].contractStatus.translate().toUpperCase(),
                 ),
               ),
               DataCell(
                 CustomText(
-                  text: DateFormat('yyyy-MM-dd – kk:mm').format(dataList[index].completionDateTime),
+                  text: DateFormat('yyyy-MM-dd – kk:mm').format(contractsState.contracts[index].completionDateTime),
                 ),
               ),
               DataCell(
                 GestureDetector(
-                  onTap: () => onTap(dataList[index].companyId),
+                  onTap: () => onTap(contractsState.contracts[index]),
                   child: Container(
                     decoration: BoxDecoration(
                       color: light,

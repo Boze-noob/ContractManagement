@@ -28,7 +28,8 @@ class FirebaseFirestoreClass {
 
   Future getDataWithFilter(String collection, String fieldName, dynamic fieldValue) async {
     try {
-      final jsonData = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().catchError((onError) => print('Error happen $onError'));
+      final jsonData = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().catchError((onError) => print('Error happen in get data with filter $onError'));
+      print('Data in getDataWithFilter is ${jsonData.docs} ----------------');
       return jsonData.docs.isEmpty ? null : jsonData.docs;
     } catch (e) {
       print(e);
@@ -91,9 +92,9 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future updateSpecificField(String collection, String document, String fieldName, String? fieldValue) async {
+  Future updateSpecificField(String collection, String document, String fieldName, dynamic fieldValue) async {
     String? errorMessage;
-    FirebaseFirestore.instance.collection(collection).doc(document).update({fieldName: fieldValue}).catchError((onError) => errorMessage = onError.toString());
+    await FirebaseFirestore.instance.collection(collection).doc(document).update({fieldName: fieldValue}).catchError((onError) => errorMessage = onError.toString());
     if (errorMessage != null) return errorMessage;
 
     return errorMessage;
@@ -103,7 +104,7 @@ class FirebaseFirestoreClass {
     String? errorMessage;
 
     for (int i = 0; i < fieldName.length; i++) {
-      FirebaseFirestore.instance.collection(collection).doc(document).update({fieldName[i]: fieldValue[i]}).catchError((onError) => errorMessage = onError.toString());
+      await FirebaseFirestore.instance.collection(collection).doc(document).update({fieldName[i]: fieldValue[i]}).catchError((onError) => errorMessage = onError.toString());
       if (errorMessage != null) return errorMessage;
     }
     return errorMessage;

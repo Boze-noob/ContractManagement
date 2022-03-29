@@ -18,75 +18,68 @@ class _NewContractWidgetState extends State<NewContractWidget> {
           create: (context) => DeleteContractRequestBloc(context.serviceProvider.contractsRepo),
         ),
       ],
-      child: BlocBuilder<MyContractBloc, MyContractState>(
-        builder: (context, myContractState) {
-          if (myContractState.status == MyContractStateStatus.loading)
-            return Column(
-              children: [
-                SizedBox(
-                  height: context.screenHeight / 2.8,
-                ),
-                Loader(
-                  width: 100,
-                  height: 100,
-                  color: active,
-                ),
-              ],
-            );
-          else if (myContractState.model == null)
-            return Column(
-              children: [
-                SizedBox(
-                  height: context.screenHeight / 2.8,
-                ),
-                CustomText(
-                  text: 'No contract request',
-                  weight: FontWeight.bold,
-                  color: Colors.black,
-                  size: context.textSizeXL,
-                ),
-              ],
-            );
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: Material(
-                  clipBehavior: Clip.antiAlias,
-                  shape: BeveledRectangleBorder(
-                    side: BorderSide(
-                      color: active.withOpacity(0.7),
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30.0),
-                      bottomLeft: Radius.circular(30.0),
-                      topLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
+      child: BlocListener<MyContractBloc, MyContractState>(
+        listener: (context, state) {
+          if (state.status == MyContractStateStatus.contractAccepted) {
+            showInfoMessage('Contract has been accepted', context);
+            context.currentUserBloc.add(CurrentUserGetEvent());
+          }
+        },
+        child: BlocBuilder<MyContractBloc, MyContractState>(
+          builder: (context, myContractState) {
+            if (myContractState.status == MyContractStateStatus.loading)
+              return Column(
+                children: [
+                  SizedBox(
+                    height: context.screenHeight / 2.8,
                   ),
-                  child: Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          myContractState.model!.contractName.toUpperCase(),
-                          style: GoogleFonts.oleoScript(
-                            height: 1.8,
-                            fontWeight: FontWeight.normal,
-                            fontSize: context.textSizeL,
+                  Loader(
+                    width: 100,
+                    height: 100,
+                    color: active,
+                  ),
+                ],
+              );
+            else if (myContractState.model == null)
+              return Column(
+                children: [
+                  SizedBox(
+                    height: context.screenHeight / 2.8,
+                  ),
+                  CustomText(
+                    text: 'No contract request',
+                    weight: FontWeight.bold,
+                    color: Colors.black,
+                    size: context.textSizeXL,
+                  ),
+                ],
+              );
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(50.0),
+                  child: Material(
+                    clipBehavior: Clip.antiAlias,
+                    shape: BeveledRectangleBorder(
+                      side: BorderSide(
+                        color: active.withOpacity(0.7),
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30.0),
+                        bottomLeft: Radius.circular(30.0),
+                        topLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                    ),
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 15,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            myContractState.model!.contractDescription,
+                          Text(
+                            myContractState.model!.contractName.toUpperCase(),
                             style: GoogleFonts.oleoScript(
                               height: 1.8,
                               fontWeight: FontWeight.normal,
@@ -94,68 +87,75 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: myContractState.model!.contractItems.length,
-                          padding: EdgeInsets.only(left: 30),
-                          itemBuilder: (context, i) {
-                            return ListTile(
-                              title: Text(
-                                ContractItemsType.getValue(myContractState.model!.contractItems[i]).translate(),
-                                style: GoogleFonts.oleoScript(
-                                  height: 0.7,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Container(
-                          width: context.screenWidth,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(1.0),
+                          SizedBox(
+                            height: 40,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 35,
-                                ),
-                                child: SignaturePad(
-                                  width: 200,
-                                  height: 50,
-                                  penStrokeWidth: 2,
-                                  onChange: (image) {
-                                    signatureImage = image;
-                                  },
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                              myContractState.model!.contractDescription,
+                              style: GoogleFonts.oleoScript(
+                                height: 1.8,
+                                fontWeight: FontWeight.normal,
+                                fontSize: context.textSizeL,
                               ),
-                            ],
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        )
-                      ],
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: myContractState.model!.contractItems.length,
+                            padding: EdgeInsets.only(left: 30),
+                            itemBuilder: (context, i) {
+                              return ListTile(
+                                title: Text(
+                                  ContractItemsType.getValue(myContractState.model!.contractItems[i]).translate(),
+                                  style: GoogleFonts.oleoScript(
+                                    height: 0.7,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Container(
+                            width: context.screenWidth,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(1.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 35,
+                                  ),
+                                  child: SignaturePad(
+                                    width: 200,
+                                    height: 50,
+                                    penStrokeWidth: 2,
+                                    onChange: (image) {
+                                      signatureImage = image;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              BlocListener<MyContractBloc, MyContractState>(
-                listener: (context, state) {
-                  if (state.status == MyContractStateStatus.contractAccepted) {
-                    showInfoMessage('Contract has been accepted', context);
-                    context.currentUserBloc.add(CurrentUserGetEvent());
-                  }
-                },
-                child: Button(
+                SizedBox(
+                  height: 25,
+                ),
+                Button(
                   text: 'Accept',
                   shrinkWrap: true,
                   color: active,
@@ -180,13 +180,13 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                     }
                   },
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-            ],
-          );
-        },
+                SizedBox(
+                  height: 30,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

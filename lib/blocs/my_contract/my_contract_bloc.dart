@@ -80,12 +80,13 @@ class MyContractBloc extends Bloc<MyContractEvent, MyContractState> {
     final signatureBase64 = await imageBase64Encoded(event.signatureImg);
     final result = await contractsRepo.acceptContract(event.companyId, event.contractId, signatureBase64);
     if (result == null) {
-      createActiveContract(
+      await createActiveContract(
         ContractModel(
           companyName: event.companyName,
           contractTemplateId: event.contractId,
           companyId: event.companyId,
           contractStatus: ContractType.active,
+          completionDateTime: DateTime.now(),
         ),
       );
       emit(
@@ -111,7 +112,7 @@ class MyContractBloc extends Bloc<MyContractEvent, MyContractState> {
   }
 
   //It would be better to do this on backend but its fine for school project :)
-  void createActiveContract(ContractModel contractModel) async {
+  Future createActiveContract(ContractModel contractModel) async {
     await contractsRepo.createActiveContract(contractModel);
   }
 }

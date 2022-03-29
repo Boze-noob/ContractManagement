@@ -5,14 +5,14 @@ class ContractModel {
   final String contractTemplateId;
   final String companyId;
   final ContractType contractStatus;
-  final DateTime? completionDateTime;
+  final DateTime completionDateTime;
 
   ContractModel({
     required this.companyName,
     required this.contractTemplateId,
     required this.companyId,
     required this.contractStatus,
-    this.completionDateTime,
+    required this.completionDateTime,
   });
 
   ContractModel copyWith({
@@ -20,12 +20,14 @@ class ContractModel {
     final String? contractTemplateId,
     final String? companyId,
     final ContractType? contractStatus,
+    final DateTime? completionDateTime,
   }) =>
       ContractModel(
         companyName: companyName != null ? companyName : this.companyName,
         contractTemplateId: contractTemplateId != null ? contractTemplateId : this.contractTemplateId,
         companyId: companyId != null ? companyId : this.companyId,
         contractStatus: contractStatus != null ? contractStatus : this.contractStatus,
+        completionDateTime: completionDateTime != null ? completionDateTime : this.completionDateTime,
       );
 
   Map<String, dynamic> toMap() {
