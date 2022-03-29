@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:contract_management/_all.dart';
+import 'package:flutter/material.dart';
 
 class AdminRequestWidget extends StatefulWidget {
   const AdminRequestWidget({Key? key}) : super(key: key);
@@ -41,21 +42,88 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                     PointerDeviceKind.touch,
                     PointerDeviceKind.mouse,
                   }),
-                  child: ListView(
-                    children: [
-                      BlocBuilder<RequestsBloc, RequestsState>(
-                        builder: (context, state) {
-                          return RequestsDataTableWidget(
+                  child: BlocBuilder<RequestsBloc, RequestsState>(
+                    builder: (context, state) {
+                      return ListView(
+                        children: [
+                          CustomText(
+                            text: 'Clients requests list',
+                            color: Colors.black,
+                            weight: FontWeight.bold,
+                            size: context.textSizeXL,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          RequestsDataTableWidget(
                             firstColumnName: 'Display name',
                             secondColumnName: 'Email',
                             thirdColumnName: 'Location',
                             fourthColumnName: 'Date time',
                             fifthColumnName: '',
-                            clientRequestsList: state.clientRequestModel,
-                          );
-                        },
-                      )
-                    ],
+                            isEmpty: false,
+                            actionBtnTxt: 'Create order',
+                            firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                            secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                            thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                            fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomText(
+                            text: 'Order list',
+                            color: Colors.black,
+                            weight: FontWeight.bold,
+                            size: context.textSizeXL,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          RequestsDataTableWidget(
+                            firstColumnName: 'Display name',
+                            secondColumnName: 'Email',
+                            thirdColumnName: 'Location',
+                            fourthColumnName: 'Date time',
+                            fifthColumnName: '',
+                            isEmpty: false,
+                            actionBtnTxt: 'Send order to company',
+                            firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                            secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                            thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                            fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomText(
+                            text: 'Announcement list',
+                            color: Colors.black,
+                            weight: FontWeight.bold,
+                            size: context.textSizeXL,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          RequestsDataTableWidget(
+                            firstColumnName: 'Display name',
+                            secondColumnName: 'Email',
+                            thirdColumnName: 'Location',
+                            fourthColumnName: 'Date time',
+                            fifthColumnName: '',
+                            isEmpty: false,
+                            actionBtnTxt: 'Send announcement to company',
+                            firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                            secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                            thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                            fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
