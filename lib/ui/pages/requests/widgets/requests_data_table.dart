@@ -16,6 +16,7 @@ class RequestsDataTableWidget extends StatelessWidget {
   final List<String>? fifthColumnValue;
   final String? actionBtnTxt;
   final bool isEmpty;
+  final void Function() onTap;
 
   RequestsDataTableWidget({
     Key? key,
@@ -31,6 +32,7 @@ class RequestsDataTableWidget extends StatelessWidget {
     this.fifthColumnValue,
     required this.isEmpty,
     this.actionBtnTxt,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -94,17 +96,20 @@ class RequestsDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Container(
-                  decoration: BoxDecoration(
-                    color: light,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: active, width: .5),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: CustomText(
-                    text: actionBtnTxt ?? 'Action',
-                    color: active.withOpacity(.7),
-                    weight: FontWeight.bold,
+                GestureDetector(
+                  onTap: onTap,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: light,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: active, width: .5),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: CustomText(
+                      text: actionBtnTxt ?? 'Action',
+                      color: active.withOpacity(.7),
+                      weight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

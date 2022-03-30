@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
@@ -60,18 +59,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                               ),
                               (() {
                                 if (currentUserState.userModel!.role == RoleType.admin.translate() || currentUserState.userModel!.role == RoleType.orderEmployer.translate())
-                                  return RequestsDataTableWidget(
-                                    firstColumnName: 'Display name',
-                                    secondColumnName: 'Email',
-                                    thirdColumnName: 'Location',
-                                    fourthColumnName: 'Date time',
-                                    fifthColumnName: '',
-                                    isEmpty: false,
-                                    actionBtnTxt: 'Create order',
-                                    firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                                    secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                                    thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                                    fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                                  return CreateOrderWidget(
+                                    requestState: state,
                                   );
                                 else
                                   return _NoAccessWidget();
@@ -103,6 +92,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                     secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
                                     thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
                                     fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                                    onTap: () => null,
                                   );
                                 else
                                   return _NoAccessWidget();
@@ -134,6 +124,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                     secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
                                     thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
                                     fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                                    onTap: () => null,
                                   );
                                 else
                                   return _NoAccessWidget();
