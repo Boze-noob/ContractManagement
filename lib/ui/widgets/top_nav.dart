@@ -287,9 +287,9 @@ class _RoleWidgetState extends State<_RoleWidget> {
         ),
       ),
       ListTile(
-        title: Text(RoleType.orderVerifyEmployer.translate()),
+        title: Text(RoleType.announcementVerifyEmployer.translate()),
         leading: Radio<String>(
-          value: RoleType.orderVerifyEmployer.translate(),
+          value: RoleType.announcementVerifyEmployer.translate(),
           groupValue: _selectedRoleType,
           onChanged: (String? value) {
             setState(

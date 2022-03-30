@@ -44,84 +44,103 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                   }),
                   child: BlocBuilder<RequestsBloc, RequestsState>(
                     builder: (context, state) {
-                      return ListView(
-                        children: [
-                          CustomText(
-                            text: 'Clients requests list',
-                            color: Colors.black,
-                            weight: FontWeight.bold,
-                            size: context.textSizeXL,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          RequestsDataTableWidget(
-                            firstColumnName: 'Display name',
-                            secondColumnName: 'Email',
-                            thirdColumnName: 'Location',
-                            fourthColumnName: 'Date time',
-                            fifthColumnName: '',
-                            isEmpty: false,
-                            actionBtnTxt: 'Create order',
-                            firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                            secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                            thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                            fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          CustomText(
-                            text: 'Order list',
-                            color: Colors.black,
-                            weight: FontWeight.bold,
-                            size: context.textSizeXL,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          RequestsDataTableWidget(
-                            firstColumnName: 'Display name',
-                            secondColumnName: 'Email',
-                            thirdColumnName: 'Location',
-                            fourthColumnName: 'Date time',
-                            fifthColumnName: '',
-                            isEmpty: false,
-                            actionBtnTxt: 'Send order to company',
-                            firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                            secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                            thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                            fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          CustomText(
-                            text: 'Announcement list',
-                            color: Colors.black,
-                            weight: FontWeight.bold,
-                            size: context.textSizeXL,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          RequestsDataTableWidget(
-                            firstColumnName: 'Display name',
-                            secondColumnName: 'Email',
-                            thirdColumnName: 'Location',
-                            fourthColumnName: 'Date time',
-                            fifthColumnName: '',
-                            isEmpty: false,
-                            actionBtnTxt: 'Send announcement to company',
-                            firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                            secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                            thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                            fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-                          ),
-                        ],
+                      return BlocBuilder<CurrentUserBloc, CurrentUserState>(
+                        builder: (context, currentUserState) {
+                          return ListView(
+                            children: [
+                              CustomText(
+                                text: 'Clients requests list',
+                                color: Colors.black,
+                                weight: FontWeight.bold,
+                                size: context.textSizeXL,
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              (() {
+                                if (currentUserState.userModel!.role == RoleType.admin.translate() || currentUserState.userModel!.role == RoleType.orderEmployer.translate())
+                                  return RequestsDataTableWidget(
+                                    firstColumnName: 'Display name',
+                                    secondColumnName: 'Email',
+                                    thirdColumnName: 'Location',
+                                    fourthColumnName: 'Date time',
+                                    fifthColumnName: '',
+                                    isEmpty: false,
+                                    actionBtnTxt: 'Create order',
+                                    firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                                    secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                                    thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                                    fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                                  );
+                                else
+                                  return _NoAccessWidget();
+                              }()),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              CustomText(
+                                text: 'Order list',
+                                color: Colors.black,
+                                weight: FontWeight.bold,
+                                size: context.textSizeXL,
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              (() {
+                                if (currentUserState.userModel!.role != RoleType.announcementVerifyEmployer.translate())
+                                  return RequestsDataTableWidget(
+                                    firstColumnName: 'Display name',
+                                    secondColumnName: 'Email',
+                                    thirdColumnName: 'Location',
+                                    fourthColumnName: 'Date time',
+                                    fifthColumnName: '',
+                                    isEmpty: false,
+                                    actionBtnTxt: 'Send order',
+                                    firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                                    secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                                    thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                                    fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                                  );
+                                else
+                                  return _NoAccessWidget();
+                              }()),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              CustomText(
+                                text: 'Announcement list',
+                                color: Colors.black,
+                                weight: FontWeight.bold,
+                                size: context.textSizeXL,
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              (() {
+                                if (currentUserState.userModel!.role == RoleType.announcementEmployer.translate() || currentUserState.userModel!.role == RoleType.announcementVerifyEmployer.translate())
+                                  return RequestsDataTableWidget(
+                                    firstColumnName: 'Display name',
+                                    secondColumnName: 'Email',
+                                    thirdColumnName: 'Location',
+                                    fourthColumnName: 'Date time',
+                                    fifthColumnName: '',
+                                    isEmpty: false,
+                                    actionBtnTxt: 'Send announcement',
+                                    firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                                    secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                                    thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                                    fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                                  );
+                                else
+                                  return _NoAccessWidget();
+                              }()),
+                            ],
+                          );
+                        },
                       );
                     },
                   ),
@@ -129,6 +148,35 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NoAccessWidget extends StatelessWidget {
+  const _NoAccessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 600,
+      height: 300,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: active.withOpacity(.4), width: .5),
+        boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 30),
+      child: Center(
+        child: CustomText(
+          text: 'You do not have access to this section',
+          size: context.textSizeXL,
+          color: Colors.black,
+          textAlign: TextAlign.center,
+          weight: FontWeight.bold,
         ),
       ),
     );

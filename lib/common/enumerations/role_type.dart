@@ -4,7 +4,7 @@ class RoleType {
   static const client = RoleType._(2);
   static const orderEmployer = RoleType._(3);
   static const announcementEmployer = RoleType._(4);
-  static const orderVerifyEmployer = RoleType._(5);
+  static const announcementVerifyEmployer = RoleType._(5);
 
   static List<RoleType> get values => [
         admin,
@@ -12,7 +12,7 @@ class RoleType {
         client,
         orderEmployer,
         announcementEmployer,
-        orderVerifyEmployer,
+        announcementVerifyEmployer,
       ];
 
   String translate() {
@@ -28,7 +28,7 @@ class RoleType {
       case 4:
         return "Announcement employer";
       case 5:
-        return "Order verify employer";
+        return "Announcement verify employer";
       default:
         return " ";
     }

@@ -2,7 +2,6 @@ import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
-  print('route is ${settings.name}');
   switch (settings.name) {
     case overviewPageRoute:
       return _getPageRoute(OverviewPage());

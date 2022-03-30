@@ -12,7 +12,7 @@ class _RequestsPageState extends State<RequestsPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentUserBloc, CurrentUserState>(
       builder: (context, state) {
-        if (state.userModel!.role != RoleType.admin.translate())
+        if (state.userModel!.role == RoleType.company.translate())
           return CompanyRequestWidget();
         else
           return AdminRequestWidget();

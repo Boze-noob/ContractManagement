@@ -9,7 +9,6 @@ Navigator localNavigator(BuildContext context) {
 }
 
 String getInitialRouteName(BuildContext context) {
-  print('Usli smo u getInitialRouteName');
   late String role;
   if (context.currentUserBloc.state.userModel != null)
     role = context.currentUserBloc.state.userModel!.role;

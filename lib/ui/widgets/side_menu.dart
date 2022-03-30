@@ -78,14 +78,14 @@ class SideMenu extends StatelessWidget {
 
 List getMenuItems(BuildContext context) {
   final role = context.currentUserBloc.state.userModel!.role;
-  if (role == RoleType.admin.translate()) {
-    menuController.changeActiveItemTo(overviewPageDisplayName);
-    return sideMenuItemRoutes;
-  } else if (role == RoleType.client.translate()) {
+  if (role == RoleType.client.translate()) {
     menuController.changeActiveItemTo(createRequestDisplayName);
     return clientMenuItemRoutes;
-  } else {
+  } else if (role == RoleType.company.translate()) {
     menuController.changeActiveItemTo(requestsPageDisplayName);
     return companyMenuItemRoutes;
+  } else {
+    menuController.changeActiveItemTo(overviewPageDisplayName);
+    return sideMenuItemRoutes;
   }
 }
