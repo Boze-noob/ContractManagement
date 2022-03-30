@@ -14,6 +14,7 @@ export 'delete_contract_request/_all.dart';
 export 'my_contract/_all.dart';
 export 'navigator/_all.dart';
 export 'notifications/_all.dart';
+export 'order/_all.dart';
 export 'profile_edit/_all.dart';
 export 'requests/_all.dart';
 export 'revenue/_all.dart';

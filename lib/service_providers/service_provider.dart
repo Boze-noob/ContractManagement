@@ -11,6 +11,7 @@ abstract class ServiceProvider {
   late ICompanies companiesRepo;
   late IContracts contractsRepo;
   late INotifications notificationsRepo;
+  late IOrder orderRepo;
   late IRequest requestRepo;
   late IRevenue revenueRepo;
 
@@ -34,6 +35,7 @@ abstract class ServiceProvider {
     companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
     notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
+    orderRepo = OrderRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     requestRepo = RequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     revenueRepo = RevenueRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);

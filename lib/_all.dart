@@ -28,3 +28,4 @@ export 'package:flutter/cupertino.dart';
 export 'package:hive/hive.dart';
 export 'package:signature/signature.dart';
 export 'package:google_fonts/google_fonts.dart';
+export 'package:uuid/uuid.dart';

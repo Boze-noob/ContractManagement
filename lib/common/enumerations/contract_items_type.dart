@@ -38,5 +38,7 @@ class ContractItemsType {
 
   const ContractItemsType._(this.index);
   static List<int> get indexes => values.map<int>((x) => x.index).toList();
+  static List<int> getIndexValueList(List<ContractItemsType> contractItemsList) => contractItemsList.map<int>((item) => item.index).toList();
+  static List<ContractItemsType> getContractItemsFromIndexList(List<int> indexList) => indexList.map<ContractItemsType>((index) => ContractItemsType.getValue(index)).toList();
   static ContractItemsType getValue(int index) => ContractItemsType._(index);
 }

@@ -7,5 +7,6 @@ export 'common/_all.dart';
 export 'create_contract_model.dart';
 export 'list_model.dart';
 export 'notification_model.dart';
+export 'order_model.dart';
 export 'revenue_model.dart';
 export 'user_model.dart';
