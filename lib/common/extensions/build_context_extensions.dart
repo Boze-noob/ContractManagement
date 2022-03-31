@@ -27,4 +27,5 @@ extension BuildContextExtensions on BuildContext {
   NavigatorBloc get navigatorBloc => read<NavigatorBloc>();
   NotificationsBloc get notificationsBloc => read<NotificationsBloc>();
   SendContractRequestBloc get sendContractRequestBloc => read<SendContractRequestBloc>();
+  OrderBloc get orderBloc => read<OrderBloc>();
 }

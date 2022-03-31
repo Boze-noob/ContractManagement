@@ -12,8 +12,15 @@ class AdminRequestWidget extends StatefulWidget {
 class _AdminRequestWidgetState extends State<AdminRequestWidget> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RequestsBloc(request: context.serviceProvider.requestRepo)..add(RequestsLoadEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => RequestsBloc(request: context.serviceProvider.requestRepo)..add(RequestsLoadEvent()),
+        ),
+        BlocProvider(
+          create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo)..add(OrderGetEvent()),
+        ),
+      ],
       child: BlocListener<RequestsBloc, RequestsState>(
         listener: (context, state) {
           if (state.status == RequestsStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
@@ -41,97 +48,120 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                     PointerDeviceKind.touch,
                     PointerDeviceKind.mouse,
                   }),
-                  child: BlocBuilder<RequestsBloc, RequestsState>(
-                    builder: (context, state) {
-                      return BlocBuilder<CurrentUserBloc, CurrentUserState>(
-                        builder: (context, currentUserState) {
-                          return ListView(
-                            children: [
-                              CustomText(
-                                text: 'Clients requests list',
-                                color: Colors.black,
-                                weight: FontWeight.bold,
-                                size: context.textSizeXL,
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              (() {
-                                if (currentUserState.userModel!.role == RoleType.admin.translate() || currentUserState.userModel!.role == RoleType.orderEmployer.translate())
-                                  return CreateOrderWidget(
-                                    requestState: state,
+                  child: BlocBuilder<CurrentUserBloc, CurrentUserState>(
+                    builder: (context, currentUserState) {
+                      return ListView(
+                        children: [
+                          CustomText(
+                            text: 'Clients requests list',
+                            color: Colors.black,
+                            weight: FontWeight.bold,
+                            size: context.textSizeXL,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          (() {
+                            if (currentUserState.userModel!.role == RoleType.admin.translate() || currentUserState.userModel!.role == RoleType.orderEmployer.translate())
+                              return BlocBuilder<RequestsBloc, RequestsState>(
+                                builder: (context, requestsState) {
+                                  if (requestsState.clientRequestModel.isEmpty)
+                                    return Center(
+                                      child: Container(
+                                        child: CustomText(
+                                          text: 'No data to display',
+                                          textAlign: TextAlign.center,
+                                          size: context.textSizeL,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    );
+                                  else
+                                    return CreateOrderWidget(
+                                      requestState: requestsState,
+                                    );
+                                },
+                              );
+                            else
+                              return _NoAccessWidget();
+                          }()),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomText(
+                            text: 'Order list',
+                            color: Colors.black,
+                            weight: FontWeight.bold,
+                            size: context.textSizeXL,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          (() {
+                            if (currentUserState.userModel!.role != RoleType.announcementVerifyEmployer.translate())
+                              return BlocBuilder<OrderBloc, OrderState>(
+                                builder: (context, orderState) {
+                                  return OrderDataTableWidget(
+                                    firstColumnName: 'Receiver name',
+                                    secondColumnName: 'Created date time',
+                                    thirdColumnName: 'Sent date time',
+                                    fourthColumnName: 'Order status type',
+                                    fifthColumnName: 'Employer name',
+                                    sixthColumnName: '',
+                                    isEmpty: orderState.orderModels.isEmpty ? true : false,
+                                    viewBtnTxt: 'View',
+                                    editBtnTxt: 'Edit',
+                                    deleteBtnTxt: 'Delete',
+                                    viewBtnOnTap: () => null,
+                                    editBtnOnTap: () => null,
+                                    deleteBtnOnTap: () => null,
+                                    firstColumnValue: orderState.orderModels.map((orderModel) => orderModel.receiverName ?? 'Not selected yet').toList(),
+                                    secondColumnValue: orderState.orderModels.map((orderModel) => orderModel.createdDateTime.toString()).toList(),
+                                    thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime.toString()).toList(),
+                                    fourthColumnValue: orderState.orderModels.map((orderModel) => orderModel.orderStatusType.translate()).toList(),
+                                    fifthColumnValue: orderState.orderModels.map((orderModel) => orderModel.employerName).toList(),
                                   );
-                                else
-                                  return _NoAccessWidget();
-                              }()),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              CustomText(
-                                text: 'Order list',
-                                color: Colors.black,
-                                weight: FontWeight.bold,
-                                size: context.textSizeXL,
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              (() {
-                                if (currentUserState.userModel!.role != RoleType.announcementVerifyEmployer.translate())
-                                  return RequestsDataTableWidget(
-                                    firstColumnName: 'Display name',
-                                    secondColumnName: 'Email',
-                                    thirdColumnName: 'Location',
-                                    fourthColumnName: 'Date time',
-                                    fifthColumnName: '',
-                                    isEmpty: false,
-                                    actionBtnTxt: 'Send order',
-                                    firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                                    secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                                    thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                                    fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-                                    onTap: () => null,
-                                  );
-                                else
-                                  return _NoAccessWidget();
-                              }()),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              CustomText(
-                                text: 'Announcement list',
-                                color: Colors.black,
-                                weight: FontWeight.bold,
-                                size: context.textSizeXL,
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              (() {
-                                if (currentUserState.userModel!.role == RoleType.announcementEmployer.translate() || currentUserState.userModel!.role == RoleType.announcementVerifyEmployer.translate())
-                                  return RequestsDataTableWidget(
-                                    firstColumnName: 'Display name',
-                                    secondColumnName: 'Email',
-                                    thirdColumnName: 'Location',
-                                    fourthColumnName: 'Date time',
-                                    fifthColumnName: '',
-                                    isEmpty: false,
-                                    actionBtnTxt: 'Send announcement',
-                                    firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                                    secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                                    thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                                    fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-                                    onTap: () => null,
-                                  );
-                                else
-                                  return _NoAccessWidget();
-                              }()),
-                            ],
-                          );
-                        },
+                                },
+                              );
+                            else
+                              return _NoAccessWidget();
+                          }()),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomText(
+                            text: 'Announcement list',
+                            color: Colors.black,
+                            weight: FontWeight.bold,
+                            size: context.textSizeXL,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          (() {
+                            //TODO add when bloc is created
+                            //   if (currentUserState.userModel!.role == RoleType.announcementEmployer.translate() || currentUserState.userModel!.role == RoleType.announcementVerifyEmployer.translate())
+                            //     return RequestsDataTableWidget(
+                            //       firstColumnName: 'Display name',
+                            //       secondColumnName: 'Email',
+                            //       thirdColumnName: 'Location',
+                            //       fourthColumnName: 'Date time',
+                            //       fifthColumnName: '',
+                            //       isEmpty: false,
+                            //       actionBtnTxt: 'Send announcement',
+                            //       firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+                            //       secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+                            //       thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
+                            //       fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
+                            //       onTap: () => null,
+                            //     );
+                            //   else
+                            return _NoAccessWidget();
+                          }()),
+                        ],
                       );
                     },
                   ),

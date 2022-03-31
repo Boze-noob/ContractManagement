@@ -12,6 +12,12 @@ class OrderUpdateEvent extends OrderEvent {
   OrderUpdateEvent({required this.orderModel});
 }
 
+class OrderCreateEvent extends OrderEvent {
+  final String clientName;
+
+  OrderCreateEvent({required this.clientName});
+}
+
 class OrderSendEvent extends OrderEvent {
   final String orderId;
   final String companyId;

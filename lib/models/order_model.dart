@@ -4,28 +4,30 @@ import 'package:contract_management/_all.dart';
 class OrderModel {
   final String? id;
   final String senderName;
-  final String receiverName;
+  final String? receiverName;
   final String orderLocation;
   final PaymentType paymentType;
   final DateTime createdDateTime;
-  final DateTime sentDateTime;
+  final DateTime? sentDateTime;
   final List<ContractItemsType> contractItems;
   final String employerName;
   final OrderStatusType orderStatusType;
   final AdminRequestType adminRequestType;
+  final String clientName;
 
   OrderModel({
     this.id,
     required this.senderName,
-    required this.receiverName,
+    this.receiverName,
     required this.orderLocation,
     required this.paymentType,
     required this.createdDateTime,
-    required this.sentDateTime,
+    this.sentDateTime,
     required this.contractItems,
     required this.employerName,
     required this.orderStatusType,
     required this.adminRequestType,
+    required this.clientName,
   });
 
   OrderModel copyWith({
@@ -40,8 +42,10 @@ class OrderModel {
     String? employerName,
     OrderStatusType? orderStatusType,
     AdminRequestType? adminRequestType,
+    String? clientName,
   }) =>
       OrderModel(
+        id: id ?? this.id,
         senderName: senderName ?? this.senderName,
         receiverName: receiverName ?? this.receiverName,
         orderLocation: orderLocation ?? this.orderLocation,
@@ -52,21 +56,23 @@ class OrderModel {
         employerName: employerName ?? this.employerName,
         orderStatusType: orderStatusType ?? this.orderStatusType,
         adminRequestType: adminRequestType ?? this.adminRequestType,
+        clientName: clientName ?? this.clientName,
       );
 
   Map<String, dynamic> toMap() {
     return {
-      'id': generateRandomId(),
+      'id': id,
       'senderName': senderName,
       'receiverName': receiverName,
       'orderLocation': orderLocation,
       'paymentType': paymentType.index,
       'createdDateTime': createdDateTime.toUtc(),
-      'sentDateTime': sentDateTime.toUtc(),
+      'sentDateTime': sentDateTime != null ? sentDateTime!.toUtc() : null,
       'contractItems': ContractItemsType.getIndexValueList(contractItems),
       'employerName': employerName,
-      'orderStatusType': orderStatusType,
-      'adminRequestType': adminRequestType,
+      'orderStatusType': orderStatusType.index,
+      'adminRequestType': adminRequestType.index,
+      'clientName': clientName,
     };
   }
 
@@ -77,18 +83,13 @@ class OrderModel {
       receiverName: map['receiverName'],
       orderLocation: map['orderLocation'],
       paymentType: PaymentType.getValue(map['paymentType']),
-      createdDateTime: map['createdDateTime'].toLocal(),
-      sentDateTime: map['sentDateTime'].toLocal(),
+      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+      sentDateTime: map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
       contractItems: ContractItemsType.getContractItemsFromIndexList(map['contractItems']),
       employerName: map['employerName'],
       orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
       adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
+      clientName: map['clientName'],
     );
   }
-}
-
-//This should be done on backend
-String generateRandomId() {
-  var uuid = Uuid();
-  return uuid.v4();
 }

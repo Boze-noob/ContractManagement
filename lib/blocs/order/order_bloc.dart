@@ -8,6 +8,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderInitEvent>(_init);
     on<OrderGetEvent>(_get);
     on<OrderUpdateEvent>(_update);
+    on<OrderCreateEvent>(_create);
     on<OrderSendEvent>(_send);
     on<OrderDeleteEvent>(_delete);
   }
@@ -17,14 +18,13 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         orderModel: OrderModel(
           contractItems: [],
           senderName: '',
-          receiverName: '',
           employerName: '',
           createdDateTime: DateTime.now(),
-          sentDateTime: DateTime.now(),
           paymentType: PaymentType.cash,
           orderStatusType: OrderStatusType.waiting,
           orderLocation: '',
           adminRequestType: AdminRequestType.order,
+          clientName: '',
         ),
         orderModels: List.empty(),
       );
@@ -36,6 +36,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Future<void> _get(OrderGetEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(status: OrderStateStatus.loading));
     final result = await orderRepo.getOrders();
+    if (result != null) print(result.length);
     if (result != null)
       emit(state.copyWith(status: OrderStateStatus.loaded, orderModels: result));
     else
@@ -46,14 +47,35 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(state.copyWith(orderModel: event.orderModel));
   }
 
+  Future<void> _create(OrderCreateEvent event, Emitter<OrderState> emit) async {
+    emit(
+      state.copyWith(
+        status: OrderStateStatus.loading,
+        orderModel: state.orderModel.copyWith(
+          id: generateRandomId(),
+          clientName: event.clientName,
+        ),
+      ),
+    );
+    final result = await orderRepo.createOrder(state.orderModel);
+    if (result)
+      emit(state.copyWith(status: OrderStateStatus.submitSuccessful, message: 'Order created'));
+    else
+      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error happen'));
+  }
+
   Future<void> _send(OrderSendEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(
       status: OrderStateStatus.loading,
     ));
     final result = await orderRepo.sendOrder(event.orderId, event.companyId);
-    if (result == null)
-      emit(state.copyWith(status: OrderStateStatus.submitSuccessful, message: 'Submitted successfully'));
-    else
+    if (result == null) {
+      emit(state.copyWith(
+        status: OrderStateStatus.submitSuccessful,
+        message: 'Submitted successfully',
+      ));
+      emit(initialState());
+    } else
       emit(state.copyWith(status: OrderStateStatus.error, message: result));
   }
 
@@ -64,5 +86,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(state.copyWith(status: OrderStateStatus.deleteSuccessful));
     else
       emit(state.copyWith(status: OrderStateStatus.error, message: result));
+  }
+
+  //This should be done on backend
+  String generateRandomId() {
+    var uuid = Uuid();
+    return uuid.v4();
   }
 }

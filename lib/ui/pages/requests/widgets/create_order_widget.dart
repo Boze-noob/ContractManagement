@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +12,10 @@ class CreateOrderWidget extends StatefulWidget {
 }
 
 class _CreateOrderWidgetState extends State<CreateOrderWidget> {
+  late PaymentType selectedPaymentTypeValue;
+  late List<PaymentType> paymentTypesItems;
+  late List<int> selectedContractItemsIndex;
+
   @override
   Widget build(BuildContext context) {
     return RequestsDataTableWidget(
@@ -28,166 +30,258 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
       secondColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.email).toList(),
       thirdColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.location).toList(),
       fourthColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-      onTap: () => showDialog(
+      createOnTap: (index) => showDialog(
         context: context,
-        builder: (context) => StatefulBuilder(builder: (context, setState) {
-          return CustomDialog(
-            buttonText: 'Create',
-            child: StatefulBuilder(builder: (context, setState) {
-              PaymentType paymentTypeValue = PaymentType.cash;
-              List<PaymentType> paymentTypesItems = PaymentType.values;
-              List<int> selectedContractItems = List.empty();
-              return Container(
-                child: Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                              text: 'Fill order fields',
-                              weight: FontWeight.bold,
-                              color: Colors.black,
-                              paddingAllValue: 20,
-                              size: context.textSizeXL,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextField(
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Enter sender name',
-                          ),
-                          maxLines: 1,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextField(
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Enter order location',
-                          ),
-                          maxLines: 1,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            CustomText(
-                              text: 'Pick payment option',
-                              color: Colors.black,
-                              size: context.textSizeM,
-                              weight: FontWeight.bold,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            DropdownButton(
-                              value: paymentTypeValue,
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              items: paymentTypesItems.map((PaymentType items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items.translate()),
-                                );
-                              }).toList(),
-                              onChanged: (PaymentType? newValue) {
-                                setState(() {
-                                  print('We change payment option');
-                                  print('We selected $newValue');
-                                  paymentTypeValue = newValue!;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            CustomText(
-                              text: 'Created date',
-                              color: Colors.black,
-                              size: context.textSizeM,
-                              weight: FontWeight.bold,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            _DatePickerWidget(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        CustomText(
-                          text: 'Add contract item',
-                          color: Colors.black,
-                          size: context.textSizeM,
-                          weight: FontWeight.bold,
-                        ),
-                        ListView.builder(
-                            itemCount: ContractItemsType.values.length,
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (selectedContractItems.contains(index))
-                                      List.from(selectedContractItems)..remove(index);
-                                    else
-                                      List.from(selectedContractItems)..add(index);
-                                  });
-                                },
-                                child: ListTile(
-                                  title: Text(ContractItemsType.getValue(index).translate()),
-                                  selectedTileColor: Colors.green.withOpacity(0.4),
-                                  selected: selectedContractItems.contains(index) ? true : false,
+        builder: (context) => BlocProvider(
+          create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+          child: Builder(builder: (context) {
+            return CustomDialog(
+              buttonText: 'Create',
+              onButtonPressed: () => context.orderBloc.add(OrderCreateEvent(clientName: widget.requestState.clientRequestModel[index].displayName)),
+              child: StatefulBuilder(builder: (context, setState) {
+                return Container(
+                  child: Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: BlocBuilder<OrderBloc, OrderState>(
+                        builder: (context, state) {
+                          context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(employerName: context.currentUserBloc.state.userModel!.displayName)));
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomText(
+                                    text: 'Fill order fields',
+                                    weight: FontWeight.bold,
+                                    color: Colors.black,
+                                    paddingAllValue: 20,
+                                    size: context.textSizeXL,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextField(
+                                onChanged: (text) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(senderName: text))),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter sender name',
                                 ),
-                              );
-                            }),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Enter employer name',
-                          ),
-                          initialValue: context.currentUserBloc.state.userModel!.displayName,
-                          maxLines: 1,
-                        ),
-                      ],
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextField(
+                                onChanged: (text) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(orderLocation: text))),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter order location',
+                                ),
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  CustomText(
+                                    text: 'Pick payment option',
+                                    color: Colors.black,
+                                    size: context.textSizeM,
+                                    weight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  DropdownButton(
+                                    value: selectedPaymentTypeValue,
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    items: paymentTypesItems.map((PaymentType items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items.translate()),
+                                      );
+                                    }).toList(),
+                                    onChanged: (PaymentType? newValue) {
+                                      setState(() {
+                                        context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(paymentType: newValue)));
+                                        selectedPaymentTypeValue = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  CustomText(
+                                    text: 'Created date',
+                                    color: Colors.black,
+                                    size: context.textSizeM,
+                                    weight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  _DatePickerWidget(
+                                    onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(createdDateTime: dateTime))),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              CustomText(
+                                text: 'Add contract item',
+                                color: Colors.black,
+                                size: context.textSizeM,
+                                weight: FontWeight.bold,
+                              ),
+                              ListView.builder(
+                                  itemCount: ContractItemsType.values.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (selectedContractItemsIndex.contains(index)) {
+                                            selectedContractItemsIndex = List.from(selectedContractItemsIndex)..remove(index);
+                                          } else {
+                                            selectedContractItemsIndex = List.from(selectedContractItemsIndex)..add(index);
+                                          }
+                                          context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(contractItems: selectedContractItemsIndex.map((index) => ContractItemsType.getValue(index)).toList())));
+                                        });
+                                      },
+                                      child: ListTile(
+                                        title: Text(ContractItemsType.getValue(index).translate()),
+                                        tileColor: Colors.green.withOpacity(0.4),
+                                        selected: selectedContractItemsIndex.contains(index) ? true : false,
+                                      ),
+                                    );
+                                  }),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter employer name',
+                                ),
+                                initialValue: context.currentUserBloc.state.userModel!.displayName,
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                                maxLines: 1,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
+                );
+              }),
+            );
+          }),
+        ),
+      ),
+      viewOnTap: (index) => showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+          buttonText: 'Close',
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 15,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                  text: 'Request details',
+                  size: context.textSizeXL,
+                  color: Colors.black,
+                  textAlign: TextAlign.center,
+                  weight: FontWeight.bold,
                 ),
-              );
-            }),
-          );
-        }),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Client email : ' + widget.requestState.clientRequestModel[index].email,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Display name : ' + widget.requestState.clientRequestModel[index].displayName,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Request type : ' + widget.requestState.clientRequestModel[index].requestType.translate(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Description : ' + widget.requestState.clientRequestModel[index].description.value,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Location : ' + widget.requestState.clientRequestModel[index].location,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Created date time : ' + widget.requestState.clientRequestModel[index].createdDateTime.toString(),
+                ),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    selectedPaymentTypeValue = PaymentType.cash;
+    paymentTypesItems = PaymentType.values;
+    selectedContractItemsIndex = List.empty();
+    super.initState();
   }
 }
 
 class _DatePickerWidget extends StatefulWidget {
-  _DatePickerWidget({Key? key}) : super(key: key);
+  final void Function(DateTime dateTime) onDateSelected;
+  _DatePickerWidget({
+    required this.onDateSelected,
+  }) : super();
 
   @override
   State<_DatePickerWidget> createState() => _DatePickerWidgetState();
 }
 
 class _DatePickerWidgetState extends State<_DatePickerWidget> {
+  late DateTime selectedDateTime;
+  late DateTime dateTimeTxtValue;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -210,17 +304,30 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                 data: ThemeData(
                   colorScheme: ColorScheme.light(),
                 ),
-                child: CalendarDatePicker(
-                  firstDate: DateTime(1960),
-                  lastDate: DateTime.now(),
-                  initialDate: DateTime.now(),
-                  onDateChanged: (DateTime dateTime) {},
+                child: BlocProvider(
+                  create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+                  child: BlocBuilder<OrderBloc, OrderState>(
+                    builder: (context, state) {
+                      return CalendarDatePicker(
+                        firstDate: DateTime(1960),
+                        lastDate: DateTime.now(),
+                        initialDate: selectedDateTime,
+                        onDateChanged: (DateTime dateTime) {
+                          setState(() {
+                            selectedDateTime = dateTime;
+                          });
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
+                  dateTimeTxtValue = selectedDateTime;
+                  widget.onDateSelected(selectedDateTime);
                   Navigator.pop(context);
                 },
                 child: Text(
@@ -241,7 +348,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
           Row(
             children: [
               Text(
-                DateTime.now().formatDDMMYY().toString(),
+                dateTimeTxtValue.formatDDMMYY().toString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -262,5 +369,12 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    selectedDateTime = DateTime.now();
+    dateTimeTxtValue = DateTime.now();
+    super.initState();
   }
 }

@@ -29,7 +29,6 @@ class FirebaseFirestoreClass {
   Future getDataWithFilter(String collection, String fieldName, dynamic fieldValue) async {
     try {
       final jsonData = await fireStoreInstance.collection(collection).where(fieldName, isEqualTo: fieldValue).get().catchError((onError) => print('Error happen in get data with filter $onError'));
-      print('Data in getDataWithFilter is ${jsonData.docs} ----------------');
       return jsonData.docs.isEmpty ? null : jsonData.docs;
     } catch (e) {
       print(e);
