@@ -20,8 +20,8 @@ class OrderDataTableWidget extends StatelessWidget {
   final String deleteBtnTxt;
   final bool isEmpty;
   final void Function(int index) viewBtnOnTap;
-  final void Function() editBtnOnTap;
-  final void Function() deleteBtnOnTap;
+  final void Function(int index) editBtnOnTap;
+  final void Function(int index) deleteBtnOnTap;
 
   OrderDataTableWidget({
     Key? key,
@@ -145,7 +145,7 @@ class OrderDataTableWidget extends StatelessWidget {
                     borderRadius: 20,
                     padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                     borderColor: active,
-                    onTap: editBtnOnTap,
+                    onTap: () => editBtnOnTap(index),
                   ),
                   Button(
                     text: deleteBtnTxt,
@@ -153,7 +153,7 @@ class OrderDataTableWidget extends StatelessWidget {
                     borderRadius: 20,
                     padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                     borderColor: active,
-                    onTap: deleteBtnOnTap,
+                    onTap: () => deleteBtnOnTap(index),
                   ),
                 ],
               )),

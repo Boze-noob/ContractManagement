@@ -11,6 +11,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderCreateEvent>(_create);
     on<OrderSendEvent>(_send);
     on<OrderDeleteEvent>(_delete);
+    on<OrderSubmitUpdateEvent>(_submitUpdate);
   }
 
   static OrderState initialState() => OrderState(
@@ -25,12 +26,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           orderLocation: '',
           adminRequestType: AdminRequestType.order,
           clientName: '',
+          id: '',
         ),
         orderModels: List.empty(),
       );
 
   Future<void> _init(OrderInitEvent event, Emitter<OrderState> emit) async {
-    emit(initialState());
+    emit(state.copyWith(status: OrderStateStatus.loading));
+    await Future.delayed(Duration(seconds: 1));
+    emit(state.copyWith(orderModel: event.orderModel, status: OrderStateStatus.init));
   }
 
   Future<void> _get(OrderGetEvent event, Emitter<OrderState> emit) async {
@@ -44,6 +48,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   Future<void> _update(OrderUpdateEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(orderModel: event.orderModel));
+  }
+
+  Future<void> _submitUpdate(OrderSubmitUpdateEvent event, Emitter<OrderState> emit) async {
+    final result = await orderRepo.editOrder(state.orderModel);
+    if (result)
+      emit(state.copyWith(
+        status: OrderStateStatus.submitSuccessful,
+      ));
+    else
+      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error message'));
   }
 
   Future<void> _create(OrderCreateEvent event, Emitter<OrderState> emit) async {

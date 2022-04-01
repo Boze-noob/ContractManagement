@@ -4,7 +4,7 @@ abstract class IOrder {
   Future<bool> createOrder(OrderModel orderModel);
   Future<String?> sendOrder(String orderId, String companyId);
   Future<String?> deleteOrder(String orderId);
-  Future<bool?> editOrder(OrderModel orderModel);
+  Future<bool> editOrder(OrderModel orderModel);
   Future<List<OrderModel>?> getOrders();
 }
 
@@ -28,7 +28,7 @@ class OrderRepo implements IOrder {
   }
 
   @override
-  Future<bool?> editOrder(OrderModel orderModel) async {
+  Future<bool> editOrder(OrderModel orderModel) async {
     return await firebaseFirestoreClass.storeData('orders', orderModel.id, orderModel.toMap());
   }
 

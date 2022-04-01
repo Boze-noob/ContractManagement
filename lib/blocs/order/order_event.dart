@@ -2,7 +2,11 @@ import 'package:contract_management/_all.dart';
 
 abstract class OrderEvent {}
 
-class OrderInitEvent extends OrderEvent {}
+class OrderInitEvent extends OrderEvent {
+  final OrderModel orderModel;
+
+  OrderInitEvent({required this.orderModel});
+}
 
 class OrderGetEvent extends OrderEvent {}
 
@@ -11,6 +15,8 @@ class OrderUpdateEvent extends OrderEvent {
 
   OrderUpdateEvent({required this.orderModel});
 }
+
+class OrderSubmitUpdateEvent extends OrderEvent {}
 
 class OrderCreateEvent extends OrderEvent {
   final String clientName;

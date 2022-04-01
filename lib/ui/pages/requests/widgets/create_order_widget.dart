@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 
 class CreateOrderWidget extends StatefulWidget {
   final RequestsState requestState;
+  final void Function() onCreate;
+
   const CreateOrderWidget({
     required this.requestState,
+    required this.onCreate,
   }) : super();
 
   @override
@@ -35,160 +38,165 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
         builder: (context) => BlocProvider(
           create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
           child: Builder(builder: (context) {
-            return CustomDialog(
-              buttonText: 'Create',
-              onButtonPressed: () => context.orderBloc.add(OrderCreateEvent(clientName: widget.requestState.clientRequestModel[index].displayName)),
-              child: StatefulBuilder(builder: (context, setState) {
-                return Container(
-                  child: Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: BlocBuilder<OrderBloc, OrderState>(
-                        builder: (context, state) {
-                          context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(employerName: context.currentUserBloc.state.userModel!.displayName)));
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomText(
-                                    text: 'Fill order fields',
-                                    weight: FontWeight.bold,
-                                    color: Colors.black,
-                                    paddingAllValue: 20,
-                                    size: context.textSizeXL,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              TextField(
-                                onChanged: (text) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(senderName: text))),
-                                decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  labelText: 'Enter sender name',
+            return BlocListener<OrderBloc, OrderState>(
+              listener: (context, state) {
+                if (state.status == OrderStateStatus.submitSuccessful) widget.onCreate();
+              },
+              child: CustomDialog(
+                buttonText: 'Create',
+                onButtonPressed: () => context.orderBloc.add(OrderCreateEvent(clientName: widget.requestState.clientRequestModel[index].displayName)),
+                child: StatefulBuilder(builder: (context, setState) {
+                  return Container(
+                    child: Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: BlocBuilder<OrderBloc, OrderState>(
+                          builder: (context, state) {
+                            context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(employerName: context.currentUserBloc.state.userModel!.displayName)));
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CustomText(
+                                      text: 'Fill order fields',
+                                      weight: FontWeight.bold,
+                                      color: Colors.black,
+                                      paddingAllValue: 20,
+                                      size: context.textSizeXL,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                                maxLines: 1,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              TextField(
-                                onChanged: (text) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(orderLocation: text))),
-                                decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  labelText: 'Enter order location',
+                                SizedBox(
+                                  height: 5,
                                 ),
-                                maxLines: 1,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  CustomText(
-                                    text: 'Pick payment option',
-                                    color: Colors.black,
-                                    size: context.textSizeM,
-                                    weight: FontWeight.bold,
+                                TextField(
+                                  onChanged: (text) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(senderName: text))),
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'Enter sender name',
                                   ),
-                                  SizedBox(
-                                    width: 20,
+                                  maxLines: 1,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                TextField(
+                                  onChanged: (text) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(orderLocation: text))),
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'Enter order location',
                                   ),
-                                  DropdownButton(
-                                    value: selectedPaymentTypeValue,
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    items: paymentTypesItems.map((PaymentType items) {
-                                      return DropdownMenuItem(
-                                        value: items,
-                                        child: Text(items.translate()),
-                                      );
-                                    }).toList(),
-                                    onChanged: (PaymentType? newValue) {
-                                      setState(() {
-                                        context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(paymentType: newValue)));
-                                        selectedPaymentTypeValue = newValue!;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  CustomText(
-                                    text: 'Created date',
-                                    color: Colors.black,
-                                    size: context.textSizeM,
-                                    weight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  _DatePickerWidget(
-                                    onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(createdDateTime: dateTime))),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              CustomText(
-                                text: 'Add contract item',
-                                color: Colors.black,
-                                size: context.textSizeM,
-                                weight: FontWeight.bold,
-                              ),
-                              ListView.builder(
-                                  itemCount: ContractItemsType.values.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return GestureDetector(
-                                      onTap: () {
+                                  maxLines: 1,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    CustomText(
+                                      text: 'Pick payment option',
+                                      color: Colors.black,
+                                      size: context.textSizeM,
+                                      weight: FontWeight.bold,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    DropdownButton(
+                                      value: selectedPaymentTypeValue,
+                                      icon: const Icon(Icons.keyboard_arrow_down),
+                                      items: paymentTypesItems.map((PaymentType items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(items.translate()),
+                                        );
+                                      }).toList(),
+                                      onChanged: (PaymentType? newValue) {
                                         setState(() {
-                                          if (selectedContractItemsIndex.contains(index)) {
-                                            selectedContractItemsIndex = List.from(selectedContractItemsIndex)..remove(index);
-                                          } else {
-                                            selectedContractItemsIndex = List.from(selectedContractItemsIndex)..add(index);
-                                          }
-                                          context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(contractItems: selectedContractItemsIndex.map((index) => ContractItemsType.getValue(index)).toList())));
+                                          context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(paymentType: newValue)));
+                                          selectedPaymentTypeValue = newValue!;
                                         });
                                       },
-                                      child: ListTile(
-                                        title: Text(ContractItemsType.getValue(index).translate()),
-                                        tileColor: Colors.green.withOpacity(0.4),
-                                        selected: selectedContractItemsIndex.contains(index) ? true : false,
-                                      ),
-                                    );
-                                  }),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  labelText: 'Enter employer name',
+                                    ),
+                                  ],
                                 ),
-                                initialValue: context.currentUserBloc.state.userModel!.displayName,
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6),
+                                SizedBox(
+                                  height: 10,
                                 ),
-                                maxLines: 1,
-                              ),
-                            ],
-                          );
-                        },
+                                Row(
+                                  children: [
+                                    CustomText(
+                                      text: 'Created date',
+                                      color: Colors.black,
+                                      size: context.textSizeM,
+                                      weight: FontWeight.bold,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    _DatePickerWidget(
+                                      onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(createdDateTime: dateTime))),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                CustomText(
+                                  text: 'Add contract item',
+                                  color: Colors.black,
+                                  size: context.textSizeM,
+                                  weight: FontWeight.bold,
+                                ),
+                                ListView.builder(
+                                    itemCount: ContractItemsType.values.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            if (selectedContractItemsIndex.contains(index)) {
+                                              selectedContractItemsIndex = List.from(selectedContractItemsIndex)..remove(index);
+                                            } else {
+                                              selectedContractItemsIndex = List.from(selectedContractItemsIndex)..add(index);
+                                            }
+                                            context.orderBloc.add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(contractItems: selectedContractItemsIndex.map((index) => ContractItemsType.getValue(index)).toList())));
+                                          });
+                                        },
+                                        child: ListTile(
+                                          title: Text(ContractItemsType.getValue(index).translate()),
+                                          tileColor: Colors.green.withOpacity(0.4),
+                                          selected: selectedContractItemsIndex.contains(index) ? true : false,
+                                        ),
+                                      );
+                                    }),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'Enter employer name',
+                                  ),
+                                  initialValue: context.currentUserBloc.state.userModel!.displayName,
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6),
+                                  ),
+                                  maxLines: 1,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             );
           }),
         ),

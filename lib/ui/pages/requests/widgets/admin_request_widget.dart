@@ -80,6 +80,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                   else
                                     return CreateOrderWidget(
                                       requestState: requestsState,
+                                      //not good practice but context of CreateOrderWidget is not in scope of adminRequest in widget tree(not its parent cuz Custom dialog I think), so I use callback function
+                                      onCreate: () => context.orderBloc.add(OrderGetEvent()),
                                     );
                                 },
                               );
@@ -103,30 +105,42 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                             if (currentUserState.userModel!.role != RoleType.announcementVerifyEmployer.translate())
                               return BlocBuilder<OrderBloc, OrderState>(
                                 builder: (context, orderState) {
-                                  return OrderDataTableWidget(
-                                    firstColumnName: 'Receiver name',
-                                    secondColumnName: 'Created date time',
-                                    thirdColumnName: 'Sent date time',
-                                    fourthColumnName: 'Order status type',
-                                    fifthColumnName: 'Employer name',
-                                    sixthColumnName: '',
-                                    isEmpty: orderState.orderModels.isEmpty ? true : false,
-                                    viewBtnTxt: 'View',
-                                    editBtnTxt: 'Edit',
-                                    deleteBtnTxt: 'Delete',
-                                    viewBtnOnTap: (index) => showDialog(
-                                      context: context,
-                                      builder: (context) => ViewOrderDialog(
-                                        orderModel: orderState.orderModels[index],
+                                  return BlocListener<OrderBloc, OrderState>(
+                                    listener: (context, state) {
+                                      if (state.status == OrderStateStatus.deleteSuccessful) context.orderBloc.add(OrderGetEvent());
+                                    },
+                                    child: OrderDataTableWidget(
+                                      firstColumnName: 'Receiver name',
+                                      secondColumnName: 'Created date time',
+                                      thirdColumnName: 'Sent date time',
+                                      fourthColumnName: 'Order status type',
+                                      fifthColumnName: 'Employer name',
+                                      sixthColumnName: '',
+                                      isEmpty: orderState.orderModels.isEmpty ? true : false,
+                                      viewBtnTxt: 'View',
+                                      editBtnTxt: 'Edit',
+                                      deleteBtnTxt: 'Delete',
+                                      viewBtnOnTap: (index) => showDialog(
+                                        context: context,
+                                        builder: (context) => ViewOrderDialog(
+                                          orderModel: orderState.orderModels[index],
+                                        ),
                                       ),
+                                      editBtnOnTap: (index) => showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (context) => EditOrderDialog(
+                                          orderModel: orderState.orderModels[index],
+                                          orderEdited: () => context.orderBloc.add(OrderGetEvent()),
+                                        ),
+                                      ),
+                                      deleteBtnOnTap: (index) => context.orderBloc.add(OrderDeleteEvent(orderId: orderState.orderModels[index].id)),
+                                      firstColumnValue: orderState.orderModels.map((orderModel) => orderModel.receiverName ?? 'Not selected yet').toList(),
+                                      secondColumnValue: orderState.orderModels.map((orderModel) => orderModel.createdDateTime.formatDDMMYY().toString()).toList(),
+                                      thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined').toList(),
+                                      fourthColumnValue: orderState.orderModels.map((orderModel) => orderModel.orderStatusType.translate()).toList(),
+                                      fifthColumnValue: orderState.orderModels.map((orderModel) => orderModel.employerName).toList(),
                                     ),
-                                    editBtnOnTap: () => null,
-                                    deleteBtnOnTap: () => null,
-                                    firstColumnValue: orderState.orderModels.map((orderModel) => orderModel.receiverName ?? 'Not selected yet').toList(),
-                                    secondColumnValue: orderState.orderModels.map((orderModel) => orderModel.createdDateTime.formatDDMMYY().toString()).toList(),
-                                    thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined').toList(),
-                                    fourthColumnValue: orderState.orderModels.map((orderModel) => orderModel.orderStatusType.translate()).toList(),
-                                    fifthColumnValue: orderState.orderModels.map((orderModel) => orderModel.employerName).toList(),
                                   );
                                 },
                               );

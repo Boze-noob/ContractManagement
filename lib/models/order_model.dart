@@ -2,7 +2,7 @@ import 'package:contract_management/_all.dart';
 
 //TODO I think that work details(location of client, name of client etc will be in announcement part
 class OrderModel {
-  final String? id;
+  final String id;
   final String senderName;
   final String? receiverName;
   final String orderLocation;
@@ -16,7 +16,7 @@ class OrderModel {
   final String clientName;
 
   OrderModel({
-    this.id,
+    required this.id,
     required this.senderName,
     this.receiverName,
     required this.orderLocation,
