@@ -19,7 +19,7 @@ class OrderDataTableWidget extends StatelessWidget {
   final String editBtnTxt;
   final String deleteBtnTxt;
   final bool isEmpty;
-  final void Function() viewBtnOnTap;
+  final void Function(int index) viewBtnOnTap;
   final void Function() editBtnOnTap;
   final void Function() deleteBtnOnTap;
 
@@ -123,6 +123,11 @@ class OrderDataTableWidget extends StatelessWidget {
                   text: fourthColumnValue![index],
                 ),
               ),
+              DataCell(
+                CustomText(
+                  text: fifthColumnValue![index],
+                ),
+              ),
               DataCell(Row(
                 children: [
                   Button(
@@ -132,7 +137,7 @@ class OrderDataTableWidget extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                     borderColor: active,
                     //TOD add func
-                    onTap: viewBtnOnTap,
+                    onTap: () => viewBtnOnTap(index),
                   ),
                   Button(
                     text: editBtnTxt,

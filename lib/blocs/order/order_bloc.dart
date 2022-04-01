@@ -36,7 +36,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Future<void> _get(OrderGetEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(status: OrderStateStatus.loading));
     final result = await orderRepo.getOrders();
-    if (result != null) print(result.length);
     if (result != null)
       emit(state.copyWith(status: OrderStateStatus.loaded, orderModels: result));
     else

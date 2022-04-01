@@ -114,12 +114,17 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                     viewBtnTxt: 'View',
                                     editBtnTxt: 'Edit',
                                     deleteBtnTxt: 'Delete',
-                                    viewBtnOnTap: () => null,
+                                    viewBtnOnTap: (index) => showDialog(
+                                      context: context,
+                                      builder: (context) => ViewOrderDialog(
+                                        orderModel: orderState.orderModels[index],
+                                      ),
+                                    ),
                                     editBtnOnTap: () => null,
                                     deleteBtnOnTap: () => null,
                                     firstColumnValue: orderState.orderModels.map((orderModel) => orderModel.receiverName ?? 'Not selected yet').toList(),
-                                    secondColumnValue: orderState.orderModels.map((orderModel) => orderModel.createdDateTime.toString()).toList(),
-                                    thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime.toString()).toList(),
+                                    secondColumnValue: orderState.orderModels.map((orderModel) => orderModel.createdDateTime.formatDDMMYY().toString()).toList(),
+                                    thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined').toList(),
                                     fourthColumnValue: orderState.orderModels.map((orderModel) => orderModel.orderStatusType.translate()).toList(),
                                     fifthColumnValue: orderState.orderModels.map((orderModel) => orderModel.employerName).toList(),
                                   );

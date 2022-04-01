@@ -85,7 +85,7 @@ class OrderModel {
       paymentType: PaymentType.getValue(map['paymentType']),
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
       sentDateTime: map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
-      contractItems: ContractItemsType.getContractItemsFromIndexList(map['contractItems']),
+      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
       employerName: map['employerName'],
       orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
       adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
