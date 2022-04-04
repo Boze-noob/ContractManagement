@@ -52,11 +52,12 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   Future<void> _submitUpdate(OrderSubmitUpdateEvent event, Emitter<OrderState> emit) async {
     final result = await orderRepo.editOrder(state.orderModel);
-    if (result)
+    if (result) {
       emit(state.copyWith(
         status: OrderStateStatus.submitSuccessful,
+        message: 'Edit successful',
       ));
-    else
+    } else
       emit(state.copyWith(status: OrderStateStatus.error, message: 'Error message'));
   }
 

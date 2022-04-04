@@ -103,13 +103,13 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                           ),
                           (() {
                             if (currentUserState.userModel!.role != RoleType.announcementVerifyEmployer.translate())
-                              return BlocBuilder<OrderBloc, OrderState>(
-                                builder: (context, orderState) {
-                                  return BlocListener<OrderBloc, OrderState>(
-                                    listener: (context, state) {
-                                      if (state.status == OrderStateStatus.deleteSuccessful) context.orderBloc.add(OrderGetEvent());
-                                    },
-                                    child: OrderDataTableWidget(
+                              return BlocListener<OrderBloc, OrderState>(
+                                listener: (context, state) {
+                                  if (state.status == OrderStateStatus.deleteSuccessful) context.orderBloc.add(OrderGetEvent());
+                                },
+                                child: BlocBuilder<OrderBloc, OrderState>(
+                                  builder: (context, orderState) {
+                                    return OrderDataTableWidget(
                                       firstColumnName: 'Receiver name',
                                       secondColumnName: 'Created date time',
                                       thirdColumnName: 'Sent date time',
@@ -129,7 +129,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       editBtnOnTap: (index) => showDialog(
                                         context: context,
                                         barrierDismissible: false,
-                                        builder: (context) => EditOrderDialog(
+                                        builder: (dialogContext) => EditOrderDialog(
                                           orderModel: orderState.orderModels[index],
                                           orderEdited: () => context.orderBloc.add(OrderGetEvent()),
                                         ),
@@ -140,9 +140,9 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined').toList(),
                                       fourthColumnValue: orderState.orderModels.map((orderModel) => orderModel.orderStatusType.translate()).toList(),
                                       fifthColumnValue: orderState.orderModels.map((orderModel) => orderModel.employerName).toList(),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
                               );
                             else
                               return _NoAccessWidget();
