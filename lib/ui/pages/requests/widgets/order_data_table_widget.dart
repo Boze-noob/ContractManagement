@@ -15,10 +15,12 @@ class OrderDataTableWidget extends StatelessWidget {
   final List<String>? thirdColumnValue;
   final List<String>? fourthColumnValue;
   final List<String>? fifthColumnValue;
+  final String sendBtnTxt;
   final String viewBtnTxt;
   final String editBtnTxt;
   final String deleteBtnTxt;
   final bool isEmpty;
+  final void Function(int index) sendBtnOnTap;
   final void Function(int index) viewBtnOnTap;
   final void Function(int index) editBtnOnTap;
   final void Function(int index) deleteBtnOnTap;
@@ -37,9 +39,11 @@ class OrderDataTableWidget extends StatelessWidget {
     this.fourthColumnValue,
     this.fifthColumnValue,
     required this.isEmpty,
+    required this.sendBtnTxt,
     required this.viewBtnTxt,
     required this.editBtnTxt,
     required this.deleteBtnTxt,
+    required this.sendBtnOnTap,
     required this.viewBtnOnTap,
     required this.editBtnOnTap,
     required this.deleteBtnOnTap,
@@ -99,8 +103,9 @@ class OrderDataTableWidget extends StatelessWidget {
           DataColumn(
             label: Text(fifthColumnName),
           ),
-          DataColumn(
+          DataColumn2(
             label: Text(sixthColumnName),
+            size: ColumnSize.L,
           ),
         ],
         rows: List<DataRow>.generate(
@@ -130,30 +135,47 @@ class OrderDataTableWidget extends StatelessWidget {
               ),
               DataCell(Row(
                 children: [
-                  Button(
-                    text: viewBtnTxt,
-                    textColor: active,
-                    borderRadius: 20,
-                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    borderColor: active,
-                    //TOD add func
-                    onTap: () => viewBtnOnTap(index),
+                  Expanded(
+                    child: Button(
+                      text: sendBtnTxt,
+                      textColor: active,
+                      borderRadius: 20,
+                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      borderColor: active,
+                      //TOD add func
+                      onTap: () => sendBtnOnTap(index),
+                    ),
                   ),
-                  Button(
-                    text: editBtnTxt,
-                    textColor: Colors.lightBlueAccent,
-                    borderRadius: 20,
-                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    borderColor: active,
-                    onTap: () => editBtnOnTap(index),
+                  Expanded(
+                    child: Button(
+                      text: viewBtnTxt,
+                      textColor: active,
+                      borderRadius: 20,
+                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      borderColor: active,
+                      //TOD add func
+                      onTap: () => viewBtnOnTap(index),
+                    ),
                   ),
-                  Button(
-                    text: deleteBtnTxt,
-                    textColor: Colors.red.withOpacity(0.5),
-                    borderRadius: 20,
-                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    borderColor: active,
-                    onTap: () => deleteBtnOnTap(index),
+                  Expanded(
+                    child: Button(
+                      text: editBtnTxt,
+                      textColor: Colors.lightBlueAccent,
+                      borderRadius: 20,
+                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      borderColor: active,
+                      onTap: () => editBtnOnTap(index),
+                    ),
+                  ),
+                  Expanded(
+                    child: Button(
+                      text: deleteBtnTxt,
+                      textColor: Colors.red.withOpacity(0.5),
+                      borderRadius: 20,
+                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      borderColor: active,
+                      onTap: () => deleteBtnOnTap(index),
+                    ),
                   ),
                 ],
               )),

@@ -12,6 +12,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderSendEvent>(_send);
     on<OrderDeleteEvent>(_delete);
     on<OrderSubmitUpdateEvent>(_submitUpdate);
+    on<OrderGetCompaniesForOrderEvent>(_getCompanies);
   }
 
   static OrderState initialState() => OrderState(
@@ -29,6 +30,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           id: '',
         ),
         orderModels: List.empty(),
+        companiesForOrder: {},
       );
 
   Future<void> _init(OrderInitEvent event, Emitter<OrderState> emit) async {
@@ -100,6 +102,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(state.copyWith(status: OrderStateStatus.deleteSuccessful));
     else
       emit(state.copyWith(status: OrderStateStatus.error, message: result));
+  }
+
+  Future<void> _getCompanies(OrderGetCompaniesForOrderEvent event, Emitter<OrderState> emit) async {
+    emit(state.copyWith(status: OrderStateStatus.loading));
+    final result = await orderRepo.getCompanies(event.contractItems.map((item) => item.index).toList());
+    if (result != null)
+      emit(state.copyWith(status: OrderStateStatus.loaded, companiesForOrder: result));
+    else
+      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error happen'));
   }
 
   //This should be done on backend

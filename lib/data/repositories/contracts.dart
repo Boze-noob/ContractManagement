@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:contract_management/_all.dart';
-import 'package:flutter/material.dart';
 
 abstract class IContracts {
   Future<List<ContractModel>?> loadContracts(ContractType contractStatus);
@@ -70,7 +67,7 @@ class ContractsRepo implements IContracts {
   @override
   Future<List<CreateContractModel>?> loadContractsTemplates() async {
     final jsonData = await firebaseFirestoreClass.getAllDataFromCollection('contractTemplates', null);
-    return jsonData.map<CreateContractModel>((json) => CreateContractModel.fromMap(json))?.toList() ?? jsonData;
+    return jsonData != null ? jsonData.map<CreateContractModel>((json) => CreateContractModel.fromMap(json))?.toList() : null;
   }
 
   @override

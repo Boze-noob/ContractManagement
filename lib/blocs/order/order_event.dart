@@ -36,3 +36,9 @@ class OrderDeleteEvent extends OrderEvent {
 
   OrderDeleteEvent({required this.orderId});
 }
+
+class OrderGetCompaniesForOrderEvent extends OrderEvent {
+  final List<ContractItemsType> contractItems;
+
+  OrderGetCompaniesForOrderEvent({required this.contractItems});
+}

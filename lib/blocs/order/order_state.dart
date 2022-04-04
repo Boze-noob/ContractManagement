@@ -14,12 +14,14 @@ class OrderState {
   final OrderModel orderModel;
   final List<OrderModel> orderModels;
   final String? message;
+  final Map companiesForOrder;
 
   OrderState({
     required this.status,
     required this.orderModel,
     required this.orderModels,
     this.message,
+    required this.companiesForOrder,
   });
 
   OrderState copyWith({
@@ -27,11 +29,13 @@ class OrderState {
     OrderModel? orderModel,
     List<OrderModel>? orderModels,
     String? message,
+    Map? companiesForOrder,
   }) =>
       OrderState(
         status: status ?? this.status,
         orderModel: orderModel ?? this.orderModel,
         orderModels: orderModels ?? this.orderModels,
         message: message ?? this.message,
+        companiesForOrder: companiesForOrder ?? this.companiesForOrder,
       );
 }

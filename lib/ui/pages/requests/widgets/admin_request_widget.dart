@@ -109,6 +109,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                 },
                                 child: BlocBuilder<OrderBloc, OrderState>(
                                   builder: (context, orderState) {
+                                    //TOdo trebat ce response popravit kod action buttona
                                     return OrderDataTableWidget(
                                       firstColumnName: 'Receiver name',
                                       secondColumnName: 'Created date time',
@@ -117,9 +118,17 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       fifthColumnName: 'Employer name',
                                       sixthColumnName: '',
                                       isEmpty: orderState.orderModels.isEmpty ? true : false,
+                                      sendBtnTxt: 'Send',
                                       viewBtnTxt: 'View',
                                       editBtnTxt: 'Edit',
                                       deleteBtnTxt: 'Delete',
+                                      sendBtnOnTap: (index) => showDialog(
+                                        context: context,
+                                        builder: (context) => SendOrderDialog(
+                                          orderModel: orderState.orderModels[index],
+                                          orderSent: () {},
+                                        ),
+                                      ),
                                       viewBtnOnTap: (index) => showDialog(
                                         context: context,
                                         builder: (context) => ViewOrderDialog(

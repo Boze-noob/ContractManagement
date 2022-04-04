@@ -34,7 +34,6 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
         create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo)..add(OrderInitEvent(orderModel: widget.orderModel)),
         child: BlocBuilder<OrderBloc, OrderState>(
           builder: (context, orderState) {
-            print('Payment value isss ----------------' + orderState.orderModel.paymentType.translate());
             if (orderState.status == OrderStateStatus.loading)
               return Center(
                 child: Loader(
