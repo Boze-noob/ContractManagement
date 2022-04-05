@@ -12,10 +12,14 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CompanyRequestsBloc(companyRequestRepo: context.serviceProvider.companyRequestRepo)..add(CompanyRequestsGetEvent(companyId: context.currentUserBloc.state.userModel!.id)),
+      create: (context) => CompanyRequestsBloc(
+          companyRequestRepo: context.serviceProvider.companyRequestRepo)
+        ..add(CompanyRequestsGetEvent(
+            companyId: context.currentUserBloc.state.userModel!.id)),
       child: BlocListener<CompanyRequestsBloc, CompanyRequestsState>(
         listener: (context, state) {
-          if (state.status == CompanyRequestsStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
+          if (state.status == CompanyRequestsStateStatus.error)
+            showInfoMessage(state.errorMessage ?? 'Error happen', context);
         },
         child: BlocBuilder<CompanyRequestsBloc, CompanyRequestsState>(
           builder: (context, state) {
@@ -36,7 +40,10 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                     () => Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
+                          margin: EdgeInsets.only(
+                              top: ResponsiveWidget.isSmallScreen(context)
+                                  ? 56
+                                  : 6),
                           child: CustomText(
                             text: menuController.activeItem.value,
                             size: 24,
@@ -48,13 +55,15 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                   ),
                   Expanded(
                     child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                      behavior: ScrollConfiguration.of(context)
+                          .copyWith(dragDevices: {
                         PointerDeviceKind.touch,
                         PointerDeviceKind.mouse,
                       }),
                       child: ListView(
                         children: [
-                          BlocBuilder<CompanyRequestsBloc, CompanyRequestsState>(
+                          BlocBuilder<CompanyRequestsBloc,
+                              CompanyRequestsState>(
                             builder: (context, state) {
                               //TODO add table here
                               return Container(

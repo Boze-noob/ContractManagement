@@ -32,13 +32,24 @@ abstract class ServiceProvider {
 
     accountRepo = AccountRepo();
     clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
-    notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
-    orderRepo = OrderRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo, contractsRepo: contractsRepo, companiesRepo: companiesRepo);
-    companyRequestRepo = CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    companiesRepo = CompaniesRepo(
+        firebaseFirestoreClass: firebaseFirestoreClass,
+        firebaseAuthClass: firebaseAuthClass);
+    notificationsRepo =
+        NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    contractsRepo = ContractsRepo(
+        firebaseFirestoreClass: firebaseFirestoreClass,
+        notificationsRepo: notificationsRepo);
+    orderRepo = OrderRepo(
+        firebaseFirestoreClass: firebaseFirestoreClass,
+        notificationsRepo: notificationsRepo,
+        contractsRepo: contractsRepo,
+        companiesRepo: companiesRepo);
+    companyRequestRepo =
+        CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     revenueRepo = RevenueRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
+    userAuth = UserAuthRepo(
+        account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
   }
 
   Future initFirebase() async {
@@ -47,7 +58,14 @@ abstract class ServiceProvider {
       await Firebase.initializeApp();
     } else {
       await Firebase.initializeApp(
-        options: FirebaseOptions(apiKey: "AIzaSyC1vKgkFIYOVH6rZanSRXrpJKt13osljE8", authDomain: "contractmanagement-d8f7f.firebaseapp.com", projectId: "contractmanagement-d8f7f", storageBucket: "contractmanagement-d8f7f.appspot.com", messagingSenderId: "1059163966516", appId: "1:1059163966516:web:0a34dce6233d9611450e61", measurementId: "G-68H02GDMN1"),
+        options: FirebaseOptions(
+            apiKey: "AIzaSyC1vKgkFIYOVH6rZanSRXrpJKt13osljE8",
+            authDomain: "contractmanagement-d8f7f.firebaseapp.com",
+            projectId: "contractmanagement-d8f7f",
+            storageBucket: "contractmanagement-d8f7f.appspot.com",
+            messagingSenderId: "1059163966516",
+            appId: "1:1059163966516:web:0a34dce6233d9611450e61",
+            measurementId: "G-68H02GDMN1"),
       );
     }
   }

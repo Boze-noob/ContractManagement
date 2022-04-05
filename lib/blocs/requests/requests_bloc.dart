@@ -22,10 +22,13 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
         status: RequestsStateStatus.loading,
       ),
     );
-    final result = await companyRequest.getRequests('requests', 'createdDateTime');
+    final result =
+        await companyRequest.getRequests('requests', 'createdDateTime');
     if (result != null) {
-      emit(state.copyWith(status: RequestsStateStatus.loaded, clientRequestModel: result));
+      emit(state.copyWith(
+          status: RequestsStateStatus.loaded, clientRequestModel: result));
     } else
-      emit(state.copyWith(status: RequestsStateStatus.error, errorMessage: 'Error happen'));
+      emit(state.copyWith(
+          status: RequestsStateStatus.error, errorMessage: 'Error happen'));
   }
 }
