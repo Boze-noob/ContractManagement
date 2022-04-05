@@ -16,7 +16,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
       providers: [
         BlocProvider(
           create: (context) =>
-              RequestsBloc(request: context.serviceProvider.requestRepo)
+              RequestsBloc(companyRequest: context.serviceProvider.companyRequestRepo)
                 ..add(RequestsLoadEvent()),
         ),
         BlocProvider(

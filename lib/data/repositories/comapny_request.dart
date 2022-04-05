@@ -1,14 +1,14 @@
 import 'package:contract_management/_all.dart';
 
-abstract class IRequest {
+abstract class ICompanyRequest {
   Future<List<ClientRequestModel>?> getRequests(String collection, String sortFieldName);
   Future<List<AdminRequestModel>?> getAdminRequests(String companyId);
 }
 
-class RequestRepo implements IRequest {
+class CompanyRequestRepo implements ICompanyRequest {
   FirebaseFirestoreClass firebaseFirestoreClass;
 
-  RequestRepo({
+  CompanyRequestRepo({
     required this.firebaseFirestoreClass,
   });
 

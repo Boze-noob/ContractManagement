@@ -12,7 +12,7 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CompanyRequestsBloc(requestRepo: context.serviceProvider.requestRepo)..add(CompanyRequestsGetEvent(companyId: context.currentUserBloc.state.userModel!.id)),
+      create: (context) => CompanyRequestsBloc(companyRequestRepo: context.serviceProvider.companyRequestRepo)..add(CompanyRequestsGetEvent(companyId: context.currentUserBloc.state.userModel!.id)),
       child: BlocListener<CompanyRequestsBloc, CompanyRequestsState>(
         listener: (context, state) {
           if (state.status == CompanyRequestsStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);

@@ -1,8 +1,8 @@
 import 'package:contract_management/_all.dart';
 
 class CompanyRequestsBloc extends Bloc<CompanyRequestsEvent, CompanyRequestsState> {
-  final IRequest requestRepo;
-  CompanyRequestsBloc({required this.requestRepo}) : super(initialState()) {
+  final ICompanyRequest companyRequestRepo;
+  CompanyRequestsBloc({required this.companyRequestRepo}) : super(initialState()) {
     on<CompanyRequestsInitEvent>(_init);
     on<CompanyRequestsSendEvent>(_send);
     on<CompanyRequestsGetEvent>(_load);
@@ -17,7 +17,7 @@ class CompanyRequestsBloc extends Bloc<CompanyRequestsEvent, CompanyRequestsStat
 
   void _load(CompanyRequestsGetEvent event, Emitter<CompanyRequestsState> emit) async {
     emit(state.copyWith(status: CompanyRequestsStateStatus.loading));
-    final result = await requestRepo.getAdminRequests(event.companyId);
+    final result = await companyRequestRepo.getAdminRequests(event.companyId);
     if (result != null)
       emit(state.copyWith(status: CompanyRequestsStateStatus.loaded, model: result));
     else

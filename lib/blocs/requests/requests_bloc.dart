@@ -1,8 +1,8 @@
 import 'package:contract_management/_all.dart';
 
 class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
-  IRequest request;
-  RequestsBloc({required this.request}) : super(initialState()) {
+  ICompanyRequest companyRequest;
+  RequestsBloc({required this.companyRequest}) : super(initialState()) {
     on<RequestsInitEvent>(_init);
     on<RequestsLoadEvent>(_load);
   }
@@ -22,7 +22,7 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
         status: RequestsStateStatus.loading,
       ),
     );
-    final result = await request.getRequests('requests', 'createdDateTime');
+    final result = await companyRequest.getRequests('requests', 'createdDateTime');
     if (result != null) {
       emit(state.copyWith(status: RequestsStateStatus.loaded, clientRequestModel: result));
     } else
