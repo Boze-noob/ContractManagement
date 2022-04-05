@@ -19,9 +19,14 @@ class CompanyRequestsBloc
   Future<void> _getOrder(CompanyGetOrderRequestsEvent event,
       Emitter<CompanyRequestsState> emit) async {
     emit(state.copyWith(status: CompanyRequestsStateStatus.loading));
-    final result = await companyRequestRepo.getOrders(event.companyId, event.receiverId);
-    if(result != null) emit(state.copyWith(status: CompanyRequestsStateStatus.loaded, orderModels: result));
-    else emit(state.copyWith(status: CompanyRequestsStateStatus.error, message: 'Error happen'));
+    final result =
+        await companyRequestRepo.getOrders(event.companyId, event.receiverId);
+    if (result != null)
+      emit(state.copyWith(
+          status: CompanyRequestsStateStatus.loaded, orderModels: result));
+    else
+      emit(state.copyWith(
+          status: CompanyRequestsStateStatus.error, message: 'Error happen'));
   }
 
   Future<void> _getAnnouncement(CompanyGetAnnouncementRequestsEvent event,
@@ -29,9 +34,15 @@ class CompanyRequestsBloc
 
   Future<void> _editOrder(CompanyEditOrderRequestEvent event,
       Emitter<CompanyRequestsState> emit) async {
-    final result = await companyRequestRepo.editOrder(event.orderStatusType, event.orderId);
-    if(result == null) emit(state.copyWith(status: CompanyRequestsStateStatus.editSuccessful, message: 'Order has been edited'));
-    else emit(state.copyWith(status: CompanyRequestsStateStatus.error, message: 'Error happen'));
+    final result = await companyRequestRepo.editOrder(
+        event.orderStatusType, event.orderId);
+    if (result == null)
+      emit(state.copyWith(
+          status: CompanyRequestsStateStatus.editSuccessful,
+          message: 'Order has been edited'));
+    else
+      emit(state.copyWith(
+          status: CompanyRequestsStateStatus.error, message: 'Error happen'));
   }
 
   Future<void> _editAnnouncement(CompanyEditAnnouncementRequestsEvent event,
