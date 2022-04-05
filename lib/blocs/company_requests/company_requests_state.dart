@@ -6,23 +6,25 @@ enum CompanyRequestsStateStatus {
   loaded,
   error,
   empty,
+  editSuccessful,
 }
 
 class CompanyRequestsState {
   final CompanyRequestsStateStatus status;
-  final List<AdminRequestModel>? model;
-  final String? errorMessage;
+  final List<OrderModel> orderModels;
+  final String? message;
 
-  CompanyRequestsState({required this.status, required this.model, this.errorMessage});
+  CompanyRequestsState(
+      {required this.status, required this.orderModels, this.message});
 
   CompanyRequestsState copyWith({
-    CompanyRequestsStateStatus? status,
-    List<AdminRequestModel>? model,
-    String? errorMessage,
+    final CompanyRequestsStateStatus? status,
+    final List<OrderModel>? orderModels,
+    final String? message,
   }) =>
       CompanyRequestsState(
         status: status ?? this.status,
-        model: model,
-        errorMessage: errorMessage ?? this.errorMessage,
+        orderModels: orderModels ?? this.orderModels,
+        message: message ?? this.message,
       );
 }

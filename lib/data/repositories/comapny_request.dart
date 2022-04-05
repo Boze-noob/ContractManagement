@@ -1,9 +1,11 @@
 import 'package:contract_management/_all.dart';
 
 abstract class ICompanyRequest {
+  Future<List<OrderModel>?> getOrders(String companyId, String receiverId);
+  Future<String?> editOrder(OrderStatusType orderStatusType, String orderId);
+
   Future<List<ClientRequestModel>?> getRequests(
       String collection, String sortFieldName);
-  Future<List<AdminRequestModel>?> getAdminRequests(String companyId);
 }
 
 class CompanyRequestRepo implements ICompanyRequest {
@@ -25,13 +27,20 @@ class CompanyRequestRepo implements ICompanyRequest {
   }
 
   @override
-  Future<List<AdminRequestModel>?> getAdminRequests(String companyId) async {
+  Future<String?> editOrder(
+      OrderStatusType orderStatusType, String orderId) async {
+    final result = await firebaseFirestoreClass.updateSpecificField(
+        'orders', orderId, 'orderStatusType', orderStatusType.index);
+    return result;
+  }
+
+  @override
+  Future<List<OrderModel>?> getOrders(
+      String companyId, String receiverId) async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter(
-        'adminRequests', 'companyId', companyId);
+        'orders', 'receiverId', receiverId);
     return jsonData != null
-        ? jsonData
-            .map<AdminRequestModel>((json) => AdminRequestModel.fromMap(json))
-            ?.toList()
+        ? jsonData.map<OrderModel>((json) => OrderModel.fromMap(json))
         : null;
   }
 }
