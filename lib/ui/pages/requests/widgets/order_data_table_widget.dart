@@ -15,12 +15,10 @@ class OrderDataTableWidget extends StatelessWidget {
   final List<String>? thirdColumnValue;
   final List<String>? fourthColumnValue;
   final List<String>? fifthColumnValue;
-  final String sendBtnTxt;
-  final String viewBtnTxt;
-  final String editBtnTxt;
-  final String deleteBtnTxt;
   final bool isEmpty;
+  final List<OrderStatusType> isSent;
   final void Function(int index) sendBtnOnTap;
+  final void Function(int index) createBtnOnTap;
   final void Function(int index) viewBtnOnTap;
   final void Function(int index) editBtnOnTap;
   final void Function(int index) deleteBtnOnTap;
@@ -39,11 +37,9 @@ class OrderDataTableWidget extends StatelessWidget {
     this.fourthColumnValue,
     this.fifthColumnValue,
     required this.isEmpty,
-    required this.sendBtnTxt,
-    required this.viewBtnTxt,
-    required this.editBtnTxt,
-    required this.deleteBtnTxt,
+    required this.isSent,
     required this.sendBtnOnTap,
+    required this.createBtnOnTap,
     required this.viewBtnOnTap,
     required this.editBtnOnTap,
     required this.deleteBtnOnTap,
@@ -58,7 +54,12 @@ class OrderDataTableWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: active.withOpacity(.4), width: .5),
-          boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(0, 6),
+                color: lightGrey.withOpacity(.1),
+                blurRadius: 12)
+          ],
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(16),
@@ -77,7 +78,12 @@ class OrderDataTableWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: active.withOpacity(.4), width: .5),
-        boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 6),
+              color: lightGrey.withOpacity(.1),
+              blurRadius: 12)
+        ],
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(16),
@@ -133,52 +139,91 @@ class OrderDataTableWidget extends StatelessWidget {
                   text: fifthColumnValue![index],
                 ),
               ),
-              DataCell(Row(
-                children: [
-                  Expanded(
-                    child: Button(
-                      text: sendBtnTxt,
-                      textColor: active,
-                      borderRadius: 20,
-                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      borderColor: active,
-                      //TOD add func
-                      onTap: () => sendBtnOnTap(index),
-                    ),
-                  ),
-                  Expanded(
-                    child: Button(
-                      text: viewBtnTxt,
-                      textColor: active,
-                      borderRadius: 20,
-                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      borderColor: active,
-                      //TOD add func
-                      onTap: () => viewBtnOnTap(index),
-                    ),
-                  ),
-                  Expanded(
-                    child: Button(
-                      text: editBtnTxt,
-                      textColor: Colors.lightBlueAccent,
-                      borderRadius: 20,
-                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      borderColor: active,
-                      onTap: () => editBtnOnTap(index),
-                    ),
-                  ),
-                  Expanded(
-                    child: Button(
-                      text: deleteBtnTxt,
-                      textColor: Colors.red.withOpacity(0.5),
-                      borderRadius: 20,
-                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      borderColor: active,
-                      onTap: () => deleteBtnOnTap(index),
-                    ),
-                  ),
-                ],
-              )),
+              DataCell((() {
+                if (isSent[index] == OrderStatusType.waiting) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Button(
+                          text: 'Send',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          //TOD add func
+                          onTap: () => sendBtnOnTap(index),
+                        ),
+                      ),
+                      Expanded(
+                        child: Button(
+                          text: 'View',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          //TOD add func
+                          onTap: () => viewBtnOnTap(index),
+                        ),
+                      ),
+                      Expanded(
+                        child: Button(
+                          text: 'Edit',
+                          textColor: Colors.lightBlueAccent,
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          onTap: () => editBtnOnTap(index),
+                        ),
+                      ),
+                      Expanded(
+                        child: Button(
+                          text: 'Delete',
+                          textColor: Colors.red.withOpacity(0.5),
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          onTap: () => deleteBtnOnTap(index),
+                        ),
+                      ),
+                    ],
+                  );
+                } else
+                  return Row(
+                    children: [
+                      Visibility(
+                        visible: isSent[index] == OrderStatusType.accepted,
+                        child: Expanded(
+                          child: Button(
+                            text: 'Create',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            //TOD add func
+                            onTap: () => createBtnOnTap(index),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Button(
+                          text: 'Delete',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          //TOD add func
+                          onTap: () => deleteBtnOnTap(index),
+                        ),
+                      ),
+                    ],
+                  );
+              }())),
             ],
           ),
         ),

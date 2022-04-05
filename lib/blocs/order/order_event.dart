@@ -26,9 +26,10 @@ class OrderCreateEvent extends OrderEvent {
 
 class OrderSendEvent extends OrderEvent {
   final String orderId;
-  final String companyId;
+  final String receiverId;
+  final String receiverName;
 
-  OrderSendEvent({required this.orderId, required this.companyId});
+  OrderSendEvent({required this.orderId, required this.receiverId, required this.receiverName});
 }
 
 class OrderDeleteEvent extends OrderEvent {

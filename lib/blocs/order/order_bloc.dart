@@ -36,23 +36,29 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   Future<void> _init(OrderInitEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(status: OrderStateStatus.loading));
     await Future.delayed(Duration(seconds: 1));
-    emit(state.copyWith(orderModel: event.orderModel, status: OrderStateStatus.init));
+    emit(state.copyWith(
+        orderModel: event.orderModel, status: OrderStateStatus.init));
   }
 
   Future<void> _get(OrderGetEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(status: OrderStateStatus.loading));
     final result = await orderRepo.getOrders();
     if (result != null)
-      emit(state.copyWith(status: OrderStateStatus.loaded, orderModels: result));
+      emit(
+          state.copyWith(status: OrderStateStatus.loaded, orderModels: result));
     else
-      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error happen', orderModels: List.empty()));
+      emit(state.copyWith(
+          status: OrderStateStatus.error,
+          message: 'Error happen',
+          orderModels: List.empty()));
   }
 
   Future<void> _update(OrderUpdateEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(orderModel: event.orderModel));
   }
 
-  Future<void> _submitUpdate(OrderSubmitUpdateEvent event, Emitter<OrderState> emit) async {
+  Future<void> _submitUpdate(
+      OrderSubmitUpdateEvent event, Emitter<OrderState> emit) async {
     final result = await orderRepo.editOrder(state.orderModel);
     if (result) {
       emit(state.copyWith(
@@ -60,7 +66,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         message: 'Edit successful',
       ));
     } else
-      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error message'));
+      emit(state.copyWith(
+          status: OrderStateStatus.error, message: 'Error message'));
   }
 
   Future<void> _create(OrderCreateEvent event, Emitter<OrderState> emit) async {
@@ -75,22 +82,25 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     );
     final result = await orderRepo.createOrder(state.orderModel);
     if (result)
-      emit(state.copyWith(status: OrderStateStatus.submitSuccessful, message: 'Order created'));
+      emit(state.copyWith(
+          status: OrderStateStatus.submitSuccessful, message: 'Order created'));
     else
-      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error happen'));
+      emit(state.copyWith(
+          status: OrderStateStatus.error, message: 'Error happen'));
   }
 
   Future<void> _send(OrderSendEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(
       status: OrderStateStatus.loading,
     ));
-    final result = await orderRepo.sendOrder(event.orderId, event.companyId);
+    final result = await orderRepo.sendOrder(
+        event.orderId, event.receiverId, event.receiverName);
     if (result == null) {
       emit(state.copyWith(
         status: OrderStateStatus.submitSuccessful,
         message: 'Submitted successfully',
       ));
-      emit(initialState());
+      //emit(initialState());
     } else
       emit(state.copyWith(status: OrderStateStatus.error, message: result));
   }
@@ -104,13 +114,17 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(state.copyWith(status: OrderStateStatus.error, message: result));
   }
 
-  Future<void> _getCompanies(OrderGetCompaniesForOrderEvent event, Emitter<OrderState> emit) async {
+  Future<void> _getCompanies(
+      OrderGetCompaniesForOrderEvent event, Emitter<OrderState> emit) async {
     emit(state.copyWith(status: OrderStateStatus.loading));
-    final result = await orderRepo.getCompanies(event.contractItems.map((item) => item.index).toList());
+    final result = await orderRepo
+        .getCompanies(event.contractItems.map((item) => item.index).toList());
     if (result != null)
-      emit(state.copyWith(status: OrderStateStatus.loaded, companiesForOrder: result));
+      emit(state.copyWith(
+          status: OrderStateStatus.loaded, companiesForOrder: result));
     else
-      emit(state.copyWith(status: OrderStateStatus.error, message: 'Error happen'));
+      emit(state.copyWith(
+          status: OrderStateStatus.error, message: 'Error happen'));
   }
 
   //This should be done on backend

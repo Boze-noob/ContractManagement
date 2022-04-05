@@ -6,19 +6,24 @@ class SendOrderDialog extends StatelessWidget {
   OrderModel orderModel;
   final void Function() orderSent;
 
-  SendOrderDialog({Key? key, required this.orderModel, required this.orderSent}) : super(key: key);
+  SendOrderDialog({Key? key, required this.orderModel, required this.orderSent})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo)..add(OrderGetCompaniesForOrderEvent(contractItems: orderModel.contractItems)),
+      create: (context) =>
+          OrderBloc(orderRepo: context.serviceProvider.orderRepo)
+            ..add(OrderGetCompaniesForOrderEvent(
+                contractItems: orderModel.contractItems)),
       child: BlocBuilder<OrderBloc, OrderState>(
         builder: (context, orderState) {
           if (orderState.status == OrderStateStatus.loading)
             return CustomDialog(
               buttonText: 'Close',
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                 child: Loader(
                   width: 50,
                   height: 50,
@@ -30,7 +35,8 @@ class SendOrderDialog extends StatelessWidget {
             return CustomDialog(
               buttonText: 'Close',
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                 child: CustomText(
                   text: 'No companies to display',
                   size: context.textSizeXL,
@@ -40,14 +46,16 @@ class SendOrderDialog extends StatelessWidget {
               ),
             );
           //TODO zamjenio sam ideve sa displayName
-          List<String> companiesIds = orderState.companiesForOrder['companiesIds'];
-          List<String> companiesNames = orderState.companiesForOrder['companiesName'];
-          print('COmpanies names ${companiesNames[0]} ----------------');
+          List<String> companiesIds =
+              orderState.companiesForOrder['companiesIds'];
+          List<String> companiesNames =
+              orderState.companiesForOrder['companiesName'];
           return CustomDialog(
             buttonText: 'Close',
             child: Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,10 +82,19 @@ class SendOrderDialog extends StatelessWidget {
                           child: Text(items),
                         );
                       }).toList(),
-                      onChanged: (String? newValue) {
+                      onChanged: (String? newValue) async {
+                        //This should be in listener
                         Get.back();
                         int index = companiesNames.indexOf(newValue!);
-                        context.orderBloc.add(OrderSendEvent(orderId: orderModel.id, companyId: companiesIds[index]));
+                        context.orderBloc.add(OrderSendEvent(
+                            orderId: orderModel.id,
+                            receiverId: companiesIds[index],
+                            receiverName: companiesNames[index]));
+
+                        //Not good practice
+                        await Future.delayed(Duration(milliseconds: 500));
+                        //This should be in listener
+                        orderSent();
                       },
                     ),
                     SizedBox(

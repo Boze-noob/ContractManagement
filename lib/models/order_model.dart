@@ -5,6 +5,7 @@ class OrderModel {
   final String id;
   final String senderName;
   final String? receiverName;
+  final String? receiverId;
   final String orderLocation;
   final PaymentType paymentType;
   final DateTime createdDateTime;
@@ -19,6 +20,7 @@ class OrderModel {
     required this.id,
     required this.senderName,
     this.receiverName,
+    this.receiverId,
     required this.orderLocation,
     required this.paymentType,
     required this.createdDateTime,
@@ -34,6 +36,7 @@ class OrderModel {
     String? id,
     String? senderName,
     String? receiverName,
+    String? receiverId,
     String? orderLocation,
     PaymentType? paymentType,
     DateTime? createdDateTime,
@@ -48,6 +51,7 @@ class OrderModel {
         id: id ?? this.id,
         senderName: senderName ?? this.senderName,
         receiverName: receiverName ?? this.receiverName,
+        receiverId: receiverId ?? this.receiverId,
         orderLocation: orderLocation ?? this.orderLocation,
         paymentType: paymentType ?? this.paymentType,
         createdDateTime: createdDateTime ?? this.createdDateTime,
@@ -64,6 +68,7 @@ class OrderModel {
       'id': id,
       'senderName': senderName,
       'receiverName': receiverName,
+      'receiverId': receiverId,
       'orderLocation': orderLocation,
       'paymentType': paymentType.index,
       'createdDateTime': createdDateTime.toUtc(),
@@ -81,6 +86,7 @@ class OrderModel {
       id: map['id'],
       senderName: map['senderName'],
       receiverName: map['receiverName'],
+      receiverId: map['receiverId'] ?? null,
       orderLocation: map['orderLocation'],
       paymentType: PaymentType.getValue(map['paymentType']),
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,

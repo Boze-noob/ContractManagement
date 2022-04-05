@@ -2,7 +2,7 @@ import 'package:contract_management/_all.dart';
 
 abstract class IOrder {
   Future<bool> createOrder(OrderModel orderModel);
-  Future<String?> sendOrder(String orderId, String companyId);
+  Future<String?> sendOrder(String orderId, String receiverId, String receiverName);
   Future<String?> deleteOrder(String orderId);
   Future<bool> editOrder(OrderModel orderModel);
   Future<List<OrderModel>?> getOrders();
@@ -44,10 +44,10 @@ class OrderRepo implements IOrder {
   }
 
   @override
-  Future<String?> sendOrder(String orderId, String companyId) async {
-    await notificationsRepo.sendNotification(NotificationModel(userId: companyId, message: 'You have new order request'));
-    List<String> fields = ['receiverName', 'sentDateTime', 'orderStatusType'];
-    List values = [companyId, DateTime.now().toUtc(), 2];
+  Future<String?> sendOrder(String orderId, String receiverId, String receiverName) async {
+    await notificationsRepo.sendNotification(NotificationModel(userId: receiverId, message: 'You have new order request'));
+    List<String> fields = ['receiverId', 'receiverName', 'sentDateTime', 'orderStatusType'];
+    List values = [receiverId, receiverName, DateTime.now().toUtc(), 2];
 
     return await firebaseFirestoreClass.updaterSpecificFields('orders', orderId, fields, values);
   }
@@ -83,7 +83,7 @@ class OrderRepo implements IOrder {
         contractTemplatesThatMatch.forEach((contractTemplate) {
           if (company.contractId == contractTemplate.contractName) {
             companiesThatMatch = List.from(companiesThatMatch)..add(company.id);
-            companiesThatMatchName = List.from(companiesThatMatch)..add(company.displayName);
+            companiesThatMatchName = List.from(companiesThatMatchName)..add(company.displayName);
           }
         });
       });

@@ -15,15 +15,20 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => RequestsBloc(request: context.serviceProvider.requestRepo)..add(RequestsLoadEvent()),
+          create: (context) =>
+              RequestsBloc(request: context.serviceProvider.requestRepo)
+                ..add(RequestsLoadEvent()),
         ),
         BlocProvider(
-          create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo)..add(OrderGetEvent()),
+          create: (context) =>
+              OrderBloc(orderRepo: context.serviceProvider.orderRepo)
+                ..add(OrderGetEvent()),
         ),
       ],
       child: BlocListener<RequestsBloc, RequestsState>(
         listener: (context, state) {
-          if (state.status == RequestsStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
+          if (state.status == RequestsStateStatus.error)
+            showInfoMessage(state.errorMessage ?? 'Error happen', context);
         },
         child: Container(
           child: Column(
@@ -32,7 +37,9 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                 () => Row(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
+                      margin: EdgeInsets.only(
+                          top:
+                              ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
                       child: CustomText(
                         text: menuController.activeItem.value,
                         size: 24,
@@ -44,7 +51,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
               ),
               Expanded(
                 child: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                  behavior:
+                      ScrollConfiguration.of(context).copyWith(dragDevices: {
                     PointerDeviceKind.touch,
                     PointerDeviceKind.mouse,
                   }),
@@ -63,7 +71,10 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                             height: 8,
                           ),
                           (() {
-                            if (currentUserState.userModel!.role == RoleType.admin.translate() || currentUserState.userModel!.role == RoleType.orderEmployer.translate())
+                            if (currentUserState.userModel!.role ==
+                                    RoleType.admin.translate() ||
+                                currentUserState.userModel!.role ==
+                                    RoleType.orderEmployer.translate())
                               return BlocBuilder<RequestsBloc, RequestsState>(
                                 builder: (context, requestsState) {
                                   if (requestsState.clientRequestModel.isEmpty)
@@ -81,7 +92,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                     return CreateOrderWidget(
                                       requestState: requestsState,
                                       //not good practice but context of CreateOrderWidget is not in scope of adminRequest in widget tree(not its parent cuz Custom dialog I think), so I use callback function
-                                      onCreate: () => context.orderBloc.add(OrderGetEvent()),
+                                      onCreate: () => context.orderBloc
+                                          .add(OrderGetEvent()),
                                     );
                                 },
                               );
@@ -102,54 +114,105 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                             height: 8,
                           ),
                           (() {
-                            if (currentUserState.userModel!.role != RoleType.announcementVerifyEmployer.translate())
+                            if (currentUserState.userModel!.role !=
+                                RoleType.announcementVerifyEmployer.translate())
                               return BlocListener<OrderBloc, OrderState>(
                                 listener: (context, state) {
-                                  if (state.status == OrderStateStatus.deleteSuccessful) context.orderBloc.add(OrderGetEvent());
+                                  if (state.status ==
+                                      OrderStateStatus.deleteSuccessful)
+                                    context.orderBloc.add(OrderGetEvent());
                                 },
                                 child: BlocBuilder<OrderBloc, OrderState>(
                                   builder: (context, orderState) {
+                                    if (orderState.status ==
+                                        OrderStateStatus.loading)
+                                      return Loader(
+                                        width: 100,
+                                        height: 100,
+                                        color: active,
+                                      );
                                     //TOdo trebat ce response popravit kod action buttona
-                                    return OrderDataTableWidget(
-                                      firstColumnName: 'Receiver name',
-                                      secondColumnName: 'Created date time',
-                                      thirdColumnName: 'Sent date time',
-                                      fourthColumnName: 'Order status type',
-                                      fifthColumnName: 'Employer name',
-                                      sixthColumnName: '',
-                                      isEmpty: orderState.orderModels.isEmpty ? true : false,
-                                      sendBtnTxt: 'Send',
-                                      viewBtnTxt: 'View',
-                                      editBtnTxt: 'Edit',
-                                      deleteBtnTxt: 'Delete',
-                                      sendBtnOnTap: (index) => showDialog(
-                                        context: context,
-                                        builder: (context) => SendOrderDialog(
-                                          orderModel: orderState.orderModels[index],
-                                          orderSent: () {},
+                                    return Builder(builder: (parentContext) {
+                                      return OrderDataTableWidget(
+                                        firstColumnName: 'Receiver name',
+                                        secondColumnName: 'Created date time',
+                                        thirdColumnName: 'Sent date time',
+                                        fourthColumnName: 'Order status type',
+                                        fifthColumnName: 'Employer name',
+                                        sixthColumnName: '',
+                                        isEmpty: orderState.orderModels.isEmpty
+                                            ? true
+                                            : false,
+                                        isSent: orderState.orderModels
+                                            .map((item) => item.orderStatusType)
+                                            .toList(),
+                                        sendBtnOnTap: (index) => showDialog(
+                                          context: parentContext,
+                                          builder: (context) => SendOrderDialog(
+                                            orderModel:
+                                                orderState.orderModels[index],
+                                            orderSent: () {
+                                              parentContext.orderBloc
+                                                  .add(OrderGetEvent());
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                      viewBtnOnTap: (index) => showDialog(
-                                        context: context,
-                                        builder: (context) => ViewOrderDialog(
-                                          orderModel: orderState.orderModels[index],
+                                        createBtnOnTap: (index) => null,
+                                        viewBtnOnTap: (index) => showDialog(
+                                          context: context,
+                                          builder: (context) => ViewOrderDialog(
+                                            orderModel:
+                                                orderState.orderModels[index],
+                                          ),
                                         ),
-                                      ),
-                                      editBtnOnTap: (index) => showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (dialogContext) => EditOrderDialog(
-                                          orderModel: orderState.orderModels[index],
-                                          orderEdited: () => context.orderBloc.add(OrderGetEvent()),
+                                        editBtnOnTap: (index) => showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (dialogContext) =>
+                                              EditOrderDialog(
+                                            orderModel:
+                                                orderState.orderModels[index],
+                                            orderEdited: () => context.orderBloc
+                                                .add(OrderGetEvent()),
+                                          ),
                                         ),
-                                      ),
-                                      deleteBtnOnTap: (index) => context.orderBloc.add(OrderDeleteEvent(orderId: orderState.orderModels[index].id)),
-                                      firstColumnValue: orderState.orderModels.map((orderModel) => orderModel.receiverName ?? 'Not selected yet').toList(),
-                                      secondColumnValue: orderState.orderModels.map((orderModel) => orderModel.createdDateTime.formatDDMMYY().toString()).toList(),
-                                      thirdColumnValue: orderState.orderModels.map((orderModel) => orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined').toList(),
-                                      fourthColumnValue: orderState.orderModels.map((orderModel) => orderModel.orderStatusType.translate()).toList(),
-                                      fifthColumnValue: orderState.orderModels.map((orderModel) => orderModel.employerName).toList(),
-                                    );
+                                        deleteBtnOnTap: (index) => context
+                                            .orderBloc
+                                            .add(OrderDeleteEvent(
+                                                orderId: orderState
+                                                    .orderModels[index].id)),
+                                        firstColumnValue: orderState.orderModels
+                                            .map((orderModel) =>
+                                                orderModel.receiverName ??
+                                                'Not selected yet')
+                                            .toList(),
+                                        secondColumnValue: orderState
+                                            .orderModels
+                                            .map((orderModel) => orderModel
+                                                .createdDateTime
+                                                .formatDDMMYY()
+                                                .toString())
+                                            .toList(),
+                                        thirdColumnValue: orderState.orderModels
+                                            .map((orderModel) =>
+                                                orderModel.sentDateTime != null
+                                                    ? orderModel.sentDateTime!
+                                                        .formatDDMMYY()
+                                                        .toString()
+                                                    : 'Not defined')
+                                            .toList(),
+                                        fourthColumnValue: orderState
+                                            .orderModels
+                                            .map((orderModel) => orderModel
+                                                .orderStatusType
+                                                .translate())
+                                            .toList(),
+                                        fifthColumnValue: orderState.orderModels
+                                            .map((orderModel) =>
+                                                orderModel.employerName)
+                                            .toList(),
+                                      );
+                                    });
                                   },
                                 ),
                               );
@@ -214,7 +277,12 @@ class _NoAccessWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: active.withOpacity(.4), width: .5),
-        boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 6),
+              color: lightGrey.withOpacity(.1),
+              blurRadius: 12)
+        ],
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(16),
