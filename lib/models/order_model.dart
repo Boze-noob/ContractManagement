@@ -15,6 +15,7 @@ class OrderModel {
   final OrderStatusType orderStatusType;
   final AdminRequestType adminRequestType;
   final String clientName;
+  final String price;
 
   OrderModel({
     required this.id,
@@ -30,6 +31,7 @@ class OrderModel {
     required this.orderStatusType,
     required this.adminRequestType,
     required this.clientName,
+    required this.price,
   });
 
   OrderModel copyWith({
@@ -46,6 +48,7 @@ class OrderModel {
     OrderStatusType? orderStatusType,
     AdminRequestType? adminRequestType,
     String? clientName,
+    String? price,
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -61,6 +64,7 @@ class OrderModel {
         orderStatusType: orderStatusType ?? this.orderStatusType,
         adminRequestType: adminRequestType ?? this.adminRequestType,
         clientName: clientName ?? this.clientName,
+        price: price ?? this.price,
       );
 
   Map<String, dynamic> toMap() {
@@ -78,6 +82,7 @@ class OrderModel {
       'orderStatusType': orderStatusType.index,
       'adminRequestType': adminRequestType.index,
       'clientName': clientName,
+      'price': price,
     };
   }
 
@@ -89,13 +94,18 @@ class OrderModel {
       receiverId: map['receiverId'] ?? null,
       orderLocation: map['orderLocation'],
       paymentType: PaymentType.getValue(map['paymentType']),
-      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
-      sentDateTime: map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
-      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
+      createdDateTime: map['createdDateTime'] != null
+          ? map['createdDateTime'].toDate()
+          : null,
+      sentDateTime:
+          map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
+      contractItems: ContractItemsType.getContractItemsFromIndexList(
+          List<int>.from(map['contractItems'])),
       employerName: map['employerName'],
       orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
       adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
       clientName: map['clientName'],
+      price: map['price'],
     );
   }
 }
