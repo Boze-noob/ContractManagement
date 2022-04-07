@@ -72,6 +72,9 @@ class AnnouncementDataTableWidget extends StatelessWidget {
           DataColumn(
             label: Text('Date time'),
           ),
+          DataColumn(
+            label: Text('Status type'),
+          ),
           DataColumn2(
             label: Text(' '),
             size: ColumnSize.L,
@@ -100,6 +103,11 @@ class AnnouncementDataTableWidget extends StatelessWidget {
               DataCell(
                 CustomText(
                   text: announcementsModels[index].createdDateTime.toLocal().formatDDMMYY(),
+                ),
+              ),
+              DataCell(
+                CustomText(
+                  text: announcementsModels[index].announcementStatusType.translate(),
                 ),
               ),
               DataCell(

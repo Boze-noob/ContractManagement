@@ -4,7 +4,9 @@ enum AnnouncementStateStatus {
   init,
   loading,
   loaded,
-  announcementCreated,
+  deleted,
+  sent,
+  created,
   error,
 }
 

@@ -2,9 +2,9 @@ import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class ViewOrderDialog extends StatelessWidget {
-  OrderModel orderModel;
-  ViewOrderDialog({Key? key, required this.orderModel}) : super(key: key);
+class ViewAnnouncementDialog extends StatelessWidget {
+  AnnouncementModel announcementModel;
+  ViewAnnouncementDialog({Key? key, required this.announcementModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ViewOrderDialog extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: CustomText(
-                  text: 'Order details',
+                  text: 'Announcement details',
                   weight: FontWeight.bold,
                   size: context.textSizeXL,
                   color: Colors.black,
@@ -31,7 +31,7 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 18,
               ),
               CustomText(
-                text: 'Sender name: ${orderModel.senderName.value}',
+                text: 'Id: ${announcementModel.id.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -39,7 +39,7 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Receiver name: ${orderModel.receiverName.value}',
+                text: 'Order id: ${announcementModel.orderId.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -47,7 +47,7 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Order location: ${orderModel.orderLocation.value}',
+                text: 'Receiver id: ${announcementModel.receiverId.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -55,7 +55,7 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Payment type: ${orderModel.paymentType.translate().value}',
+                text: 'Receiver name: ${announcementModel.receiverName.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -63,7 +63,7 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Create date time: ${orderModel.createdDateTime.formatDDMMYY().value}',
+                text: 'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -71,8 +71,15 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Sent date time: ${orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined yet'}',
+                text: 'Price: ${announcementModel.price.value}',
+                weight: FontWeight.normal,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                text: 'Status type: ${announcementModel.announcementStatusType.translate()}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -88,10 +95,10 @@ class ViewOrderDialog extends StatelessWidget {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: orderModel.contractItems.length,
+                itemCount: announcementModel.contractItems.length,
                 itemBuilder: (context, i) {
                   return ListTile(
-                    title: Text(' - ' + orderModel.contractItems[i].translate()),
+                    title: Text(' - ' + announcementModel.contractItems[i].translate()),
                   );
                 },
               ),
@@ -102,33 +109,12 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Employer name: ${orderModel.employerName.value}',
+                text: 'Employer name: ${announcementModel.employerName.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
               SizedBox(
                 height: 10,
-              ),
-              CustomText(
-                text: 'Order status type: ${orderModel.orderStatusType.translate().value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Admin request type: ${orderModel.adminRequestType.translate().value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Client name: ${orderModel.clientName.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
               ),
             ],
           ),

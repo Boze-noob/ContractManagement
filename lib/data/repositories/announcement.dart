@@ -3,6 +3,8 @@ import 'package:contract_management/_all.dart';
 abstract class IAnnouncement {
   Future<List<AnnouncementModel>?> getAnnouncements();
   Future<bool> createAnnouncement(AnnouncementModel announcementModel);
+  Future<String?> deleteAnnouncement(String announcementId);
+  Future<String?> sendAnnouncement(String announcementId);
 }
 
 class AnnouncementRepo implements IAnnouncement {
@@ -24,5 +26,16 @@ class AnnouncementRepo implements IAnnouncement {
   @override
   Future<bool> createAnnouncement(AnnouncementModel announcementModel) async {
     return await firebaseFirestoreClass.storeData('announcements', announcementModel.id, announcementModel.toMap());
+  }
+
+  @override
+  Future<String?> deleteAnnouncement(String announcementId) async {
+    return await firebaseFirestoreClass.deleteData('announcements', announcementId);
+  }
+
+  @override
+  Future<String?> sendAnnouncement(String announcementId) async {
+    return await firebaseFirestoreClass.updateSpecificField(
+        'announcements', announcementId, 'announcementStatusType', 1);
   }
 }

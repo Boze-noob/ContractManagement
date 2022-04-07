@@ -9,17 +9,18 @@ class AnnouncementModel {
   final String price;
   final DateTime createdDateTime;
   final String employerName;
+  final AnnouncementStatusType announcementStatusType;
 
-  AnnouncementModel({
-    required this.id,
-    required this.orderId,
-    this.receiverId,
-    this.receiverName,
-    required this.contractItems,
-    required this.price,
-    required this.createdDateTime,
-    required this.employerName,
-  });
+  AnnouncementModel(
+      {required this.id,
+      required this.orderId,
+      this.receiverId,
+      this.receiverName,
+      required this.contractItems,
+      required this.price,
+      required this.createdDateTime,
+      required this.employerName,
+      required this.announcementStatusType});
 
   AnnouncementModel copyWith({
     String? id,
@@ -30,6 +31,7 @@ class AnnouncementModel {
     String? price,
     DateTime? createdDateTime,
     String? employerName,
+    AnnouncementStatusType? announcementStatusType,
   }) =>
       AnnouncementModel(
         id: id ?? this.id,
@@ -40,6 +42,7 @@ class AnnouncementModel {
         price: price ?? this.price,
         createdDateTime: createdDateTime ?? this.createdDateTime,
         employerName: employerName ?? this.employerName,
+        announcementStatusType: announcementStatusType ?? this.announcementStatusType,
       );
 
   Map<String, dynamic> toMap() {
@@ -52,6 +55,7 @@ class AnnouncementModel {
       'price': price,
       'createdDateTime': createdDateTime.toUtc(),
       'employerName': employerName,
+      'announcementStatusType': announcementStatusType,
     };
   }
 
@@ -65,6 +69,7 @@ class AnnouncementModel {
       price: map['price'],
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
       employerName: map['employerName'],
+      announcementStatusType: map['announcementStatusType'],
     );
   }
 }

@@ -10,3 +10,15 @@ class AnnouncementCreateEvent extends AnnouncementEvent {
 
   AnnouncementCreateEvent({required this.orderModel, required this.employerName});
 }
+
+class AnnouncementDeleteEvent extends AnnouncementEvent {
+  final String announcementId;
+
+  AnnouncementDeleteEvent({required this.announcementId});
+}
+
+class AnnouncementSendEvent extends AnnouncementEvent {
+  final String announcementId;
+
+  AnnouncementSendEvent({required this.announcementId});
+}

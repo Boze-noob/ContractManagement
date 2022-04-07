@@ -123,7 +123,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                   listener: (context, state) {
                                     if (state.status == AnnouncementStateStatus.error)
                                       showInfoMessage(state.message ?? 'Error happen', context);
-                                    else if (state.status == AnnouncementStateStatus.announcementCreated) {
+                                    else if (state.status == AnnouncementStateStatus.created) {
                                       showInfoMessage(state.message ?? 'Created', context);
                                       context.announcementBloc.add(AnnouncementGetEvent());
                                     }
@@ -229,27 +229,46 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                             height: 8,
                           ),
                           (() {
-                            //TODO add when bloc is created
                             if (currentUserState.userModel!.role == RoleType.announcementEmployer.translate() ||
                                 currentUserState.userModel!.role == RoleType.announcementVerifyEmployer.translate())
-                              return BlocBuilder<AnnouncementBloc, AnnouncementState>(
-                                builder: (context, state) {
-                                  if (state.status == AnnouncementStateStatus.loading)
-                                    return Center(
-                                      child: Loader(
-                                        width: 100,
-                                        height: 100,
-                                        color: active,
-                                      ),
-                                    );
-                                  return AnnouncementDataTableWidget(
-                                    isEmpty: state.announcementsModels.isEmpty,
-                                    viewBtnOnTap: (index) => null,
-                                    sendBtnOnTap: (index) => null,
-                                    deleteBtnOnTap: (index) => null,
-                                    announcementsModels: state.announcementsModels,
-                                  );
+                              return BlocListener<AnnouncementBloc, AnnouncementState>(
+                                listener: (context, state) {
+                                  if (state.status == AnnouncementStateStatus.error)
+                                    showInfoMessage(state.message ?? 'Error happen', context);
+                                  else if (state.status == AnnouncementStateStatus.deleted)
+                                    showInfoMessage(state.message ?? 'Deleted', context);
+                                  else if (state.status == AnnouncementStateStatus.sent)
+                                    showInfoMessage(state.message ?? 'Sent', context);
                                 },
+                                child: BlocBuilder<AnnouncementBloc, AnnouncementState>(
+                                  builder: (context, state) {
+                                    if (state.status == AnnouncementStateStatus.loading)
+                                      return Center(
+                                        child: Loader(
+                                          width: 100,
+                                          height: 100,
+                                          color: active,
+                                        ),
+                                      );
+                                    return AnnouncementDataTableWidget(
+                                      isEmpty: state.announcementsModels.isEmpty,
+                                      viewBtnOnTap: (index) => showDialog(
+                                        context: context,
+                                        builder: (context) => ViewAnnouncementDialog(
+                                          announcementModel: state.announcementsModels[index],
+                                        ),
+                                      ),
+                                      sendBtnOnTap: (index) => context.announcementBloc.add(
+                                        AnnouncementSendEvent(
+                                          announcementId: state.announcementsModels[index].id,
+                                        ),
+                                      ),
+                                      deleteBtnOnTap: (index) => context.announcementBloc.add(
+                                          AnnouncementDeleteEvent(announcementId: state.announcementsModels[index].id)),
+                                      announcementsModels: state.announcementsModels,
+                                    );
+                                  },
+                                ),
                               );
                             else
                               return _NoAccessWidget();

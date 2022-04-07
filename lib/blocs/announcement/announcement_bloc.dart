@@ -6,6 +6,8 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
   AnnouncementBloc({required this.announcementRepo}) : super(initialState()) {
     on<AnnouncementGetEvent>(_getAnnouncement);
     on<AnnouncementCreateEvent>(_createAnnouncement);
+    on<AnnouncementDeleteEvent>(_deleteAnnouncement);
+    on<AnnouncementSendEvent>(_sendAnnouncement);
   }
 
   static AnnouncementState initialState() =>
@@ -33,12 +35,29 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
         price: event.orderModel.price,
         createdDateTime: event.orderModel.createdDateTime,
         employerName: event.employerName,
+        announcementStatusType: AnnouncementStatusType.waiting,
       );
       final result = await announcementRepo.createAnnouncement(announcementModel);
       if (result)
-        emit(state.copyWith(status: AnnouncementStateStatus.announcementCreated, message: 'Announcement created'));
+        emit(state.copyWith(status: AnnouncementStateStatus.created, message: 'Announcement created'));
       else
         emit(state.copyWith(status: AnnouncementStateStatus.error, message: 'Error happen'));
     }
+  }
+
+  Future<void> _deleteAnnouncement(AnnouncementDeleteEvent event, Emitter<AnnouncementState> emit) async {
+    final result = await announcementRepo.deleteAnnouncement(event.announcementId);
+    if (result == null)
+      emit(state.copyWith(status: AnnouncementStateStatus.deleted, message: 'Deleted successfully'));
+    else
+      emit(state.copyWith(status: AnnouncementStateStatus.error, message: result));
+  }
+
+  Future<void> _sendAnnouncement(AnnouncementSendEvent event, Emitter<AnnouncementState> emit) async {
+    final result = await announcementRepo.sendAnnouncement(event.announcementId);
+    if (result == null)
+      emit(state.copyWith(status: AnnouncementStateStatus.sent, message: 'Announcement sent'));
+    else
+      emit(state.copyWith(status: AnnouncementStateStatus.error, message: result));
   }
 }
