@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/ui/pages/requests/widgets/admin/announcement_data_table_widget.dart';
 import 'package:contract_management/ui/pages/requests/widgets/admin/create_announcement_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,9 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
         BlocProvider(
           create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo)..add(OrderGetEvent()),
         ),
-        BlocProvider(create: (context) => AnnouncementBloc(announcementRepo: context.serviceProvider.announcementRepo)),
+        BlocProvider(
+            create: (context) => AnnouncementBloc(announcementRepo: context.serviceProvider.announcementRepo)
+              ..add(AnnouncementGetEvent())),
       ],
       child: BlocListener<RequestsBloc, RequestsState>(
         listener: (context, state) {
@@ -151,10 +154,17 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                               },
                                             ),
                                           ),
-                                          createBtnOnTap: (index) => CreateAnnouncementDialog(
-                                            orderModel: orderState.orderModels[index],
-                                            createOnTap: () => parentContext.announcementBloc.add(
-                                                AnnouncementCreateEvent(orderModel: orderState.orderModels[index])),
+                                          createBtnOnTap: (index) => showDialog(
+                                            context: parentContext,
+                                            builder: (context) => CreateAnnouncementDialog(
+                                              orderModel: orderState.orderModels[index],
+                                              createOnTap: () => parentContext.announcementBloc.add(
+                                                AnnouncementCreateEvent(
+                                                  orderModel: orderState.orderModels[index],
+                                                  employerName: context.currentUserBloc.state.userModel!.displayName,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                           viewBtnOnTap: (index) => showDialog(
                                             context: context,
@@ -215,23 +225,29 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                           ),
                           (() {
                             //TODO add when bloc is created
-                            //   if (currentUserState.userModel!.role == RoleType.announcementEmployer.translate() || currentUserState.userModel!.role == RoleType.announcementVerifyEmployer.translate())
-                            //     return RequestsDataTableWidget(
-                            //       firstColumnName: 'Display name',
-                            //       secondColumnName: 'Email',
-                            //       thirdColumnName: 'Location',
-                            //       fourthColumnName: 'Date time',
-                            //       fifthColumnName: '',
-                            //       isEmpty: false,
-                            //       actionBtnTxt: 'Send announcement',
-                            //       firstColumnValue: state.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
-                            //       secondColumnValue: state.clientRequestModel.map((clientModel) => clientModel.email).toList(),
-                            //       thirdColumnValue: state.clientRequestModel.map((clientModel) => clientModel.location).toList(),
-                            //       fourthColumnValue: state.clientRequestModel.map((clientModel) => clientModel.createdDateTime.toLocal().toString()).toList(),
-                            //       onTap: () => null,
-                            //     );
-                            //   else
-                            return _NoAccessWidget();
+                            if (currentUserState.userModel!.role == RoleType.announcementEmployer.translate() ||
+                                currentUserState.userModel!.role == RoleType.announcementVerifyEmployer.translate())
+                              return BlocBuilder<AnnouncementBloc, AnnouncementState>(
+                                builder: (context, state) {
+                                  if (state.status == AnnouncementStateStatus.loading)
+                                    return Center(
+                                      child: Loader(
+                                        width: 100,
+                                        height: 100,
+                                        color: active,
+                                      ),
+                                    );
+                                  return AnnouncementDataTableWidget(
+                                    isEmpty: state.announcementsModels.isEmpty,
+                                    viewBtnOnTap: (index) => null,
+                                    sendBtnOnTap: (index) => null,
+                                    deleteBtnOnTap: (index) => null,
+                                    announcementsModels: state.announcementsModels,
+                                  );
+                                },
+                              );
+                            else
+                              return _NoAccessWidget();
                           }()),
                         ],
                       );

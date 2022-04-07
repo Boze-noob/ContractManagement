@@ -15,11 +15,14 @@ class AnnouncementRepo implements IAnnouncement {
   //TODO change to get by worker id)
   @override
   Future<List<AnnouncementModel>?> getAnnouncements() async {
-    return await firebaseFirestoreClass.getAllDataFromCollection('announcement', null);
+    final jsonData = await firebaseFirestoreClass.getAllDataFromCollection('announcements', null);
+    return jsonData != null
+        ? jsonData.map<AnnouncementModel>((json) => AnnouncementModel.fromMap(json))?.toList()
+        : jsonData;
   }
 
   @override
   Future<bool> createAnnouncement(AnnouncementModel announcementModel) async {
-    return await firebaseFirestoreClass.storeData('announcement', announcementModel.id, announcementModel.toMap());
+    return await firebaseFirestoreClass.storeData('announcements', announcementModel.id, announcementModel.toMap());
   }
 }

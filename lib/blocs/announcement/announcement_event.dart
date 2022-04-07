@@ -6,6 +6,7 @@ class AnnouncementGetEvent extends AnnouncementEvent {}
 
 class AnnouncementCreateEvent extends AnnouncementEvent {
   final OrderModel orderModel;
+  final String employerName;
 
-  AnnouncementCreateEvent({required this.orderModel});
+  AnnouncementCreateEvent({required this.orderModel, required this.employerName});
 }

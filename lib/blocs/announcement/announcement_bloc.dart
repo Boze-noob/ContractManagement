@@ -21,7 +21,7 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
   }
 
   Future<void> _createAnnouncement(AnnouncementCreateEvent event, Emitter<AnnouncementState> emit) async {
-    if (event.orderModel.receiverId != null) {
+    if (event.orderModel.receiverId == null) {
       emit(state.copyWith(status: AnnouncementStateStatus.error, message: 'Receiver id is not defined'));
     } else {
       AnnouncementModel announcementModel = AnnouncementModel(
@@ -32,11 +32,11 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
         contractItems: event.orderModel.contractItems,
         price: event.orderModel.price,
         createdDateTime: event.orderModel.createdDateTime,
-        employerName: event.orderModel.employerName,
+        employerName: event.employerName,
       );
       final result = await announcementRepo.createAnnouncement(announcementModel);
       if (result)
-        emit(state.copyWith(status: AnnouncementStateStatus.announcementCreated));
+        emit(state.copyWith(status: AnnouncementStateStatus.announcementCreated, message: 'Announcement created'));
       else
         emit(state.copyWith(status: AnnouncementStateStatus.error, message: 'Error happen'));
     }
