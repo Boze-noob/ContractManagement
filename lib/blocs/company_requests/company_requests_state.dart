@@ -14,8 +14,7 @@ class CompanyRequestsState {
   final List<OrderModel> orderModels;
   final String? message;
 
-  CompanyRequestsState(
-      {required this.status, required this.orderModels, this.message});
+  CompanyRequestsState({required this.status, required this.orderModels, this.message});
 
   CompanyRequestsState copyWith({
     final CompanyRequestsStateStatus? status,

@@ -1,4 +1,5 @@
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/models/announcement_model.dart';
 
 abstract class ICompanyRequest {
   Future<List<OrderModel>?> getOrders(String receiverId);

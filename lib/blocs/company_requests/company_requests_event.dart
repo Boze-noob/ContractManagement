@@ -16,8 +16,7 @@ class CompanyEditOrderRequestEvent extends CompanyRequestsEvent {
   final OrderStatusType orderStatusType;
   final String orderId;
 
-  CompanyEditOrderRequestEvent(
-      {required this.orderStatusType, required this.orderId});
+  CompanyEditOrderRequestEvent({required this.orderStatusType, required this.orderId});
 }
 
 class CompanyEditAnnouncementRequestsEvent extends CompanyRequestsEvent {}

@@ -1,4 +1,5 @@
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/data/repositories/announcement.dart';
 import 'package:contract_management/data/repositories/revenue.dart';
 import 'package:flutter/foundation.dart';
 
@@ -7,6 +8,7 @@ class DevelopmentServiceProvider extends ServiceProvider {}
 abstract class ServiceProvider {
   late IUserAuth userAuth;
   late IAccount accountRepo;
+  late IAnnouncement announcementRepo;
   late IClients clientsRepo;
   late ICompanies companiesRepo;
   late IContracts contractsRepo;
@@ -31,25 +33,19 @@ abstract class ServiceProvider {
     firebaseFirestoreClass = FirebaseFirestoreClass();
 
     accountRepo = AccountRepo();
+    announcementRepo = AnnouncementRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    companiesRepo = CompaniesRepo(
-        firebaseFirestoreClass: firebaseFirestoreClass,
-        firebaseAuthClass: firebaseAuthClass);
-    notificationsRepo =
-        NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    contractsRepo = ContractsRepo(
-        firebaseFirestoreClass: firebaseFirestoreClass,
-        notificationsRepo: notificationsRepo);
+    companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
+    notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     orderRepo = OrderRepo(
         firebaseFirestoreClass: firebaseFirestoreClass,
         notificationsRepo: notificationsRepo,
         contractsRepo: contractsRepo,
         companiesRepo: companiesRepo);
-    companyRequestRepo =
-        CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+    companyRequestRepo = CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     revenueRepo = RevenueRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    userAuth = UserAuthRepo(
-        account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
+    userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
   }
 
   Future initFirebase() async {

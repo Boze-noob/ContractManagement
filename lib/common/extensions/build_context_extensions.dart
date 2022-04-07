@@ -11,6 +11,7 @@ extension BuildContextExtensions on BuildContext {
   double get textSizeXL => 23;
 
   //Blocs
+  AnnouncementBloc get announcementBloc => read<AnnouncementBloc>();
   AuthBloc get authBloc => read<AuthBloc>();
   ClientsBloc get clientsBloc => read<ClientsBloc>();
   ClientRequestBloc get clientRequestBloc => read<ClientRequestBloc>();

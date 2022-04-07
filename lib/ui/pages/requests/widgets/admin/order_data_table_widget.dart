@@ -54,12 +54,7 @@ class OrderDataTableWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: active.withOpacity(.4), width: .5),
-          boxShadow: [
-            BoxShadow(
-                offset: Offset(0, 6),
-                color: lightGrey.withOpacity(.1),
-                blurRadius: 12)
-          ],
+          boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(16),
@@ -78,12 +73,7 @@ class OrderDataTableWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: active.withOpacity(.4), width: .5),
-        boxShadow: [
-          BoxShadow(
-              offset: Offset(0, 6),
-              color: lightGrey.withOpacity(.1),
-              blurRadius: 12)
-        ],
+        boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(16),
@@ -148,8 +138,7 @@ class OrderDataTableWidget extends StatelessWidget {
                           text: 'Send',
                           textColor: active,
                           borderRadius: 20,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                           borderColor: active,
                           //TOD add func
                           onTap: () => sendBtnOnTap(index),
@@ -160,8 +149,7 @@ class OrderDataTableWidget extends StatelessWidget {
                           text: 'View',
                           textColor: active,
                           borderRadius: 20,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                           borderColor: active,
                           //TOD add func
                           onTap: () => viewBtnOnTap(index),
@@ -172,8 +160,7 @@ class OrderDataTableWidget extends StatelessWidget {
                           text: 'Edit',
                           textColor: Colors.lightBlueAccent,
                           borderRadius: 20,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                           borderColor: active,
                           onTap: () => editBtnOnTap(index),
                         ),
@@ -183,8 +170,7 @@ class OrderDataTableWidget extends StatelessWidget {
                           text: 'Delete',
                           textColor: Colors.red.withOpacity(0.5),
                           borderRadius: 20,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                           borderColor: active,
                           onTap: () => deleteBtnOnTap(index),
                         ),
@@ -195,14 +181,13 @@ class OrderDataTableWidget extends StatelessWidget {
                   return Row(
                     children: [
                       Visibility(
-                        visible: isSent[index] == OrderStatusType.accepted,
+                        visible: isSent[index].translate() == OrderStatusType.accepted.translate(),
                         child: Expanded(
                           child: Button(
                             text: 'Create',
                             textColor: active,
                             borderRadius: 20,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 12),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                             borderColor: active,
                             //TOD add func
                             onTap: () => createBtnOnTap(index),
@@ -214,8 +199,7 @@ class OrderDataTableWidget extends StatelessWidget {
                           text: 'Delete',
                           textColor: active,
                           borderRadius: 20,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                           borderColor: active,
                           //TOD add func
                           onTap: () => deleteBtnOnTap(index),
