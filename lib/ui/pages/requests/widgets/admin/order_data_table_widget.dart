@@ -130,7 +130,7 @@ class OrderDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell((() {
-                if (isSent[index] == OrderStatusType.waiting) {
+                if (isSent[index].translate() == OrderStatusType.waiting.translate()) {
                   return Row(
                     children: [
                       Expanded(

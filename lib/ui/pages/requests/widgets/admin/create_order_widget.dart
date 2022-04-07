@@ -29,247 +29,202 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
       fifthColumnName: '',
       isEmpty: false,
       actionBtnTxt: 'Create order',
-      firstColumnValue: widget.requestState.clientRequestModel
-          .map((clientModel) => clientModel.displayName)
-          .toList(),
-      secondColumnValue: widget.requestState.clientRequestModel
-          .map((clientModel) => clientModel.email)
-          .toList(),
-      thirdColumnValue: widget.requestState.clientRequestModel
-          .map((clientModel) => clientModel.location)
-          .toList(),
+      firstColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.displayName).toList(),
+      secondColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.email).toList(),
+      thirdColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.location).toList(),
       fourthColumnValue: widget.requestState.clientRequestModel
-          .map(
-              (clientModel) => clientModel.createdDateTime.toLocal().toString())
+          .map((clientModel) => clientModel.createdDateTime.toLocal().toString())
           .toList(),
       createOnTap: (index) => showDialog(
         context: context,
         builder: (context) => BlocProvider(
-          create: (context) =>
-              OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+          create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
           child: Builder(builder: (context) {
-            return BlocListener<OrderBloc, OrderState>(
-              listener: (context, state) {
-                if (state.status == OrderStateStatus.submitSuccessful)
-                  widget.onCreate();
+            return CustomDialog(
+              buttonText: 'Create',
+              onButtonPressed: () async {
+                context.orderBloc
+                    .add(OrderCreateEvent(clientName: widget.requestState.clientRequestModel[index].displayName));
+                //This should be done via listener
+                await Future.delayed(Duration(milliseconds: 500));
+                widget.onCreate();
               },
-              child: CustomDialog(
-                buttonText: 'Create',
-                onButtonPressed: () => context.orderBloc.add(OrderCreateEvent(
-                    clientName: widget
-                        .requestState.clientRequestModel[index].displayName)),
-                child: StatefulBuilder(builder: (context, setState) {
-                  return Container(
-                    child: Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: BlocBuilder<OrderBloc, OrderState>(
-                          builder: (context, state) {
-                            context.orderBloc.add(OrderUpdateEvent(
-                                orderModel: state.orderModel.copyWith(
-                                    employerName: context.currentUserBloc.state
-                                        .userModel!.displayName)));
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomText(
-                                      text: 'Fill order fields',
-                                      weight: FontWeight.bold,
-                                      color: Colors.black,
-                                      paddingAllValue: 20,
-                                      size: context.textSizeXL,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                TextField(
-                                  onChanged: (text) => context.orderBloc.add(
-                                      OrderUpdateEvent(
-                                          orderModel: state.orderModel
-                                              .copyWith(senderName: text))),
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Enter sender name',
+              child: StatefulBuilder(builder: (context, setState) {
+                return Container(
+                  child: Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: BlocBuilder<OrderBloc, OrderState>(
+                        builder: (context, state) {
+                          context.orderBloc.add(OrderUpdateEvent(
+                              orderModel: state.orderModel
+                                  .copyWith(employerName: context.currentUserBloc.state.userModel!.displayName)));
+                          return ListView(
+                            shrinkWrap: true,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomText(
+                                    text: 'Fill order fields',
+                                    weight: FontWeight.bold,
+                                    color: Colors.black,
+                                    paddingAllValue: 20,
+                                    size: context.textSizeXL,
+                                    textAlign: TextAlign.center,
                                   ),
-                                  maxLines: 1,
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextField(
+                                onChanged: (text) => context.orderBloc
+                                    .add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(senderName: text))),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter sender name',
                                 ),
-                                SizedBox(
-                                  height: 5,
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextField(
+                                onChanged: (text) => context.orderBloc
+                                    .add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(orderLocation: text))),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter order location',
                                 ),
-                                TextField(
-                                  onChanged: (text) => context.orderBloc.add(
-                                      OrderUpdateEvent(
-                                          orderModel: state.orderModel
-                                              .copyWith(orderLocation: text))),
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Enter order location',
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  CustomText(
+                                    text: 'Pick payment option',
+                                    color: Colors.black,
+                                    size: context.textSizeM,
+                                    weight: FontWeight.bold,
                                   ),
-                                  maxLines: 1,
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  DropdownButton(
+                                    value: selectedPaymentTypeValue,
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    items: paymentTypesItems.map((PaymentType items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items.translate()),
+                                      );
+                                    }).toList(),
+                                    onChanged: (PaymentType? newValue) {
+                                      setState(() {
+                                        context.orderBloc.add(OrderUpdateEvent(
+                                            orderModel: state.orderModel.copyWith(paymentType: newValue)));
+                                        selectedPaymentTypeValue = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextField(
+                                onChanged: (text) => context.orderBloc
+                                    .add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(price: text))),
+                                decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter price',
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: 'Pick payment option',
-                                      color: Colors.black,
-                                      size: context.textSizeM,
-                                      weight: FontWeight.bold,
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    TextField(
-                                      onChanged: (text) => context.orderBloc
-                                          .add(OrderUpdateEvent(
-                                              orderModel: state.orderModel
-                                                  .copyWith(price: text))),
-                                      decoration: const InputDecoration(
-                                        border: UnderlineInputBorder(),
-                                        labelText: 'Enter price',
-                                      ),
-                                      keyboardType: TextInputType.number,
-                                      maxLines: 1,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    DropdownButton(
-                                      value: selectedPaymentTypeValue,
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      items: paymentTypesItems
-                                          .map((PaymentType items) {
-                                        return DropdownMenuItem(
-                                          value: items,
-                                          child: Text(items.translate()),
-                                        );
-                                      }).toList(),
-                                      onChanged: (PaymentType? newValue) {
+                                keyboardType: TextInputType.number,
+                                maxLines: 1,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  CustomText(
+                                    text: 'Created date',
+                                    color: Colors.black,
+                                    size: context.textSizeM,
+                                    weight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  _DatePickerWidget(
+                                    onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(
+                                        orderModel: state.orderModel.copyWith(createdDateTime: dateTime))),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              CustomText(
+                                text: 'Add contract item',
+                                color: Colors.black,
+                                size: context.textSizeM,
+                                weight: FontWeight.bold,
+                              ),
+                              ListView.builder(
+                                  itemCount: ContractItemsType.values.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
                                         setState(() {
-                                          context.orderBloc.add(
-                                              OrderUpdateEvent(
-                                                  orderModel: state.orderModel
-                                                      .copyWith(
-                                                          paymentType:
-                                                              newValue)));
-                                          selectedPaymentTypeValue = newValue!;
+                                          if (selectedContractItemsIndex.contains(index)) {
+                                            selectedContractItemsIndex = List.from(selectedContractItemsIndex)
+                                              ..remove(index);
+                                          } else {
+                                            selectedContractItemsIndex = List.from(selectedContractItemsIndex)
+                                              ..add(index);
+                                          }
+                                          context.orderBloc.add(OrderUpdateEvent(
+                                              orderModel: state.orderModel.copyWith(
+                                                  contractItems: selectedContractItemsIndex
+                                                      .map((index) => ContractItemsType.getValue(index))
+                                                      .toList())));
                                         });
                                       },
-                                    ),
-                                  ],
+                                      child: ListTile(
+                                        title: Text(ContractItemsType.getValue(index).translate()),
+                                        tileColor: Colors.green.withOpacity(0.4),
+                                        selected: selectedContractItemsIndex.contains(index) ? true : false,
+                                      ),
+                                    );
+                                  }),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: UnderlineInputBorder(),
+                                  labelText: 'Enter employer name',
                                 ),
-                                SizedBox(
-                                  height: 10,
+                                initialValue: context.currentUserBloc.state.userModel!.displayName,
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.6),
                                 ),
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: 'Created date',
-                                      color: Colors.black,
-                                      size: context.textSizeM,
-                                      weight: FontWeight.bold,
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    _DatePickerWidget(
-                                      onDateSelected: (dateTime) => context
-                                          .orderBloc
-                                          .add(OrderUpdateEvent(
-                                              orderModel: state.orderModel
-                                                  .copyWith(
-                                                      createdDateTime:
-                                                          dateTime))),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                CustomText(
-                                  text: 'Add contract item',
-                                  color: Colors.black,
-                                  size: context.textSizeM,
-                                  weight: FontWeight.bold,
-                                ),
-                                ListView.builder(
-                                    itemCount: ContractItemsType.values.length,
-                                    shrinkWrap: true,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (selectedContractItemsIndex
-                                                .contains(index)) {
-                                              selectedContractItemsIndex =
-                                                  List.from(
-                                                      selectedContractItemsIndex)
-                                                    ..remove(index);
-                                            } else {
-                                              selectedContractItemsIndex =
-                                                  List.from(
-                                                      selectedContractItemsIndex)
-                                                    ..add(index);
-                                            }
-                                            context.orderBloc.add(OrderUpdateEvent(
-                                                orderModel: state.orderModel.copyWith(
-                                                    contractItems:
-                                                        selectedContractItemsIndex
-                                                            .map((index) =>
-                                                                ContractItemsType
-                                                                    .getValue(
-                                                                        index))
-                                                            .toList())));
-                                          });
-                                        },
-                                        child: ListTile(
-                                          title: Text(
-                                              ContractItemsType.getValue(index)
-                                                  .translate()),
-                                          tileColor:
-                                              Colors.green.withOpacity(0.4),
-                                          selected: selectedContractItemsIndex
-                                                  .contains(index)
-                                              ? true
-                                              : false,
-                                        ),
-                                      );
-                                    }),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  enabled: false,
-                                  decoration: InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Enter employer name',
-                                  ),
-                                  initialValue: context.currentUserBloc.state
-                                      .userModel!.displayName,
-                                  style: TextStyle(
-                                    color: Colors.black.withOpacity(0.6),
-                                  ),
-                                  maxLines: 1,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
+                                maxLines: 1,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             );
           }),
         ),
@@ -297,47 +252,38 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                   height: 10,
                 ),
                 CustomText(
-                  text: 'Client email : ' +
-                      widget.requestState.clientRequestModel[index].email,
+                  text: 'Client email : ' + widget.requestState.clientRequestModel[index].email,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
-                  text: 'Display name : ' +
-                      widget.requestState.clientRequestModel[index].displayName,
+                  text: 'Display name : ' + widget.requestState.clientRequestModel[index].displayName,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
-                  text: 'Request type : ' +
-                      widget.requestState.clientRequestModel[index].requestType
-                          .translate(),
+                  text: 'Request type : ' + widget.requestState.clientRequestModel[index].requestType.translate(),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
-                  text: 'Description : ' +
-                      widget.requestState.clientRequestModel[index].description
-                          .value,
+                  text: 'Description : ' + widget.requestState.clientRequestModel[index].description.value,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
-                  text: 'Location : ' +
-                      widget.requestState.clientRequestModel[index].location,
+                  text: 'Location : ' + widget.requestState.clientRequestModel[index].location,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
-                  text: 'Created date time : ' +
-                      widget.requestState.clientRequestModel[index]
-                          .createdDateTime
-                          .toString(),
+                  text:
+                      'Created date time : ' + widget.requestState.clientRequestModel[index].createdDateTime.toString(),
                 ),
                 SizedBox(
                   height: 10,
@@ -396,8 +342,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                   colorScheme: ColorScheme.light(),
                 ),
                 child: BlocProvider(
-                  create: (context) =>
-                      OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+                  create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
                   child: BlocBuilder<OrderBloc, OrderState>(
                     builder: (context, state) {
                       return CalendarDatePicker(

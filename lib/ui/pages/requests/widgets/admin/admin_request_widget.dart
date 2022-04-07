@@ -86,10 +86,12 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                     );
                                   else
                                     return CreateOrderWidget(
-                                      requestState: requestsState,
-                                      //not good practice but context of CreateOrderWidget is not in scope of adminRequest in widget tree(not its parent cuz Custom dialog I think), so I use callback function
-                                      onCreate: () => context.orderBloc.add(OrderGetEvent()),
-                                    );
+                                        requestState: requestsState,
+                                        //not good practice but context of CreateOrderWidget is not in scope of adminRequest in widget tree(not its parent cuz Custom dialog I think), so I use callback function
+                                        onCreate: () {
+                                          print('order listener was called');
+                                          context.orderBloc.add(OrderGetEvent());
+                                        });
                                 },
                               );
                             else
@@ -128,6 +130,9 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                   },
                                   child: BlocBuilder<OrderBloc, OrderState>(
                                     builder: (context, orderState) {
+                                      print('this is updating , order --------------');
+                                      print(orderState.status.toString());
+                                      print(orderState.orderModels.length.toString());
                                       if (orderState.status == OrderStateStatus.loading)
                                         return Loader(
                                           width: 100,
