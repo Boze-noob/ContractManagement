@@ -2,6 +2,7 @@ import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class SendOrderDialog extends StatelessWidget {
   OrderModel orderModel;
   final void Function() orderSent;

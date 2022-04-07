@@ -19,8 +19,7 @@ class CompanyRequestsBloc
   Future<void> _getOrder(CompanyGetOrderRequestsEvent event,
       Emitter<CompanyRequestsState> emit) async {
     emit(state.copyWith(status: CompanyRequestsStateStatus.loading));
-    final result =
-        await companyRequestRepo.getOrders(event.companyId, event.receiverId);
+    final result = await companyRequestRepo.getOrders(event.receiverId);
     if (result != null)
       emit(state.copyWith(
           status: CompanyRequestsStateStatus.loaded, orderModels: result));

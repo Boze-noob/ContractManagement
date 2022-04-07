@@ -2,13 +2,13 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
-class ClientOrderDataTableWidget extends StatelessWidget {
+class CompanyOrderDataTableWidget extends StatelessWidget {
   final bool isEmpty;
   final void Function(int index) viewBtnOnTap;
   final void Function(int index) respondBtnOnTap;
   final List<OrderModel> orderModels;
 
-  ClientOrderDataTableWidget({
+  CompanyOrderDataTableWidget({
     Key? key,
     required this.isEmpty,
     required this.viewBtnOnTap,
@@ -25,12 +25,7 @@ class ClientOrderDataTableWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: active.withOpacity(.4), width: .5),
-          boxShadow: [
-            BoxShadow(
-                offset: Offset(0, 6),
-                color: lightGrey.withOpacity(.1),
-                blurRadius: 12)
-          ],
+          boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(16),
@@ -49,12 +44,7 @@ class ClientOrderDataTableWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: active.withOpacity(.4), width: .5),
-        boxShadow: [
-          BoxShadow(
-              offset: Offset(0, 6),
-              color: lightGrey.withOpacity(.1),
-              blurRadius: 12)
-        ],
+        boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(16),
@@ -108,10 +98,7 @@ class ClientOrderDataTableWidget extends StatelessWidget {
               DataCell(
                 CustomText(
                   text: orderModels[index].sentDateTime != null
-                      ? orderModels[index]
-                          .sentDateTime!
-                          .toLocal()
-                          .formatDDMMYY()
+                      ? orderModels[index].sentDateTime!.toLocal().formatDDMMYY()
                       : 'Not defined',
                 ),
               ),
@@ -123,23 +110,27 @@ class ClientOrderDataTableWidget extends StatelessWidget {
                         text: 'View',
                         textColor: active,
                         borderRadius: 20,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         borderColor: active,
                         onTap: () => viewBtnOnTap(index),
                       ),
                     ),
-                    Expanded(
-                      child: Button(
-                        text: 'Response',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        onTap: () => respondBtnOnTap(index),
-                      ),
-                    ),
+                    (() {
+                      if (orderModels[index].orderStatusType.translate() == OrderStatusType.declined.translate() ||
+                          orderModels[index].orderStatusType.translate() == OrderStatusType.accepted.translate())
+                        return SizedBox();
+                      else
+                        return Expanded(
+                          child: Button(
+                            text: 'Response',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => respondBtnOnTap(index),
+                          ),
+                        );
+                    }())
                   ],
                 ),
               ),

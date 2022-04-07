@@ -4,10 +4,10 @@ abstract class CompanyRequestsEvent {}
 
 class CompanyGetOrderRequestsEvent extends CompanyRequestsEvent {
   final String receiverId;
-  final String companyId;
 
-  CompanyGetOrderRequestsEvent(
-      {required this.receiverId, required this.companyId});
+  CompanyGetOrderRequestsEvent({
+    required this.receiverId,
+  });
 }
 
 class CompanyGetAnnouncementRequestsEvent extends CompanyRequestsEvent {}
