@@ -16,6 +16,7 @@ abstract class ServiceProvider {
   late IOrder orderRepo;
   late ICompanyRequest companyRequestRepo;
   late IRevenue revenueRepo;
+  late IWorkDiaries workDiaries;
 
   late FirebaseAuthClass firebaseAuthClass;
   late FirebaseFirestoreClass firebaseFirestoreClass;
@@ -46,6 +47,7 @@ abstract class ServiceProvider {
     companyRequestRepo = CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     revenueRepo = RevenueRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
+    workDiaries = WorkDiaries(firebaseFirestoreClass: firebaseFirestoreClass);
   }
 
   Future initFirebase() async {

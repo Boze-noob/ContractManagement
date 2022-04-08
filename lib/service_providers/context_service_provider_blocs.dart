@@ -41,10 +41,16 @@ class ContextServiceProviderBlocs extends StatelessWidget {
         ),
         BlocProvider<ContractsBloc>(
           lazy: false,
-          create: (BuildContext context) => ContractsBloc(contractsRepo: context.serviceProvider.contractsRepo)
-            ..add(
+          create: (BuildContext context) => ContractsBloc(
+            contractsRepo: context.serviceProvider.contractsRepo,
+          )..add(
               ContractsCheckDateEvent(),
             ),
+        ),
+        BlocProvider<WorkDiariesBloc>(
+          create: (BuildContext context) => WorkDiariesBloc(
+            workDiariesRepo: context.serviceProvider.workDiaries,
+          ),
         ),
       ],
       child: child,

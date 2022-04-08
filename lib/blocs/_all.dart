@@ -20,3 +20,4 @@ export 'profile_edit/_all.dart';
 export 'requests/_all.dart';
 export 'revenue/_all.dart';
 export 'send_contract_request/_all.dart';
+export 'work_diaries/_all.dart';

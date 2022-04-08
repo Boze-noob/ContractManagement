@@ -14,11 +14,7 @@ class ClientsRepo implements IClients {
   @override
   Future<List<UserModel>?> getClients() async {
     final jsonData = await firebaseFirestoreClass.getDataWithFilter("users", "role", "Client");
-    if (jsonData == null) {
-      return null;
-    } else {
-      return jsonData.map<UserModel>((json) => UserModel.fromMap(json))?.toList();
-    }
+    return jsonData == null ? null : jsonData.map<UserModel>((json) => UserModel.fromMap(json))?.toList();
   }
 
   @override

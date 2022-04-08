@@ -6,3 +6,4 @@ export 'notifications.dart';
 export 'order.dart';
 export 'comapny_request.dart';
 export 'user_auth.dart';
+export 'work_diaries.dart';
