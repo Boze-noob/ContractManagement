@@ -9,10 +9,10 @@ class WorkDiariesGetEvent extends WorkDiariesEvent {
 }
 
 class WorkDiariesUpdateEvent extends WorkDiariesEvent {
-  final WorkDiaryModel workDiaryModel;
-  final WorkingDayModel workingDayModel;
+  final WorkDiaryModel? workDiaryModel;
+  final WorkingDayModel? workingDayModel;
 
-  WorkDiariesUpdateEvent({required this.workDiaryModel, required this.workingDayModel});
+  WorkDiariesUpdateEvent({this.workDiaryModel, this.workingDayModel});
 }
 
 class WorkDiariesSubmitUpdateEvent extends WorkDiariesEvent {}

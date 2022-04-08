@@ -1,5 +1,4 @@
 import 'package:contract_management/_all.dart';
-import 'package:contract_management/blocs/navigator/navigator_event.dart';
 import 'package:contract_management/blocs/navigator/navigator_state.dart' as navigatorState;
 
 class NavigatorBloc extends Bloc<NavigatorEvent, navigatorState.NavigatorState> {
