@@ -235,9 +235,10 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                 listener: (context, state) {
                                   if (state.status == AnnouncementStateStatus.error)
                                     showInfoMessage(state.message ?? 'Error happen', context);
-                                  else if (state.status == AnnouncementStateStatus.deleted)
+                                  else if (state.status == AnnouncementStateStatus.deleted) {
                                     showInfoMessage(state.message ?? 'Deleted', context);
-                                  else if (state.status == AnnouncementStateStatus.sent)
+                                    context.announcementBloc.add(AnnouncementGetEvent());
+                                  } else if (state.status == AnnouncementStateStatus.sent)
                                     showInfoMessage(state.message ?? 'Sent', context);
                                 },
                                 child: BlocBuilder<AnnouncementBloc, AnnouncementState>(

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/ui/pages/requests/widgets/company/announcement_data_table_widget.dart';
 import 'package:flutter/material.dart';
 
 class CompanyRequestWidget extends StatefulWidget {
@@ -14,7 +15,7 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CompanyRequestsBloc(companyRequestRepo: context.serviceProvider.companyRequestRepo)
-        ..add(CompanyGetOrderRequestsEvent(receiverId: context.currentUserBloc.state.userModel!.id)),
+        ..add(CompanyGetRequestsEvent(receiverId: context.currentUserBloc.state.userModel!.id)),
       child: Container(
         child: Column(
           children: [
@@ -32,34 +33,45 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                 ],
               ),
             ),
-            Expanded(
-              child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-                  PointerDeviceKind.touch,
-                  PointerDeviceKind.mouse,
-                }),
-                child: ListView(
-                  children: [
-                    CustomText(
-                      text: 'Order list',
-                      color: Colors.black,
-                      weight: FontWeight.bold,
-                      size: context.textSizeXL,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    BlocListener<CompanyRequestsBloc, CompanyRequestsState>(
-                      listener: (context, state) {
-                        if (state.status == CompanyRequestsStateStatus.editSuccessful) {
-                          showInfoMessage(state.message ?? 'Edit successful', context);
-                          context.companyRequestsBloc.add(
-                              CompanyGetOrderRequestsEvent(receiverId: context.currentUserBloc.state.userModel!.id));
-                        }
-                      },
-                      child: BlocBuilder<CompanyRequestsBloc, CompanyRequestsState>(
+            BlocListener<CompanyRequestsBloc, CompanyRequestsState>(
+              listener: (context, state) {
+                if (state.status == CompanyRequestsStateStatus.orderEditSuccessful) {
+                  showInfoMessage(state.message ?? 'Edit successful', context);
+                  context.companyRequestsBloc
+                      .add(CompanyGetOrderRequestsEvent(receiverId: context.currentUserBloc.state.userModel!.id));
+                } else if (state.status == CompanyRequestsStateStatus.announcementEditSuccessful) {
+                  showInfoMessage(state.message ?? 'Edit successful', context);
+                  context.companyRequestsBloc.add(
+                      CompanyGetAnnouncementRequestsEvent(receiverId: context.currentUserBloc.state.userModel!.id));
+                } else if (state.status == CompanyRequestsStateStatus.error)
+                  showInfoMessage(state.message ?? 'Error happen', context);
+              },
+              child: Expanded(
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                    PointerDeviceKind.touch,
+                    PointerDeviceKind.mouse,
+                  }),
+                  child: ListView(
+                    children: [
+                      CustomText(
+                        text: 'Order list',
+                        color: Colors.black,
+                        weight: FontWeight.bold,
+                        size: context.textSizeXL,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      BlocBuilder<CompanyRequestsBloc, CompanyRequestsState>(
                         builder: (parentContext, companyRequestsState) {
+                          if (companyRequestsState.status == CompanyRequestsStateStatus.loading)
+                            return Loader(
+                              width: 100,
+                              height: 100,
+                              color: active,
+                            );
                           return CompanyOrderDataTableWidget(
                             orderModels: companyRequestsState.orderModels,
                             viewBtnOnTap: (int index) => showDialog(
@@ -89,8 +101,47 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                           );
                         },
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      CustomText(
+                        text: 'Announcement list',
+                        color: Colors.black,
+                        weight: FontWeight.bold,
+                        size: context.textSizeXL,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      BlocBuilder<CompanyRequestsBloc, CompanyRequestsState>(
+                        builder: (context, companyRequestsState) {
+                          if (companyRequestsState.status == CompanyRequestsStateStatus.loading)
+                            return Loader(
+                              width: 100,
+                              height: 100,
+                              color: active,
+                            );
+                          return CompanyAnnouncementDataTableWidget(
+                            isEmpty: companyRequestsState.announcementsModels.isEmpty,
+                            viewBtnOnTap: (index) => showDialog(
+                              context: context,
+                              builder: (context) => CompanyViewAnnouncementDialog(
+                                announcementModel: companyRequestsState.announcementsModels[index],
+                              ),
+                            ),
+                            //TODO add work diary
+                            inProgressBtnOnTap: (index) => context.companyRequestsBloc.add(
+                                CompanyEditAnnouncementRequestsEvent(
+                                    announcementStatusType: AnnouncementStatusType.inProgress,
+                                    announcementId: companyRequestsState.announcementsModels[index].id)),
+                            doneBtnOnTap: (index) => null,
+                            announcementsModels: companyRequestsState.announcementsModels,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

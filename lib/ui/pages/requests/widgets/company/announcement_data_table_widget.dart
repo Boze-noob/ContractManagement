@@ -2,19 +2,19 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
-class AnnouncementDataTableWidget extends StatelessWidget {
+class CompanyAnnouncementDataTableWidget extends StatelessWidget {
   final bool isEmpty;
   final void Function(int index) viewBtnOnTap;
-  final void Function(int index) sendBtnOnTap;
-  final void Function(int index) deleteBtnOnTap;
+  final void Function(int index) inProgressBtnOnTap;
+  final void Function(int index) doneBtnOnTap;
   final List<AnnouncementModel> announcementsModels;
 
-  AnnouncementDataTableWidget({
+  CompanyAnnouncementDataTableWidget({
     Key? key,
     required this.isEmpty,
     required this.viewBtnOnTap,
-    required this.sendBtnOnTap,
-    required this.deleteBtnOnTap,
+    required this.inProgressBtnOnTap,
+    required this.doneBtnOnTap,
     required this.announcementsModels,
   }) : super(key: key);
 
@@ -61,9 +61,6 @@ class AnnouncementDataTableWidget extends StatelessWidget {
             size: ColumnSize.L,
           ),
           DataColumn(
-            label: Text('Receiver name'),
-          ),
-          DataColumn(
             label: Text('Employer name'),
           ),
           DataColumn(
@@ -86,9 +83,6 @@ class AnnouncementDataTableWidget extends StatelessWidget {
             cells: [
               DataCell(
                 CustomText(text: announcementsModels[index].orderId),
-              ),
-              DataCell(
-                CustomText(text: announcementsModels[index].receiverName),
               ),
               DataCell(
                 CustomText(
@@ -123,32 +117,24 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                         onTap: () => viewBtnOnTap(index),
                       ),
                     ),
-                    Visibility(
-                      visible: announcementsModels[index].announcementStatusType.translate() ==
-                          AnnouncementStatusType.waiting.translate(),
-                      child: Expanded(
-                        child: Button(
-                          text: 'Send',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => sendBtnOnTap(index),
-                        ),
+                    Expanded(
+                      child: Button(
+                        text: 'In progress',
+                        textColor: active,
+                        borderRadius: 20,
+                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        borderColor: active,
+                        onTap: () => viewBtnOnTap(index),
                       ),
                     ),
-                    Visibility(
-                      visible: announcementsModels[index].announcementStatusType.translate() ==
-                          AnnouncementStatusType.waiting.translate(),
-                      child: Expanded(
-                        child: Button(
-                          text: 'Delete',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => deleteBtnOnTap(index),
-                        ),
+                    Expanded(
+                      child: Button(
+                        text: 'Done',
+                        textColor: active,
+                        borderRadius: 20,
+                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        borderColor: active,
+                        onTap: () => viewBtnOnTap(index),
                       ),
                     ),
                   ],

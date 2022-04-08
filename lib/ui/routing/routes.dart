@@ -30,6 +30,9 @@ const myProfilePageRoute = "/myProfile";
 const myContractPageDisplayName = "My contract";
 const myContractPageRoute = "/myContract";
 
+const workDiariesPageDisplayName = "Work Diaries";
+const workDiariesPageRoute = "/workDiaries";
+
 const navigationWrapperRoute = "/navigationWrapper";
 
 const activeContracts = "Active contracts";
@@ -64,6 +67,7 @@ List<MenuItem> clientMenuItemRoutes = [
 
 List<MenuItem> companyMenuItemRoutes = [
   MenuItem(requestsPageDisplayName, requestsPageRoute),
+  MenuItem(workDiariesPageDisplayName, workDiariesPageRoute),
   MenuItem(myProfilePageDisplayName, myProfilePageRoute),
   MenuItem(myContractPageDisplayName, myContractPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),

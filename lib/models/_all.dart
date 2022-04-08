@@ -11,3 +11,4 @@ export 'notification_model.dart';
 export 'order_model.dart';
 export 'revenue_model.dart';
 export 'user_model.dart';
+export 'work_diary_model/_all.dart';

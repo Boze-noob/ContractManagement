@@ -10,3 +10,4 @@ export 'overview/_all.dart';
 export 'requests/_all.dart';
 export 'my_contract/_all.dart';
 export 'my_profile/_all.dart';
+export 'work_diaries/_all.dart';

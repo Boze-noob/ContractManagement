@@ -55,7 +55,7 @@ class AnnouncementModel {
       'price': price,
       'createdDateTime': createdDateTime.toUtc(),
       'employerName': employerName,
-      'announcementStatusType': announcementStatusType,
+      'announcementStatusType': announcementStatusType.index,
     };
   }
 
@@ -69,7 +69,7 @@ class AnnouncementModel {
       price: map['price'],
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
       employerName: map['employerName'],
-      announcementStatusType: map['announcementStatusType'],
+      announcementStatusType: AnnouncementStatusType.getValue(map['announcementStatusType']),
     );
   }
 }

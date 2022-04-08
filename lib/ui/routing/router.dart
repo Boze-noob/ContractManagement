@@ -21,6 +21,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(MyProfilePage());
     case myContractPageRoute:
       return _getPageRoute(MyContractPage());
+    case workDiariesPageRoute:
+      return _getPageRoute(WorkDiariesPage());
 
     default:
       return _getPageRoute(OverviewPage());
