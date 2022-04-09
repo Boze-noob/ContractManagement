@@ -65,7 +65,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.projectDescription,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _textStyle(),
+              style: _inputFieldTextStyle(),
               decoration: _inputDecoration('Project description'),
             ),
             SizedBox(
@@ -75,7 +75,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.interferences,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _textStyle(),
+              style: _inputFieldTextStyle(),
               decoration: _inputDecoration('Interferences'),
             ),
             SizedBox(
@@ -85,7 +85,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.additionalRequirements,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _textStyle(),
+              style: _inputFieldTextStyle(),
               decoration: _inputDecoration('Additional requirements'),
             ),
             SizedBox(
@@ -95,7 +95,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.specialCases,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _textStyle(),
+              style: _inputFieldTextStyle(),
               decoration: _inputDecoration('Special cases'),
             ),
             SizedBox(
@@ -125,7 +125,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
   }
 }
 
-TextStyle _textStyle() {
+TextStyle _inputFieldTextStyle() {
   return TextStyle(
     fontFamily: AppFonts.quicksandBold,
     fontSize: 14,

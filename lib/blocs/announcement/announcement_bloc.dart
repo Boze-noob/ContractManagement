@@ -35,7 +35,7 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
         price: event.orderModel.price,
         createdDateTime: event.orderModel.createdDateTime,
         employerName: event.employerName,
-        announcementStatusType: AnnouncementStatusType.waiting,
+        announcementStatusType: AnnouncementStatusType.waiting, endDateTime: event.orderModel.completionDateTime,
       );
       final result = await announcementRepo.createAnnouncement(announcementModel);
       if (result)

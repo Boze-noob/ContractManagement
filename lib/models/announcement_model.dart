@@ -1,4 +1,5 @@
 import 'package:contract_management/_all.dart';
+import 'package:flutter/services.dart';
 
 class AnnouncementModel {
   final String id;
@@ -8,6 +9,7 @@ class AnnouncementModel {
   final List<ContractItemsType> contractItems;
   final String price;
   final DateTime createdDateTime;
+  final DateTime endDateTime;
   final String employerName;
   final AnnouncementStatusType announcementStatusType;
 
@@ -19,6 +21,7 @@ class AnnouncementModel {
       required this.contractItems,
       required this.price,
       required this.createdDateTime,
+      required this.endDateTime,
       required this.employerName,
       required this.announcementStatusType});
 
@@ -30,6 +33,7 @@ class AnnouncementModel {
     List<ContractItemsType>? contractItems,
     String? price,
     DateTime? createdDateTime,
+    DateTime? endDateTime,
     String? employerName,
     AnnouncementStatusType? announcementStatusType,
   }) =>
@@ -41,6 +45,7 @@ class AnnouncementModel {
         contractItems: contractItems ?? this.contractItems,
         price: price ?? this.price,
         createdDateTime: createdDateTime ?? this.createdDateTime,
+        endDateTime: endDateTime ?? this.endDateTime,
         employerName: employerName ?? this.employerName,
         announcementStatusType: announcementStatusType ?? this.announcementStatusType,
       );
@@ -54,6 +59,7 @@ class AnnouncementModel {
       'contractItems': ContractItemsType.getIndexValueList(contractItems),
       'price': price,
       'createdDateTime': createdDateTime.toUtc(),
+      'endDateTime': endDateTime.toUtc(),
       'employerName': employerName,
       'announcementStatusType': announcementStatusType.index,
     };
@@ -68,6 +74,7 @@ class AnnouncementModel {
       contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
       price: map['price'],
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+      endDateTime: map['endDateTime'] != null ? map['endDateTime'].toDate : null,
       employerName: map['employerName'],
       announcementStatusType: AnnouncementStatusType.getValue(map['announcementStatusType']),
     );

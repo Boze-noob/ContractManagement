@@ -28,7 +28,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           adminRequestType: AdminRequestType.order,
           clientName: '',
           id: '',
-          price: '',
+          price: '', completionDateTime: DateTime.now(),
         ),
         orderModels: List.empty(),
         companiesForOrder: {},

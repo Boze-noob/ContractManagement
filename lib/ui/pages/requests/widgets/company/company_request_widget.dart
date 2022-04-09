@@ -131,10 +131,24 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                               ),
                             ),
                             //TODO add work diary
-                            inProgressBtnOnTap: (index) => context.companyRequestsBloc.add(
-                                CompanyEditAnnouncementRequestsEvent(
-                                    announcementStatusType: AnnouncementStatusType.inProgress,
-                                    announcementId: companyRequestsState.announcementsModels[index].id)),
+                            inProgressBtnOnTap: (index) {
+                              context.companyRequestsBloc.add(CompanyEditAnnouncementRequestsEvent(
+                                  announcementStatusType: AnnouncementStatusType.inProgress,
+                                  announcementId: companyRequestsState.announcementsModels[index].id));
+                              context.workDiariesBloc.add(
+                                WorkDiariesCreateEvent(
+                                  workDiaryModel: WorkDiaryModel(
+                                    id: generateRandomId(),
+                                    startDate: DateTime.now(),
+                                    endDate: companyRequestsState.announcementsModels[index].endDateTime,
+                                    announcementId: companyRequestsState.announcementsModels[index].id,
+                                    workingDayModels: List.empty(),
+                                    companyId:
+                                        companyRequestsState.announcementsModels[index].receiverId ?? 'Not defined',
+                                  ),
+                                ),
+                              );
+                            },
                             doneBtnOnTap: (index) => null,
                             announcementsModels: companyRequestsState.announcementsModels,
                           );

@@ -1,16 +1,16 @@
 class WorkingDayModel {
   final DateTime dateTime;
-  final String weather;
-  final String employers;
-  final String machines;
-  final String materials;
+  final String? weather;
+  final String? employers;
+  final String? machines;
+  final String? materials;
 
   WorkingDayModel({
     required this.dateTime,
-    required this.weather,
-    required this.employers,
-    required this.machines,
-    required this.materials,
+    this.weather,
+    this.employers,
+    this.machines,
+    this.materials,
   });
 
   WorkingDayModel copyWith({

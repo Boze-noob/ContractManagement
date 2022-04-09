@@ -9,6 +9,7 @@ class OrderModel {
   final String orderLocation;
   final PaymentType paymentType;
   final DateTime createdDateTime;
+  final completionDateTime;
   final DateTime? sentDateTime;
   final List<ContractItemsType> contractItems;
   final String employerName;
@@ -25,6 +26,7 @@ class OrderModel {
     required this.orderLocation,
     required this.paymentType,
     required this.createdDateTime,
+    required this.completionDateTime,
     this.sentDateTime,
     required this.contractItems,
     required this.employerName,
@@ -43,6 +45,7 @@ class OrderModel {
     PaymentType? paymentType,
     DateTime? createdDateTime,
     DateTime? sentDateTime,
+    DateTime? completionDateTime,
     List<ContractItemsType>? contractItems,
     String? employerName,
     OrderStatusType? orderStatusType,
@@ -59,6 +62,7 @@ class OrderModel {
         paymentType: paymentType ?? this.paymentType,
         createdDateTime: createdDateTime ?? this.createdDateTime,
         sentDateTime: sentDateTime ?? this.sentDateTime,
+        completionDateTime: completionDateTime ?? this.completionDateTime,
         contractItems: contractItems ?? this.contractItems,
         employerName: employerName ?? this.employerName,
         orderStatusType: orderStatusType ?? this.orderStatusType,
@@ -94,13 +98,9 @@ class OrderModel {
       receiverId: map['receiverId'] ?? null,
       orderLocation: map['orderLocation'],
       paymentType: PaymentType.getValue(map['paymentType']),
-      createdDateTime: map['createdDateTime'] != null
-          ? map['createdDateTime'].toDate()
-          : null,
-      sentDateTime:
-          map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
-      contractItems: ContractItemsType.getContractItemsFromIndexList(
-          List<int>.from(map['contractItems'])),
+      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
+      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
       employerName: map['employerName'],
       orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
       adminRequestType: AdminRequestType.getValue(map['adminRequestType']),

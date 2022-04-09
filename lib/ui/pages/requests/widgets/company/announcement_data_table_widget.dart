@@ -124,7 +124,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                         borderRadius: 20,
                         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         borderColor: active,
-                        onTap: () => viewBtnOnTap(index),
+                        onTap: () => inProgressBtnOnTap(index),
                       ),
                     ),
                     Expanded(
@@ -134,7 +134,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                         borderRadius: 20,
                         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         borderColor: active,
-                        onTap: () => viewBtnOnTap(index),
+                        onTap: () => doneBtnOnTap(index),
                       ),
                     ),
                   ],
