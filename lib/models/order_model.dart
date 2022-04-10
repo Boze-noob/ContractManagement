@@ -81,6 +81,7 @@ class OrderModel {
       'paymentType': paymentType.index,
       'createdDateTime': createdDateTime.toUtc(),
       'sentDateTime': sentDateTime != null ? sentDateTime!.toUtc() : null,
+      'completionDateTime': completionDateTime != null ? completionDateTime.toUtc() : null,
       'contractItems': ContractItemsType.getIndexValueList(contractItems),
       'employerName': employerName,
       'orderStatusType': orderStatusType.index,

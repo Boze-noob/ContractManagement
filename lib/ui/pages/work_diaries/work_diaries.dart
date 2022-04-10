@@ -45,6 +45,7 @@ class _WorkDiariesPageState extends State<WorkDiariesPage> {
               if (state.index == 0)
                 return Container(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Obx(
                         () => Row(
@@ -118,7 +119,7 @@ class _WorkDiariesPageState extends State<WorkDiariesPage> {
                     ],
                   ),
                 );
-              return WorkDiaryEdit();
+              return Column(children: [Expanded(child: WorkDiaryEdit())]);
             },
           );
         },

@@ -1,5 +1,4 @@
 import 'package:contract_management/_all.dart';
-import 'package:flutter/services.dart';
 
 class AnnouncementModel {
   final String id;
@@ -10,7 +9,6 @@ class AnnouncementModel {
   final String price;
   final DateTime createdDateTime;
   final DateTime completionDateTime;
-  final DateTime endDateTime;
   final String employerName;
   final AnnouncementStatusType announcementStatusType;
 
@@ -23,7 +21,6 @@ class AnnouncementModel {
       required this.price,
       required this.createdDateTime,
       required this.completionDateTime,
-      required this.endDateTime,
       required this.employerName,
       required this.announcementStatusType});
 
@@ -49,7 +46,6 @@ class AnnouncementModel {
         price: price ?? this.price,
         createdDateTime: createdDateTime ?? this.createdDateTime,
         completionDateTime: completionDateTime ?? this.completionDateTime,
-        endDateTime: endDateTime ?? this.endDateTime,
         employerName: employerName ?? this.employerName,
         announcementStatusType: announcementStatusType ?? this.announcementStatusType,
       );
@@ -64,7 +60,6 @@ class AnnouncementModel {
       'price': price,
       'createdDateTime': createdDateTime.toUtc(),
       'completionDateTime': completionDateTime.toUtc(),
-      'endDateTime': endDateTime.toUtc(),
       'employerName': employerName,
       'announcementStatusType': announcementStatusType.index,
     };
@@ -79,8 +74,7 @@ class AnnouncementModel {
       contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
       price: map['price'],
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
-      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'] : null,
-      endDateTime: map['endDateTime'] != null ? map['endDateTime'].toDate : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
       employerName: map['employerName'],
       announcementStatusType: AnnouncementStatusType.getValue(map['announcementStatusType']),
     );

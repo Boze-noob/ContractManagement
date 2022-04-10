@@ -10,7 +10,8 @@ class WorkDiaryModel {
   final String? additionalRequirements;
   final String? specialCases;
   final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? endDate;
+  final DateTime completionDateTime;
   final List<WorkingDayModel> workingDayModels;
 
   WorkDiaryModel({
@@ -23,7 +24,8 @@ class WorkDiaryModel {
     this.additionalRequirements,
     this.specialCases,
     required this.startDate,
-    required this.endDate,
+    this.endDate,
+    required this.completionDateTime,
     required this.workingDayModels,
   });
 
@@ -38,6 +40,7 @@ class WorkDiaryModel {
     String? specialCases,
     DateTime? startDate,
     DateTime? endDate,
+    DateTime? completionDateTime,
     List<WorkingDayModel>? workingDayModels,
   }) =>
       WorkDiaryModel(
@@ -46,6 +49,7 @@ class WorkDiaryModel {
         companyId: companyId ?? this.companyId,
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
+        completionDateTime: completionDateTime ?? this.completionDateTime,
         workingDayModels: workingDayModels ?? this.workingDayModels,
         projectName: projectName ?? this.projectName,
         projectDescription: projectDescription ?? this.projectDescription,
@@ -65,7 +69,8 @@ class WorkDiaryModel {
       'additionalRequirements': additionalRequirements,
       'specialCases': specialCases,
       'startDate': startDate.toUtc(),
-      'endDate': endDate.toUtc(),
+      'endDate': endDate != null ? endDate!.toUtc() : null,
+      'completionDateTime': completionDateTime.toUtc(),
       //TODO check this
       'workingDayModels': workingDayModels.map((items) => items.toMap()).toList(),
     };
@@ -83,6 +88,7 @@ class WorkDiaryModel {
       specialCases: map['specialCases'],
       startDate: map['startDate'] != null ? map['startDate'].toDate() : null,
       endDate: map['endDate'] != null ? map['endDate'].toDate() : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
       //TODO check this
       workingDayModels: List<WorkingDayModel>.from(map['workingDayModels'])
           .map<WorkingDayModel>((item) => WorkingDayModel.fromMap(item))

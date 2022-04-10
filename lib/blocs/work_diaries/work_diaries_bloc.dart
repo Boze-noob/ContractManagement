@@ -33,14 +33,24 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
   }
 
   Future<void> _submitUpdate(WorkDiariesSubmitUpdateEvent event, Emitter<WorkDiariesState> emit) async {
-    if (state.workDiaryModel != null) {
-      final result = await workDiariesRepo.editDiary(state.workDiaryModel!);
+    //If its first working day
+    if (event.workingDayModels != null && state.workDiaryModel != null) {
+      final WorkDiaryModel workDiaryModel = state.workDiaryModel!.copyWith(workingDayModels: event.workingDayModels!);
+      final result = await workDiariesRepo.editDiary(workDiaryModel);
       if (result)
         emit(state.copyWith(status: WorkDiariesStateStatus.updateSuccessful, message: 'Update successful'));
       else
         emit(state.copyWith(status: WorkDiariesStateStatus.error, message: 'Error happen'));
-    } else
-      emit(state.copyWith(status: WorkDiariesStateStatus.error, message: 'Error happen, please try again'));
+    } else {
+      if (state.workDiaryModel != null) {
+        final result = await workDiariesRepo.editDiary(state.workDiaryModel!);
+        if (result)
+          emit(state.copyWith(status: WorkDiariesStateStatus.updateSuccessful, message: 'Update successful'));
+        else
+          emit(state.copyWith(status: WorkDiariesStateStatus.error, message: 'Error happen'));
+      } else
+        emit(state.copyWith(status: WorkDiariesStateStatus.error, message: 'Error happen, please try again'));
+    }
   }
 
   Future<void> _create(WorkDiariesCreateEvent event, Emitter<WorkDiariesState> emit) async {

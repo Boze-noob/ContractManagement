@@ -66,6 +66,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
               style: _inputFieldTextStyle(),
+              maxLines: 3,
               decoration: _inputDecoration('Project description'),
             ),
             SizedBox(
@@ -76,6 +77,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
               style: _inputFieldTextStyle(),
+              maxLines: 3,
               decoration: _inputDecoration('Interferences'),
             ),
             SizedBox(
@@ -86,6 +88,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
               style: _inputFieldTextStyle(),
+              maxLines: 3,
               decoration: _inputDecoration('Additional requirements'),
             ),
             SizedBox(
@@ -96,7 +99,14 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
               style: _inputFieldTextStyle(),
+              maxLines: 3,
               decoration: _inputDecoration('Special cases'),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            _DatePickerWidget(
+              onDateSelected: (dateTime) => null,
             ),
             SizedBox(
               height: 8,
@@ -110,7 +120,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'End date: ' + workDiariesState.workDiaryModel!.endDate.toLocal().formatDDMMYY(),
+              text: 'Completion date: ' + workDiariesState.workDiaryModel!.completionDateTime.toLocal().formatDDMMYY(),
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -142,4 +152,115 @@ InputDecoration _inputDecoration(String labelTxt) {
     ),
     border: OutlineInputBorder(),
   );
+}
+
+class _DatePickerWidget extends StatefulWidget {
+  final void Function(DateTime dateTime) onDateSelected;
+  _DatePickerWidget({
+    required this.onDateSelected,
+  }) : super();
+
+  @override
+  State<_DatePickerWidget> createState() => _DatePickerWidgetState();
+}
+
+class _DatePickerWidgetState extends State<_DatePickerWidget> {
+  late DateTime selectedDateTime;
+  late DateTime dateTimeTxtValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.zero,
+            title: Text(
+              'Choose date',
+              style: TextStyle(
+                fontFamily: AppFonts.quicksandBold,
+              ),
+            ),
+            content: Container(
+              width: 300,
+              height: 300,
+              child: Theme(
+                data: ThemeData(
+                  colorScheme: ColorScheme.light(),
+                ),
+                child: BlocProvider(
+                  create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+                  child: BlocBuilder<OrderBloc, OrderState>(
+                    builder: (context, state) {
+                      return CalendarDatePicker(
+                        firstDate: DateTime(1960),
+                        lastDate: DateTime.now(),
+                        initialDate: selectedDateTime,
+                        onDateChanged: (DateTime dateTime) {
+                          setState(() {
+                            selectedDateTime = dateTime;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  dateTimeTxtValue = selectedDateTime;
+                  widget.onDateSelected(selectedDateTime);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Select',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontFamily: AppFonts.quicksandBold,
+                  ),
+                ),
+              )
+            ],
+          );
+        },
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                dateTimeTxtValue.formatDDMMYY().toString(),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontFamily: AppFonts.quicksandRegular,
+                ),
+              ),
+              const Icon(
+                Icons.arrow_drop_down_sharp,
+                color: Color(0xFF707070),
+              ),
+              const SizedBox(height: 10),
+              Line.horizontal(
+                color: Colors.grey,
+                thickness: 0.5,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    selectedDateTime = DateTime.now();
+    dateTimeTxtValue = DateTime.now();
+    super.initState();
+  }
 }

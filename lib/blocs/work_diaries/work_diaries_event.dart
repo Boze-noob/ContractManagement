@@ -15,7 +15,11 @@ class WorkDiariesUpdateEvent extends WorkDiariesEvent {
   WorkDiariesUpdateEvent({this.workDiaryModel, this.workingDayModel});
 }
 
-class WorkDiariesSubmitUpdateEvent extends WorkDiariesEvent {}
+class WorkDiariesSubmitUpdateEvent extends WorkDiariesEvent {
+  final List<WorkingDayModel>? workingDayModels;
+
+  WorkDiariesSubmitUpdateEvent(this.workingDayModels);
+}
 
 class WorkDiariesCreateEvent extends WorkDiariesEvent {
   final WorkDiaryModel workDiaryModel;

@@ -15,7 +15,7 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
       builder: (context, state) {
         context.workDiariesBloc
             .add(WorkDiariesUpdateEvent(workDiaryModel: state.workDiaryModel, workingDayModel: state.workingDayModel));
-        if (state.workDiaryModels.isEmpty || state.workDiaryModel == null)
+        if (state.workDiaryModel!.workingDayModels.isEmpty)
           return Center(
             child: CustomText(
               text: 'No date to show',
@@ -86,12 +86,19 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
   void initState() {
     super.initState();
     //Creating new empty work day
+    //TODO we must submit this day
     if (context.workDiariesBloc.state.workDiaryModel != null) {
-      DateTime lastWorkingDayDate = context.workDiariesBloc.state.workDiaryModel!.workingDayModels.last.dateTime;
-      num comparisonResult = lastWorkingDayDate.compareTo(DateTime.now());
-      if (comparisonResult < 0)
+      if (context.workDiariesBloc.state.workDiaryModel!.workingDayModels.isEmpty) {
+        WorkingDayModel(dateTime: DateTime.now()), workDiaryModel: null)
         context.workDiariesBloc.add(
-            WorkDiariesUpdateEvent(workingDayModel: WorkingDayModel(dateTime: DateTime.now()), workDiaryModel: null));
+            WorkDiariesSubmitUpdateEvent();
+      } else {
+        DateTime lastWorkingDayDate = context.workDiariesBloc.state.workDiaryModel!.workingDayModels.last.dateTime;
+        num comparisonResult = lastWorkingDayDate.compareTo(DateTime.now());
+        if (comparisonResult < 0)
+          context.workDiariesBloc.add(
+              WorkDiariesSubmitUpdateEvent(workingDayModel: WorkingDayModel(dateTime: DateTime.now()), workDiaryModel: null));
+      }
     }
   }
 }
@@ -109,6 +116,7 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
     return BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
       builder: (context, state) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
               height: 20,

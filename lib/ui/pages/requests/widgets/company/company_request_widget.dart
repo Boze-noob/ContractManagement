@@ -140,7 +140,8 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                                   workDiaryModel: WorkDiaryModel(
                                     id: generateRandomId(),
                                     startDate: DateTime.now(),
-                                    endDate: companyRequestsState.announcementsModels[index].endDateTime,
+                                    completionDateTime:
+                                        companyRequestsState.announcementsModels[index].completionDateTime,
                                     announcementId: companyRequestsState.announcementsModels[index].id,
                                     workingDayModels: List.empty(),
                                     companyId:
