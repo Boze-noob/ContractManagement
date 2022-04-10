@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:contract_management/_all.dart';
-import 'package:contract_management/ui/pages/work_diaries/widgets/work_diary_edit.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:contract_management/blocs/navigator/navigator_state.dart' as navigatorState;
 
 class WorkDiariesPage extends StatefulWidget {
