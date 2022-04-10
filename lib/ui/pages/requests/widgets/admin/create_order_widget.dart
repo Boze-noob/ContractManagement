@@ -169,6 +169,26 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                               SizedBox(
                                 height: 20,
                               ),
+                              Row(
+                                children: [
+                                  CustomText(
+                                    text: 'Completion date',
+                                    color: Colors.black,
+                                    size: context.textSizeM,
+                                    weight: FontWeight.bold,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  _DatePickerWidget(
+                                    onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(
+                                        orderModel: state.orderModel.copyWith(completionDateTime: dateTime))),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               CustomText(
                                 text: 'Add contract item',
                                 color: Colors.black,

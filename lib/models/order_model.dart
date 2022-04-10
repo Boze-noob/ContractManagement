@@ -9,7 +9,7 @@ class OrderModel {
   final String orderLocation;
   final PaymentType paymentType;
   final DateTime createdDateTime;
-  final completionDateTime;
+  final DateTime completionDateTime;
   final DateTime? sentDateTime;
   final List<ContractItemsType> contractItems;
   final String employerName;

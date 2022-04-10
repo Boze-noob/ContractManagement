@@ -9,6 +9,7 @@ class AnnouncementModel {
   final List<ContractItemsType> contractItems;
   final String price;
   final DateTime createdDateTime;
+  final DateTime completionDateTime;
   final DateTime endDateTime;
   final String employerName;
   final AnnouncementStatusType announcementStatusType;
@@ -21,6 +22,7 @@ class AnnouncementModel {
       required this.contractItems,
       required this.price,
       required this.createdDateTime,
+      required this.completionDateTime,
       required this.endDateTime,
       required this.employerName,
       required this.announcementStatusType});
@@ -33,6 +35,7 @@ class AnnouncementModel {
     List<ContractItemsType>? contractItems,
     String? price,
     DateTime? createdDateTime,
+    DateTime? completionDateTime,
     DateTime? endDateTime,
     String? employerName,
     AnnouncementStatusType? announcementStatusType,
@@ -45,6 +48,7 @@ class AnnouncementModel {
         contractItems: contractItems ?? this.contractItems,
         price: price ?? this.price,
         createdDateTime: createdDateTime ?? this.createdDateTime,
+        completionDateTime: completionDateTime ?? this.completionDateTime,
         endDateTime: endDateTime ?? this.endDateTime,
         employerName: employerName ?? this.employerName,
         announcementStatusType: announcementStatusType ?? this.announcementStatusType,
@@ -59,6 +63,7 @@ class AnnouncementModel {
       'contractItems': ContractItemsType.getIndexValueList(contractItems),
       'price': price,
       'createdDateTime': createdDateTime.toUtc(),
+      'completionDateTime': completionDateTime.toUtc(),
       'endDateTime': endDateTime.toUtc(),
       'employerName': employerName,
       'announcementStatusType': announcementStatusType.index,
@@ -74,6 +79,7 @@ class AnnouncementModel {
       contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
       price: map['price'],
       createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'] : null,
       endDateTime: map['endDateTime'] != null ? map['endDateTime'].toDate : null,
       employerName: map['employerName'],
       announcementStatusType: AnnouncementStatusType.getValue(map['announcementStatusType']),

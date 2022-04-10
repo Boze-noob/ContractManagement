@@ -71,6 +71,14 @@ class ViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
+                text: 'Completion date time: ${orderModel.completionDateTime.formatDDMMYY().value}',
+                weight: FontWeight.normal,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
                 text:
                     'Sent date time: ${orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined yet'}',
                 weight: FontWeight.normal,

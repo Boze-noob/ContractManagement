@@ -71,6 +71,14 @@ class ViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
+                text: 'Completion date time: ${announcementModel.completionDateTime.formatDDMMYY().value}',
+                weight: FontWeight.normal,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
                 text: 'Price: ${announcementModel.price.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,

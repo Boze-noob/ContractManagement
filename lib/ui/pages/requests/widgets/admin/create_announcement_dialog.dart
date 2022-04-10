@@ -76,6 +76,14 @@ class CreateAnnouncementDialog extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
+              CustomText(
+                text: 'Completion date time: ${orderModel.completionDateTime.formatDDMMYY().value}',
+                weight: FontWeight.normal,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Divider(
                 color: Colors.black12.withOpacity(0.6),
               ),
