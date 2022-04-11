@@ -54,7 +54,8 @@ class WorkDiaryModel {
         projectName: projectName ?? this.projectName,
         projectDescription: projectDescription ?? this.projectDescription,
         interferences: interferences ?? this.interferences,
-        additionalRequirements: additionalRequirements ?? this.additionalRequirements,
+        additionalRequirements:
+            additionalRequirements ?? this.additionalRequirements,
         specialCases: specialCases ?? this.specialCases,
       );
 
@@ -72,7 +73,8 @@ class WorkDiaryModel {
       'endDate': endDate != null ? endDate!.toUtc() : null,
       'completionDateTime': completionDateTime.toUtc(),
       //TODO check this
-      'workingDayModels': workingDayModels.map((items) => items.toMap()).toList(),
+      'workingDayModels':
+          workingDayModels.map((items) => items.toMap()).toList(),
     };
   }
 
@@ -88,9 +90,10 @@ class WorkDiaryModel {
       specialCases: map['specialCases'],
       startDate: map['startDate'] != null ? map['startDate'].toDate() : null,
       endDate: map['endDate'] != null ? map['endDate'].toDate() : null,
-      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
-      //TODO check this
-      workingDayModels: List<WorkingDayModel>.from(map['workingDayModels'])
+      completionDateTime: map['completionDateTime'] != null
+          ? map['completionDateTime'].toDate()
+          : null,
+      workingDayModels: map['workingDayModels']
           .map<WorkingDayModel>((item) => WorkingDayModel.fromMap(item))
           .toList(),
     );

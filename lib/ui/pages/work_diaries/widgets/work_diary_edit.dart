@@ -33,11 +33,15 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
         return ListView(
           shrinkWrap: true,
           children: [
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
-                  text: workDiariesState.workDiaryModel!.projectName ?? 'Project name not provided',
+                  text: workDiariesState.workDiaryModel!.projectName ??
+                      'Project name not provided',
                 ),
                 IconButton(onPressed: () => null, icon: Icon(Icons.create)),
               ],
@@ -54,7 +58,8 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Announcement ID' + workDiariesState.workDiaryModel!.announcementId,
+              text: 'Announcement ID' +
+                  workDiariesState.workDiaryModel!.announcementId,
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -65,9 +70,10 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.projectDescription,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
-              decoration: _inputDecoration('Project description'),
+              decoration:
+                  TextFormFieldStyle.inputDecoration('Project description'),
             ),
             SizedBox(
               height: 8,
@@ -76,20 +82,22 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.interferences,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
-              decoration: _inputDecoration('Interferences'),
+              decoration: TextFormFieldStyle.inputDecoration('Interferences'),
             ),
             SizedBox(
               height: 8,
             ),
             TextFormField(
-              initialValue: workDiariesState.workDiaryModel!.additionalRequirements,
+              initialValue:
+                  workDiariesState.workDiaryModel!.additionalRequirements,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
-              decoration: _inputDecoration('Additional requirements'),
+              decoration:
+                  TextFormFieldStyle.inputDecoration('Additional requirements'),
             ),
             SizedBox(
               height: 8,
@@ -98,9 +106,9 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue: workDiariesState.workDiaryModel!.specialCases,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
-              decoration: _inputDecoration('Special cases'),
+              decoration: TextFormFieldStyle.inputDecoration('Special cases'),
             ),
             SizedBox(
               height: 8,
@@ -112,7 +120,10 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Start date: ' + workDiariesState.workDiaryModel!.startDate.toLocal().formatDDMMYY(),
+              text: 'Start date: ' +
+                  workDiariesState.workDiaryModel!.startDate
+                      .toLocal()
+                      .formatDDMMYY(),
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -120,7 +131,10 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Completion date: ' + workDiariesState.workDiaryModel!.completionDateTime.toLocal().formatDDMMYY(),
+              text: 'Completion date: ' +
+                  workDiariesState.workDiaryModel!.completionDateTime
+                      .toLocal()
+                      .formatDDMMYY(),
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -133,25 +147,6 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
       },
     );
   }
-}
-
-TextStyle _inputFieldTextStyle() {
-  return TextStyle(
-    fontFamily: AppFonts.quicksandBold,
-    fontSize: 14,
-    color: Colors.black,
-  );
-}
-
-InputDecoration _inputDecoration(String labelTxt) {
-  return InputDecoration(
-    labelText: labelTxt,
-    labelStyle: const TextStyle(
-      color: Colors.grey,
-      fontFamily: AppFonts.quicksandRegular,
-    ),
-    border: OutlineInputBorder(),
-  );
 }
 
 class _DatePickerWidget extends StatefulWidget {
@@ -191,7 +186,8 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                   colorScheme: ColorScheme.light(),
                 ),
                 child: BlocProvider(
-                  create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+                  create: (context) =>
+                      OrderBloc(orderRepo: context.serviceProvider.orderRepo),
                   child: BlocBuilder<OrderBloc, OrderState>(
                     builder: (context, state) {
                       return CalendarDatePicker(

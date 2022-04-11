@@ -5,6 +5,7 @@ enum WorkDiariesStateStatus {
   loading,
   loaded,
   created,
+  updating,
   updateSuccessful,
   error,
 }

@@ -9,76 +9,98 @@ class WorkingDayWidget extends StatefulWidget {
 }
 
 class _WorkingDayWidgetState extends State<WorkingDayWidget> {
+  late WorkingDayModel dropdownValue;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
-      builder: (context, state) {
-        context.workDiariesBloc
-            .add(WorkDiariesUpdateEvent(workDiaryModel: state.workDiaryModel, workingDayModel: state.workingDayModel));
-        if (state.workDiaryModel!.workingDayModels.isEmpty)
-          return Center(
-            child: CustomText(
-              text: 'No date to show',
-              size: context.textSizeXL,
-              color: Colors.black,
-            ),
-          );
-        else if (state.status == WorkDiariesStateStatus.loading)
-          return Center(
-            child: Loader(
-              width: 100,
-              height: 100,
-              color: active,
-            ),
-          );
-        WorkingDayModel dropdownValue = state.workDiaryModel!.workingDayModels.last;
-        return Column(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            DropdownButton<WorkingDayModel>(
-              value: dropdownValue,
-              icon: const Icon(Icons.access_time),
-              elevation: 16,
-              style: TextStyle(color: active),
-              underline: Container(
-                height: 2,
+    //Instead of using listener and builder we can use blocConsumer
+    return BlocListener<WorkDiariesBloc, WorkDiariesState>(
+      listener: (context, state) {
+        if (state.status == WorkDiariesStateStatus.updateSuccessful)
+          context.workDiariesBloc.add(WorkDiariesUpdateEvent(
+              workDiaryModel: null,
+              workingDayModel: state.workDiaryModel!.workingDayModels.first));
+      },
+      child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
+        builder: (context, state) {
+          if (state.workingDayModel == null)
+            return Center(
+              child: CustomText(
+                text: 'No date to show',
+                size: context.textSizeXL,
+                color: Colors.black,
+              ),
+            );
+          else if (state.status == WorkDiariesStateStatus.loading ||
+              state.status == WorkDiariesStateStatus.updating)
+            return Center(
+              child: Loader(
+                width: 100,
+                height: 100,
                 color: active,
               ),
-              onChanged: (WorkingDayModel? pickedValue) {
-                setState(() {
-                  dropdownValue = pickedValue!;
-                });
-              },
-              items: state.workDiaryModel!.workingDayModels
-                  .map<DropdownMenuItem<WorkingDayModel>>((WorkingDayModel value) {
-                return DropdownMenuItem<WorkingDayModel>(
-                  value: value,
-                  child: Text(
-                    value.dateTime.toLocal().formatDDMMYY(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: active.withOpacity(.4), width: .5),
-                boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
-                borderRadius: BorderRadius.circular(8),
+            );
+          return Column(
+            children: [
+              SizedBox(
+                height: 15,
               ),
-              padding: const EdgeInsets.all(16),
-              margin: EdgeInsets.only(bottom: 30),
-              child: _EditWorkingDayWidget(),
-            )
-          ],
-        );
-      },
+              DropdownButton<WorkingDayModel>(
+                value: dropdownValue,
+                icon: const Icon(Icons.access_time),
+                elevation: 16,
+                style: TextStyle(color: active),
+                underline: Container(
+                  height: 2,
+                  color: active,
+                ),
+                onChanged: (WorkingDayModel? pickedValue) {
+                  setState(() {
+                    dropdownValue = pickedValue!;
+                    print(dropdownValue.dateTime.toLocal().formatDDMMYY());
+                  });
+                  context.workDiariesBloc.add(
+                    WorkDiariesUpdateEvent(
+                      workDiaryModel: null,
+                      workingDayModel: pickedValue,
+                    ),
+                  );
+                },
+                items: state.workDiaryModel!.workingDayModels
+                    .map<DropdownMenuItem<WorkingDayModel>>(
+                        (WorkingDayModel value) {
+                  return DropdownMenuItem<WorkingDayModel>(
+                    value: value,
+                    child: Text(
+                      value.dateTime.toLocal().formatDDMMYY(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  );
+                }).toList(),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: active.withOpacity(.4), width: .5),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(0, 6),
+                        color: lightGrey.withOpacity(.1),
+                        blurRadius: 12)
+                  ],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.all(16),
+                margin: EdgeInsets.only(bottom: 30),
+                child: _EditWorkingDayWidget(),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -86,18 +108,37 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
   void initState() {
     super.initState();
     //Creating new empty work day
-    //TODO we must submit this day
     if (context.workDiariesBloc.state.workDiaryModel != null) {
-      if (context.workDiariesBloc.state.workDiaryModel!.workingDayModels.isEmpty) {
-        WorkingDayModel(dateTime: DateTime.now()), workDiaryModel: null)
-        context.workDiariesBloc.add(
-            WorkDiariesSubmitUpdateEvent();
+      if (context
+          .workDiariesBloc.state.workDiaryModel!.workingDayModels.isEmpty) {
+        List<WorkingDayModel> workingDays = [
+          WorkingDayModel(dateTime: DateTime.now())
+        ];
+        context.workDiariesBloc.add(WorkDiariesSubmitUpdateEvent(workingDays));
       } else {
-        DateTime lastWorkingDayDate = context.workDiariesBloc.state.workDiaryModel!.workingDayModels.last.dateTime;
-        num comparisonResult = lastWorkingDayDate.compareTo(DateTime.now());
-        if (comparisonResult < 0)
+        DateTime lastWorkingDayDate = context.workDiariesBloc.state
+            .workDiaryModel!.workingDayModels.first.dateTime;
+        bool comparisonResult = lastWorkingDayDate.isEqualDate(DateTime.now());
+
+        if (comparisonResult != true) {
+          List<WorkingDayModel> workingDays =
+              context.workDiariesBloc.state.workDiaryModel!.workingDayModels;
+          workingDays.insert(
+              workingDays.length, WorkingDayModel(dateTime: DateTime.now()));
+          context.workDiariesBloc
+              .add(WorkDiariesSubmitUpdateEvent(workingDays));
+        } else {
+          final firstWorkingDay = context
+              .workDiariesBloc.state.workDiaryModel!.workingDayModels.first;
+
           context.workDiariesBloc.add(
-              WorkDiariesSubmitUpdateEvent(workingDayModel: WorkingDayModel(dateTime: DateTime.now()), workDiaryModel: null));
+            WorkDiariesUpdateEvent(
+              workDiaryModel: null,
+              workingDayModel: firstWorkingDay,
+            ),
+          );
+          dropdownValue = firstWorkingDay;
+        }
       }
     }
   }
@@ -122,42 +163,45 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
               height: 20,
             ),
             TextFormField(
-              initialValue: state.workingDayModel!.materials,
+              initialValue: state.workingDayModel!.materials.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
-              maxLines: 8,
-              decoration: _inputDecoration('Used materials'),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
+              maxLines: 4,
+              decoration: TextFormFieldStyle.inputDecoration('Used materials'),
             ),
             SizedBox(
               height: 8,
             ),
             TextFormField(
-              initialValue: state.workingDayModel!.machines,
+              initialValue: state.workingDayModel!.machines.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
-              decoration: _inputDecoration('Used machines'),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
+              maxLines: 4,
+              decoration: TextFormFieldStyle.inputDecoration('Used machines'),
             ),
             SizedBox(
               height: 8,
             ),
             TextFormField(
-              initialValue: state.workingDayModel!.employers,
+              initialValue: state.workingDayModel!.employers.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
-              decoration: _inputDecoration('Employers'),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
+              maxLines: 4,
+              decoration: TextFormFieldStyle.inputDecoration('Employers'),
             ),
             SizedBox(
               height: 8,
             ),
             TextFormField(
-              initialValue: state.workingDayModel!.weather,
+              initialValue: state.workingDayModel!.weather.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
-              style: _inputFieldTextStyle(),
-              decoration: _inputDecoration('Weather'),
+              style: TextFormFieldStyle.inputFieldTextStyle(),
+              maxLines: 2,
+              decoration: TextFormFieldStyle.inputDecoration('Weather'),
             ),
             SizedBox(
               height: 20,
@@ -175,23 +219,4 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
       },
     );
   }
-}
-
-TextStyle _inputFieldTextStyle() {
-  return TextStyle(
-    fontFamily: AppFonts.quicksandBold,
-    fontSize: 14,
-    color: Colors.black,
-  );
-}
-
-InputDecoration _inputDecoration(String labelTxt) {
-  return InputDecoration(
-    labelText: labelTxt,
-    labelStyle: const TextStyle(
-      color: Colors.grey,
-      fontFamily: AppFonts.quicksandRegular,
-    ),
-    border: OutlineInputBorder(),
-  );
 }
