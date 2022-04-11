@@ -18,6 +18,7 @@ class ChangeProjectNameDialog extends StatelessWidget {
 
     return CustomDialog(
       buttonText: 'Change',
+      onButtonPressed: () => onEditTap(textEditingController.text),
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -40,6 +41,7 @@ class ChangeProjectNameDialog extends StatelessWidget {
               ),
               TextFormField(
                 initialValue: currentProjectName,
+                controller: textEditingController,
                 style: TextFormFieldStyle.inputFieldTextStyle(),
                 decoration:
                     TextFormFieldStyle.inputDecoration('Current project name'),

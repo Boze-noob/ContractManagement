@@ -2,10 +2,10 @@ import 'package:contract_management/_all.dart';
 
 enum WorkDiariesStateStatus {
   init,
+  initializing,
   loading,
   loaded,
   created,
-  updating,
   updateSuccessful,
   error,
 }

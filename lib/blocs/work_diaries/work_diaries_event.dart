@@ -2,6 +2,12 @@ import 'package:contract_management/_all.dart';
 
 abstract class WorkDiariesEvent {}
 
+class WorkDiariesInitEvent extends WorkDiariesEvent {
+  final WorkingDayModel workingDayModel;
+
+  WorkDiariesInitEvent({required this.workingDayModel});
+}
+
 class WorkDiariesGetEvent extends WorkDiariesEvent {
   final String companyId;
 

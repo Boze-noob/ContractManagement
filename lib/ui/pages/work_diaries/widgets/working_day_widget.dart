@@ -16,10 +16,12 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
     //Instead of using listener and builder we can use blocConsumer
     return BlocListener<WorkDiariesBloc, WorkDiariesState>(
       listener: (context, state) {
-        if (state.status == WorkDiariesStateStatus.updateSuccessful)
-          context.workDiariesBloc.add(WorkDiariesUpdateEvent(
-              workDiaryModel: null,
+        if (state.status == WorkDiariesStateStatus.updateSuccessful) {
+          showInfoMessage(state.message ?? 'Update successful', context);
+          dropdownValue = state.workDiaryModel!.workingDayModels.first;
+          context.workDiariesBloc.add(WorkDiariesInitEvent(
               workingDayModel: state.workDiaryModel!.workingDayModels.first));
+        }
       },
       child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
         builder: (context, state) {
@@ -32,7 +34,7 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
               ),
             );
           else if (state.status == WorkDiariesStateStatus.loading ||
-              state.status == WorkDiariesStateStatus.updating)
+              state.status == WorkDiariesStateStatus.initializing)
             return Center(
               child: Loader(
                 width: 100,
@@ -60,9 +62,8 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
                     print(dropdownValue.dateTime.toLocal().formatDDMMYY());
                   });
                   context.workDiariesBloc.add(
-                    WorkDiariesUpdateEvent(
-                      workDiaryModel: null,
-                      workingDayModel: pickedValue,
+                    WorkDiariesInitEvent(
+                      workingDayModel: pickedValue!,
                     ),
                   );
                 },
@@ -130,10 +131,8 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
         } else {
           final firstWorkingDay = context
               .workDiariesBloc.state.workDiaryModel!.workingDayModels.first;
-
           context.workDiariesBloc.add(
-            WorkDiariesUpdateEvent(
-              workDiaryModel: null,
+            WorkDiariesInitEvent(
               workingDayModel: firstWorkingDay,
             ),
           );
@@ -165,7 +164,10 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.materials.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                  WorkDiariesUpdateEvent(
+                      workingDayModel:
+                          state.workingDayModel!.copyWith(materials: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 4,
               decoration: TextFormFieldStyle.inputDecoration('Used materials'),
@@ -176,7 +178,10 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.machines.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                  WorkDiariesUpdateEvent(
+                      workingDayModel:
+                          state.workingDayModel!.copyWith(machines: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 4,
               decoration: TextFormFieldStyle.inputDecoration('Used machines'),
@@ -187,7 +192,10 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.employers.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                  WorkDiariesUpdateEvent(
+                      workingDayModel:
+                          state.workingDayModel!.copyWith(employers: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 4,
               decoration: TextFormFieldStyle.inputDecoration('Employers'),
@@ -198,7 +206,10 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.weather.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                  WorkDiariesUpdateEvent(
+                      workingDayModel:
+                          state.workingDayModel!.copyWith(weather: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 2,
               decoration: TextFormFieldStyle.inputDecoration('Weather'),
@@ -206,13 +217,13 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             SizedBox(
               height: 20,
             ),
-            //TODO implement on tap
             Button(
               text: 'Save',
               shrinkWrap: true,
               color: active,
               isLoading: state.status == WorkDiariesStateStatus.loading,
-              onTap: () => null,
+              onTap: () => context.workDiariesBloc
+                  .add(WorkDiariesSubmitUpdateEvent(null)),
             ),
           ],
         );

@@ -43,14 +43,28 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
                   text: workDiariesState.workDiaryModel!.projectName ??
                       'Project name not provided',
                 ),
-                IconButton(onPressed: () => null, icon: Icon(Icons.create)),
+                IconButton(
+                    onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              ChangeProjectNameDialog(
+                            onEditTap: (projectName) =>
+                                context.workDiariesBloc.add(
+                              WorkDiariesUpdateEvent(
+                                  workDiaryModel: workDiariesState
+                                      .workDiaryModel!
+                                      .copyWith(projectName: projectName)),
+                            ),
+                          ),
+                        ),
+                    icon: Icon(Icons.create)),
               ],
             ),
             SizedBox(
               height: 20,
             ),
             CustomText(
-              text: 'Diary ID ' + workDiariesState.workDiaryModel!.id,
+              text: 'Diary ID: ' + workDiariesState.workDiaryModel!.id,
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -58,7 +72,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Announcement ID' +
+              text: 'Announcement ID: ' +
                   workDiariesState.workDiaryModel!.announcementId,
               size: context.textSizeM,
               color: Colors.black,
@@ -69,7 +83,13 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
             TextFormField(
               initialValue: workDiariesState.workDiaryModel!.projectDescription,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                WorkDiariesUpdateEvent(
+                  workDiaryModel: workDiariesState.workDiaryModel!.copyWith(
+                    projectDescription: text,
+                  ),
+                ),
+              ),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
               decoration:
@@ -81,7 +101,13 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
             TextFormField(
               initialValue: workDiariesState.workDiaryModel!.interferences,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                WorkDiariesUpdateEvent(
+                  workDiaryModel: workDiariesState.workDiaryModel!.copyWith(
+                    interferences: text,
+                  ),
+                ),
+              ),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
               decoration: TextFormFieldStyle.inputDecoration('Interferences'),
@@ -93,7 +119,13 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               initialValue:
                   workDiariesState.workDiaryModel!.additionalRequirements,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                WorkDiariesUpdateEvent(
+                  workDiaryModel: workDiariesState.workDiaryModel!.copyWith(
+                    additionalRequirements: text,
+                  ),
+                ),
+              ),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
               decoration:
@@ -105,16 +137,19 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
             TextFormField(
               initialValue: workDiariesState.workDiaryModel!.specialCases,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              //onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.workDiariesBloc.add(
+                WorkDiariesUpdateEvent(
+                  workDiaryModel: workDiariesState.workDiaryModel!.copyWith(
+                    specialCases: text,
+                  ),
+                ),
+              ),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
               decoration: TextFormFieldStyle.inputDecoration('Special cases'),
             ),
             SizedBox(
               height: 8,
-            ),
-            _DatePickerWidget(
-              onDateSelected: (dateTime) => null,
             ),
             SizedBox(
               height: 8,
@@ -137,6 +172,30 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
                       .formatDDMMYY(),
               size: context.textSizeM,
               color: Colors.black,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                CustomText(
+                  text: 'End date time',
+                  size: context.textSizeM,
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                _DatePickerWidget(
+                  onDateSelected: (dateTime) => context.workDiariesBloc.add(
+                    WorkDiariesUpdateEvent(
+                      workDiaryModel: workDiariesState.workDiaryModel!.copyWith(
+                        endDate: dateTime,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: 20,

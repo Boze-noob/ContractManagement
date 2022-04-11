@@ -3,6 +3,7 @@ import 'package:contract_management/_all.dart';
 class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
   final IWorkDiaries workDiariesRepo;
   WorkDiariesBloc({required this.workDiariesRepo}) : super(initialState()) {
+    on<WorkDiariesInitEvent>(_init);
     on<WorkDiariesCreateEvent>(_create);
     on<WorkDiariesGetEvent>(_get);
     on<WorkDiariesUpdateEvent>(_update);
@@ -13,6 +14,22 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
         status: WorkDiariesStateStatus.init,
         workDiaryModels: List.empty(),
       );
+
+  Future<void> _init(
+      WorkDiariesInitEvent event, Emitter<WorkDiariesState> emit) async {
+    emit(
+      state.copyWith(
+        workingDayModel: event.workingDayModel,
+        status: WorkDiariesStateStatus.initializing,
+      ),
+    );
+    await Future.delayed(Duration(milliseconds: 200));
+    emit(
+      state.copyWith(
+        status: WorkDiariesStateStatus.init,
+      ),
+    );
+  }
 
   Future<void> _get(
       WorkDiariesGetEvent event, Emitter<WorkDiariesState> emit) async {
@@ -32,7 +49,6 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
       state.copyWith(
         workDiaryModel: event.workDiaryModel,
         workingDayModel: event.workingDayModel,
-        status: WorkDiariesStateStatus.updating,
       ),
     );
     //Added cuz textFormFiled(loading widget)
@@ -60,7 +76,19 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
             status: WorkDiariesStateStatus.error, message: 'Error happen'));
     } else {
       if (state.workDiaryModel != null) {
-        final result = await workDiariesRepo.editDiary(state.workDiaryModel!);
+        final int index = state.workDiaryModel!.workingDayModels.indexWhere(
+            (workingDay) =>
+                workingDay.dateTime == state.workingDayModel!.dateTime);
+
+        final List<WorkingDayModel> workingDaysList =
+            state.workDiaryModel!.workingDayModels;
+
+        workingDaysList[index] = state.workingDayModel!;
+
+        final WorkDiaryModel workDiaryModel = state.workDiaryModel!;
+        workDiaryModel.copyWith(workingDayModels: workingDaysList);
+
+        final result = await workDiariesRepo.editDiary(workDiaryModel);
         if (result)
           emit(state.copyWith(
               status: WorkDiariesStateStatus.updateSuccessful,
