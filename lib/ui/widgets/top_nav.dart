@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 import 'package:get/get.dart';
 
-AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => AppBar(
+AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
+    AppBar(
       leading: !ResponsiveWidget.isSmallScreen(context)
           ? Row(
               children: [
@@ -34,7 +35,10 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                 )),
             Expanded(child: Container()),
             Visibility(
-              visible: RoleType.values[0].translate() == context.currentUserBloc.state.userModel!.role ? true : false,
+              visible: RoleType.values[0].translate() ==
+                      context.currentUserBloc.state.userModel!.role
+                  ? true
+                  : false,
               child: IconButton(
                   icon: Icon(
                     Icons.person_add,
@@ -49,15 +53,21 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                             width: context.screenWidth / 2,
                             child: Form(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30),
-                                child: BlocListener<CreateUserBloc, CreateUserState>(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 30),
+                                child: BlocListener<CreateUserBloc,
+                                    CreateUserState>(
                                   listener: (context, state) {
-                                    if (state.status == CreateUserStateStatus.error) {
+                                    if (state.status ==
+                                        CreateUserStateStatus.error) {
                                       print('error happen in creating');
-                                      if (state.errorMessage != null) showInfoMessage(state.errorMessage!, context);
+                                      if (state.errorMessage != null)
+                                        showInfoMessage(
+                                            state.errorMessage!, context);
                                     }
                                   },
-                                  child: BlocBuilder<CreateUserBloc, CreateUserState>(
+                                  child: BlocBuilder<CreateUserBloc,
+                                      CreateUserState>(
                                     builder: (context, state) {
                                       return Column(
                                         mainAxisSize: MainAxisSize.min,
@@ -81,9 +91,11 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                               labelText: 'Email',
                                               fillColor: active,
                                             ),
-                                            onChanged: (text) => context.createUserBloc.add(
+                                            onChanged: (text) =>
+                                                context.createUserBloc.add(
                                               CreateUserUpdateModelEvent(
-                                                userModel: state.userModel.copyWith(email: text),
+                                                userModel: state.userModel
+                                                    .copyWith(email: text),
                                               ),
                                             ),
                                           ),
@@ -97,9 +109,11 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                               hintText: 'Enter password',
                                               labelText: 'Password',
                                             ),
-                                            onChanged: (text) => context.createUserBloc.add(
+                                            onChanged: (text) =>
+                                                context.createUserBloc.add(
                                               CreateUserUpdateModelEvent(
-                                                userModel: state.userModel.copyWith(password: text),
+                                                userModel: state.userModel
+                                                    .copyWith(password: text),
                                               ),
                                             ),
                                           ),
@@ -113,9 +127,12 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                               labelText: 'Display name',
                                               fillColor: active,
                                             ),
-                                            onChanged: (text) => context.createUserBloc.add(
+                                            onChanged: (text) =>
+                                                context.createUserBloc.add(
                                               CreateUserUpdateModelEvent(
-                                                userModel: state.userModel.copyWith(displayName: text),
+                                                userModel: state.userModel
+                                                    .copyWith(
+                                                        displayName: text),
                                               ),
                                             ),
                                           ),
@@ -173,9 +190,13 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
               width: 16,
             ),
             Container(
-              decoration: BoxDecoration(color: active.withOpacity(.5), borderRadius: BorderRadius.circular(30)),
+              decoration: BoxDecoration(
+                  color: active.withOpacity(.5),
+                  borderRadius: BorderRadius.circular(30)),
               child: Container(
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30)),
                 padding: EdgeInsets.all(2),
                 margin: EdgeInsets.all(2),
                 child: CircleAvatar(
@@ -184,7 +205,8 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                     icon: Icon(Icons.person_outline),
                     color: dark,
                     onPressed: () {
-                      menuController.changeActiveItemTo(myProfilePageDisplayName);
+                      menuController
+                          .changeActiveItemTo(myProfilePageDisplayName);
                       if (ResponsiveWidget.isSmallScreen(context)) Get.back();
                       navigationController.navigateTo(myProfilePageRoute);
                     },
@@ -326,10 +348,13 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
     return BlocListener<NotificationsBloc, NotificationsState>(
       listener: (context, state) {
         if (state.status == NotificationStateStatus.successfullyDeleted) {
-          if (context.currentUserBloc.state.userModel!.role != RoleType.admin.translate())
-            context.notificationsBloc.add(NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id));
+          if (context.currentUserBloc.state.userModel!.role !=
+              RoleType.admin.translate())
+            context.notificationsBloc.add(NotificationsLoadEvent(
+                userId: context.currentUserBloc.state.userModel!.id));
           else
-            context.notificationsBloc.add(NotificationsLoadEvent(userId: 'admin'));
+            context.notificationsBloc
+                .add(NotificationsLoadEvent(userId: 'admin'));
         }
       },
       child: BlocBuilder<NotificationsBloc, NotificationsState>(
@@ -342,7 +367,13 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
                     color: dark.withOpacity(.7),
                   ),
                   onPressed: () {
-                    _showOverlay(parentContext: context, state: state, onCloseDialog: () => context.notificationsBloc.add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id)));
+                    _showOverlay(
+                        parentContext: context,
+                        state: state,
+                        onCloseDialog: () => context.notificationsBloc.add(
+                            NotificationsDeleteEvent(
+                                userId: context
+                                    .currentUserBloc.state.userModel!.id)));
                   }),
               (() {
                 if (state.status == NotificationStateStatus.loading) {
@@ -360,7 +391,10 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
                         width: 12,
                         height: 12,
                         padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(color: active, borderRadius: BorderRadius.circular(30), border: Border.all(color: light, width: 2)),
+                        decoration: BoxDecoration(
+                            color: active,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: light, width: 2)),
                       ),
                     );
                   } else {
@@ -375,7 +409,10 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
     );
   }
 
-  void _showOverlay({required BuildContext parentContext, required NotificationsState state, required void Function() onCloseDialog}) async {
+  void _showOverlay(
+      {required BuildContext parentContext,
+      required NotificationsState state,
+      required void Function() onCloseDialog}) async {
     OverlayState? overlayState = Overlay.of(parentContext);
     late OverlayEntry overlayEntry;
     overlayEntry = OverlayEntry(builder: (context) {
@@ -394,7 +431,8 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
               child: (() {
                 if (state.model.length == 0)
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 20),
                     child: Column(
                       children: [
                         CustomText(
@@ -426,6 +464,24 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Builder(
+                          builder: (context) {
+                            return Button(
+                              child: CustomText(
+                                text: 'Clean and close',
+                                size: 16,
+                                color: active,
+                              ),
+                              textColor: active,
+                              shrinkWrap: true,
+                              onTap: () {
+                                onCloseDialog();
+                                overlayEntry.remove();
+                              },
+                              color: Colors.transparent,
+                            );
+                          },
+                        ),
                         ListView.builder(
                             itemCount: state.model.length,
                             shrinkWrap: true,
@@ -443,24 +499,6 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
                                 ),
                               );
                             }),
-                        Builder(
-                          builder: (context) {
-                            return Button(
-                              child: CustomText(
-                                text: 'Close',
-                                size: 16,
-                                color: active,
-                              ),
-                              textColor: active,
-                              shrinkWrap: true,
-                              onTap: () {
-                                onCloseDialog();
-                                overlayEntry.remove();
-                              },
-                              color: Colors.transparent,
-                            );
-                          },
-                        )
                       ],
                     ),
                   );
