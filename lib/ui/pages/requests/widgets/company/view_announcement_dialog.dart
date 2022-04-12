@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class CompanyViewAnnouncementDialog extends StatelessWidget {
   AnnouncementModel announcementModel;
-  CompanyViewAnnouncementDialog({Key? key, required this.announcementModel}) : super(key: key);
+  CompanyViewAnnouncementDialog({Key? key, required this.announcementModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,17 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
+                text:
+                    'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
+                weight: FontWeight.normal,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                text:
+                    'Completion date time: ${announcementModel.completionDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -79,7 +90,8 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Status type: ${announcementModel.announcementStatusType.translate()}',
+                text:
+                    'Status type: ${announcementModel.announcementStatusType.translate()}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -98,7 +110,8 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 itemCount: announcementModel.contractItems.length,
                 itemBuilder: (context, i) {
                   return ListTile(
-                    title: Text(' - ' + announcementModel.contractItems[i].translate()),
+                    title: Text(
+                        ' - ' + announcementModel.contractItems[i].translate()),
                   );
                 },
               ),

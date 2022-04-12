@@ -1,3 +1,4 @@
+import 'package:contract_management/common/_all.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
@@ -27,7 +28,12 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: active.withOpacity(.4), width: .5),
-          boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(0, 6),
+                color: lightGrey.withOpacity(.1),
+                blurRadius: 12)
+          ],
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(16),
@@ -46,7 +52,12 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: active.withOpacity(.4), width: .5),
-        boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+        boxShadow: [
+          BoxShadow(
+              offset: Offset(0, 6),
+              color: lightGrey.withOpacity(.1),
+              blurRadius: 12)
+        ],
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(16),
@@ -96,12 +107,17 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
               ),
               DataCell(
                 CustomText(
-                  text: announcementsModels[index].createdDateTime.toLocal().formatDDMMYY(),
+                  text: announcementsModels[index]
+                      .createdDateTime
+                      .toLocal()
+                      .formatDDMMYY(),
                 ),
               ),
               DataCell(
                 CustomText(
-                  text: announcementsModels[index].announcementStatusType.translate(),
+                  text: announcementsModels[index]
+                      .announcementStatusType
+                      .translate(),
                 ),
               ),
               DataCell(
@@ -112,29 +128,44 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                         text: 'View',
                         textColor: active,
                         borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         borderColor: active,
                         onTap: () => viewBtnOnTap(index),
                       ),
                     ),
-                    Expanded(
-                      child: Button(
-                        text: 'In progress',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        onTap: () => inProgressBtnOnTap(index),
+                    Visibility(
+                      visible: announcementsModels[index]
+                              .announcementStatusType
+                              .translate() !=
+                          AnnouncementStatusType.inProgress.translate(),
+                      child: Expanded(
+                        child: Button(
+                          text: 'In progress',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          onTap: () => inProgressBtnOnTap(index),
+                        ),
                       ),
                     ),
-                    Expanded(
-                      child: Button(
-                        text: 'Done',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        onTap: () => doneBtnOnTap(index),
+                    Visibility(
+                      visible: announcementsModels[index]
+                              .announcementStatusType
+                              .translate() ==
+                          AnnouncementStatusType.inProgress.translate(),
+                      child: Expanded(
+                        child: Button(
+                          text: 'Done',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          onTap: () => doneBtnOnTap(index),
+                        ),
                       ),
                     ),
                   ],

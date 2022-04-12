@@ -46,7 +46,6 @@ class SendOrderDialog extends StatelessWidget {
                 ),
               ),
             );
-          //TODO zamjenio sam ideve sa displayName
           List<String> companiesIds =
               orderState.companiesForOrder['companiesIds'];
           List<String> companiesNames =
