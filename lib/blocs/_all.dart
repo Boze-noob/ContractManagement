@@ -1,5 +1,6 @@
 export 'announcement/_all.dart';
 export 'auth/_all.dart';
+export 'bill/_all.dart';
 export 'create_user/_all.dart';
 export 'clients/_all.dart';
 export 'client_request/_all.dart';

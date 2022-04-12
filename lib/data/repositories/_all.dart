@@ -1,4 +1,5 @@
 export 'account.dart';
+export 'bill.dart';
 export 'clients.dart';
 export 'companies.dart';
 export 'contracts.dart';

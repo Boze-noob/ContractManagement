@@ -1,5 +1,6 @@
 export 'admin_request_model.dart';
 export 'announcement_model.dart';
+export 'bill_model.dart';
 export 'client_request_model.dart';
 export 'contract_request_model.dart';
 export 'contract_model.dart';
