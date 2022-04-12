@@ -32,3 +32,9 @@ class WorkDiariesCreateEvent extends WorkDiariesEvent {
 
   WorkDiariesCreateEvent({required this.workDiaryModel});
 }
+
+class WorkDiariesUpdateByIdEvent extends WorkDiariesEvent {
+  final String announcementId;
+
+  WorkDiariesUpdateByIdEvent({required this.announcementId});
+}

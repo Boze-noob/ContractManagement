@@ -52,6 +52,11 @@ class ContextServiceProviderBlocs extends StatelessWidget {
             workDiariesRepo: context.serviceProvider.workDiaries,
           ),
         ),
+        BlocProvider(
+          create: (BuildContext context) => BillBloc(
+            billRepo: context.serviceProvider.billRepo,
+          ),
+        ),
       ],
       child: child,
     );

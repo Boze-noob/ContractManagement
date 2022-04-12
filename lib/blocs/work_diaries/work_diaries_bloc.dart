@@ -8,6 +8,7 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
     on<WorkDiariesGetEvent>(_get);
     on<WorkDiariesUpdateEvent>(_update);
     on<WorkDiariesSubmitUpdateEvent>(_submitUpdate);
+    on<WorkDiariesUpdateByIdEvent>(_updateById);
   }
 
   static WorkDiariesState initialState() => WorkDiariesState(
@@ -113,5 +114,14 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
     else
       emit(state.copyWith(
           status: WorkDiariesStateStatus.error, message: 'Error happen'));
+  }
+
+  Future<void> _updateById(
+      WorkDiariesUpdateByIdEvent event, Emitter<WorkDiariesState> emit) async {
+    emit(state.copyWith(status: WorkDiariesStateStatus.loading));
+    final WorkDiaryModel workDiaryModel = state.workDiaryModels.firstWhere(
+      (element) => element.announcementId == event.announcementId,
+    );
+    emit(state.copyWith(workDiaryModel: workDiaryModel));
   }
 }

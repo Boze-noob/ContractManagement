@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:contract_management/_all.dart';
 import 'package:contract_management/ui/pages/requests/widgets/company/announcement_data_table_widget.dart';
+import 'package:contract_management/ui/pages/requests/widgets/company/done_announcement_dialog.dart';
 import 'package:flutter/material.dart';
 
 class CompanyRequestWidget extends StatefulWidget {
@@ -174,7 +175,14 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                                 ),
                               );
                             },
-                            doneBtnOnTap: (index) => null,
+                            doneBtnOnTap: (index) => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  DoneAnnouncementDialog(
+                                announcementModel: companyRequestsState
+                                    .announcementsModels[index],
+                              ),
+                            ),
                             announcementsModels:
                                 companyRequestsState.announcementsModels,
                           );
