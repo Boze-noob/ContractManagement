@@ -18,9 +18,9 @@ class AnnouncementStatusType {
       case 1:
         return "sent";
       case 2:
-        return "In progress";
+        return "in progress";
       case 3:
-        return "Done";
+        return "done";
       default:
         return " ";
     }
@@ -30,5 +30,6 @@ class AnnouncementStatusType {
 
   const AnnouncementStatusType._(this.index);
   static List<int> get indexes => values.map<int>((x) => x.index).toList();
-  static AnnouncementStatusType getValue(int index) => AnnouncementStatusType._(index);
+  static AnnouncementStatusType getValue(int index) =>
+      AnnouncementStatusType._(index);
 }

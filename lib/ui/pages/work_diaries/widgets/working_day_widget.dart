@@ -18,9 +18,9 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
       listener: (context, state) {
         if (state.status == WorkDiariesStateStatus.updateSuccessful) {
           showInfoMessage(state.message ?? 'Update successful', context);
-          dropdownValue = state.workDiaryModel!.workingDayModels.first;
+          dropdownValue = state.workDiaryModel!.workingDayModels.last;
           context.workDiariesBloc.add(WorkDiariesInitEvent(
-              workingDayModel: state.workDiaryModel!.workingDayModels.first));
+              workingDayModel: state.workDiaryModel!.workingDayModels.last));
         }
       },
       child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
@@ -118,7 +118,7 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
         context.workDiariesBloc.add(WorkDiariesSubmitUpdateEvent(workingDays));
       } else {
         DateTime lastWorkingDayDate = context.workDiariesBloc.state
-            .workDiaryModel!.workingDayModels.first.dateTime;
+            .workDiaryModel!.workingDayModels.last.dateTime;
         bool comparisonResult = lastWorkingDayDate.isEqualDate(DateTime.now());
 
         if (comparisonResult != true) {
@@ -129,14 +129,14 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
           context.workDiariesBloc
               .add(WorkDiariesSubmitUpdateEvent(workingDays));
         } else {
-          final firstWorkingDay = context
-              .workDiariesBloc.state.workDiaryModel!.workingDayModels.first;
+          final lastWorkingDay = context
+              .workDiariesBloc.state.workDiaryModel!.workingDayModels.last;
           context.workDiariesBloc.add(
             WorkDiariesInitEvent(
-              workingDayModel: firstWorkingDay,
+              workingDayModel: lastWorkingDay,
             ),
           );
-          dropdownValue = firstWorkingDay;
+          dropdownValue = lastWorkingDay;
         }
       }
     }
