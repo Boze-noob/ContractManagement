@@ -117,7 +117,6 @@ class _DoneAnnouncementDialogState extends State<DoneAnnouncementDialog> {
 }
 
 class _AdditionalCostWidget extends StatefulWidget {
-
   const _AdditionalCostWidget({Key? key}) : super(key: key);
 
   @override
@@ -140,46 +139,53 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
           width: 5,
         ),
         IconButton(
-          onPressed: () => showDialog(context: context, builder: (BuildContext context) => Dialog(
-            child: Column(
-              children: [
-                CustomText(
-                  text: 'Additional costs details',
-                  size: context.textSizeL,
-                  textAlign: TextAlign.center,
-                  weight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: context.workDiariesBloc.state.workDiaryModel!.additionalRequirements,
-                  size: context.textSizeM,
-                  color: Colors.black,
-                )
-              ],
+          onPressed: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => Dialog(
+              child: Column(
+                children: [
+                  CustomText(
+                    text: 'Additional costs details',
+                    size: context.textSizeL,
+                    textAlign: TextAlign.center,
+                    weight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomText(
+                    text: context.workDiariesBloc.state.workDiaryModel!
+                        .additionalRequirements,
+                    size: context.textSizeM,
+                    color: Colors.black,
+                  )
+                ],
+              ),
             ),
-          ),),
+          ),
           icon: Icon(
             Icons.info_outline,
           ),
         ),
         IconButton(
-          onPressed: () => showDialog(context: context, builder: (BuildContext context) => Dialog(
-            child: Column(
-              children: [
-                TextFormField(
-                  initialValue: additionalCost,
-                  onChanged: (text) => setState(() {
-                    additionalCost = text;
-                  }),
-                  style: TextFormFieldStyle.inputFieldTextStyle(),
-                  decoration: TextFormFieldStyle.inputDecoration('Additional cost'),
-                )
-              ],
-            ),
-          )),
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          initialValue: additionalCost,
+                          onChanged: (text) => setState(() {
+                            additionalCost = text;
+                          }),
+                          style: TextFormFieldStyle.inputFieldTextStyle(),
+                          decoration: TextFormFieldStyle.inputDecoration(
+                              'Additional cost'),
+                        )
+                      ],
+                    ),
+                  )),
           icon: Icon(
             Icons.create,
           ),
@@ -216,22 +222,24 @@ class __TotalCostWidgetState extends State<_TotalCostWidget> {
         SizedBox(
           width: 5,
         ),
-
         IconButton(
-          onPressed: () => showDialog(context: context, builder: (BuildContext context) => Dialog(
-            child: Column(
-              children: [
-                TextFormField(
-                  initialValue: totalPrice,
-                  onChanged: (text) => setState(() {
-                    totalPrice = text;
-                  }),
-                  style: TextFormFieldStyle.inputFieldTextStyle(),
-                  decoration: TextFormFieldStyle.inputDecoration('Total price'),
-                )
-              ],
-            ),
-          )),
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          initialValue: totalPrice,
+                          onChanged: (text) => setState(() {
+                            totalPrice = text;
+                          }),
+                          style: TextFormFieldStyle.inputFieldTextStyle(),
+                          decoration:
+                              TextFormFieldStyle.inputDecoration('Total price'),
+                        )
+                      ],
+                    ),
+                  )),
           icon: Icon(
             Icons.create,
           ),
