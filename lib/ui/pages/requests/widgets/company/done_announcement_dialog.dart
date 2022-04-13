@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 class DoneAnnouncementDialog extends StatefulWidget {
   final AnnouncementModel announcementModel;
 
-  const DoneAnnouncementDialog({Key? key, required this.announcementModel})
-      : super(key: key);
+  const DoneAnnouncementDialog({Key? key, required this.announcementModel}) : super(key: key);
 
   @override
   _DoneAnnouncementDialogState createState() => _DoneAnnouncementDialogState();
@@ -15,100 +14,109 @@ class _DoneAnnouncementDialogState extends State<DoneAnnouncementDialog> {
   @override
   void initState() {
     super.initState();
-    context.workDiariesBloc.add(WorkDiariesUpdateByIdEvent(
-        announcementId: widget.announcementModel.id));
+    context.workDiariesBloc.add(WorkDiariesGetEvent(companyId: context.currentUserBloc.state.userModel!.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomDialog(
-      buttonText: 'Send',
-      message: 'Documents will be sent to admin for approve',
-      child: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
-            builder: (context, workDiariesState) {
-              if (workDiariesState.status == WorkDiariesStateStatus.loading)
-                return Loader(
-                  width: 100,
-                  height: 100,
-                  color: active,
-                );
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      text: 'Documentation',
-                      weight: FontWeight.bold,
-                      size: context.textSizeXL,
+    return BlocListener<WorkDiariesBloc, WorkDiariesState>(
+      listener: (context, state) {
+        if (state.status == WorkDiariesStateStatus.loaded)
+          context.workDiariesBloc.add(
+            WorkDiariesUpdateByIdEvent(
+              announcementId: widget.announcementModel.id,
+            ),
+          );
+      },
+      child: CustomDialog(
+        buttonText: 'Send',
+        message: 'Documents will be sent to admin for approve',
+        child: Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
+              builder: (context, workDiariesState) {
+                if (workDiariesState.status == WorkDiariesStateStatus.loading)
+                  return Loader(
+                    width: 100,
+                    height: 100,
+                    color: active,
+                  );
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: CustomText(
+                        text: 'Documentation',
+                        weight: FontWeight.bold,
+                        size: context.textSizeXL,
+                        color: Colors.black,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    CustomText(
+                      text: 'Announcement id: ${widget.announcementModel.id}',
+                      size: context.textSizeM,
                       color: Colors.black,
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  CustomText(
-                    text: 'Announcement id: ${widget.announcementModel.id}',
-                    size: context.textSizeM,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomText(
-                    text:
-                        'Work diary id: ${workDiariesState.workDiaryModel!.id}',
-                    size: context.textSizeM,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomText(
-                    text:
-                        'Project name: ${workDiariesState.workDiaryModel!.projectName}',
-                    size: context.textSizeM,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomText(
-                    text: 'Billing',
-                    size: context.textSizeL,
-                    color: Colors.black,
-                    weight: FontWeight.bold,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Divider(
-                      height: 1,
-                      color: Colors.grey,
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  _AdditionalCostWidget(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  _TotalCostWidget(
-                    announcementModel: widget.announcementModel,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Button(
-                    text: 'Send',
-                    shrinkWrap: true,
-                    onTap: () => null,
-                  )
-                ],
-              );
-            },
+                    CustomText(
+                      text:
+                          'Work diary id: ${workDiariesState.workDiaryModel != null ? workDiariesState.workDiaryModel!.id.value : ' '}',
+                      size: context.textSizeM,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text:
+                          'Project name: ${workDiariesState.workDiaryModel != null ? workDiariesState.workDiaryModel!.projectName.value : ' '}',
+                      size: context.textSizeM,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    CustomText(
+                      text: 'Billing',
+                      size: context.textSizeL,
+                      color: Colors.black,
+                      weight: FontWeight.bold,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Divider(
+                        height: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    _AdditionalCostWidget(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _TotalCostWidget(
+                      announcementModel: widget.announcementModel,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Button(
+                      text: 'Send',
+                      shrinkWrap: true,
+                      onTap: () => null,
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -155,8 +163,7 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
                     height: 10,
                   ),
                   CustomText(
-                    text: context.workDiariesBloc.state.workDiaryModel!
-                        .additionalRequirements,
+                    text: context.workDiariesBloc.state.workDiaryModel!.additionalRequirements,
                     size: context.textSizeM,
                     color: Colors.black,
                   )
@@ -180,8 +187,7 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
                             additionalCost = text;
                           }),
                           style: TextFormFieldStyle.inputFieldTextStyle(),
-                          decoration: TextFormFieldStyle.inputDecoration(
-                              'Additional cost'),
+                          decoration: TextFormFieldStyle.inputDecoration('Additional cost'),
                         )
                       ],
                     ),
@@ -234,8 +240,7 @@ class __TotalCostWidgetState extends State<_TotalCostWidget> {
                             totalPrice = text;
                           }),
                           style: TextFormFieldStyle.inputFieldTextStyle(),
-                          decoration:
-                              TextFormFieldStyle.inputDecoration('Total price'),
+                          decoration: TextFormFieldStyle.inputDecoration('Total price'),
                         )
                       ],
                     ),
