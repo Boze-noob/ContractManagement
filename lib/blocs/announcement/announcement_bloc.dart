@@ -55,7 +55,7 @@ class AnnouncementBloc extends Bloc<AnnouncementEvent, AnnouncementState> {
   }
 
   Future<void> _sendAnnouncement(AnnouncementSendEvent event, Emitter<AnnouncementState> emit) async {
-    final result = await announcementRepo.sendAnnouncement(event.announcementId);
+    final result = await announcementRepo.sendAnnouncement(event.announcementId, event.receiverId);
     if (result == null)
       emit(state.copyWith(status: AnnouncementStateStatus.sent, message: 'Announcement sent'));
     else

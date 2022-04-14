@@ -4,14 +4,16 @@ abstract class IAnnouncement {
   Future<List<AnnouncementModel>?> getAnnouncements();
   Future<bool> createAnnouncement(AnnouncementModel announcementModel);
   Future<String?> deleteAnnouncement(String announcementId);
-  Future<String?> sendAnnouncement(String announcementId);
+  Future<String?> sendAnnouncement(String announcementId, String? receiverId);
 }
 
 class AnnouncementRepo implements IAnnouncement {
   FirebaseFirestoreClass firebaseFirestoreClass;
+  INotifications notificationsRepo;
 
   AnnouncementRepo({
     required this.firebaseFirestoreClass,
+    required this.notificationsRepo,
   });
 
   //TODO change to get by worker id)
@@ -34,7 +36,10 @@ class AnnouncementRepo implements IAnnouncement {
   }
 
   @override
-  Future<String?> sendAnnouncement(String announcementId) async {
+  Future<String?> sendAnnouncement(String announcementId, String? receiverId) async {
+    if (receiverId != null)
+      notificationsRepo
+          .sendNotification(NotificationModel(userId: receiverId, message: 'You have new announcement request'));
     return await firebaseFirestoreClass.updateSpecificField(
         'announcements', announcementId, 'announcementStatusType', 1);
   }

@@ -19,6 +19,7 @@ class AnnouncementDeleteEvent extends AnnouncementEvent {
 
 class AnnouncementSendEvent extends AnnouncementEvent {
   final String announcementId;
+  final String? receiverId;
 
-  AnnouncementSendEvent({required this.announcementId});
+  AnnouncementSendEvent({required this.announcementId, required this.receiverId});
 }

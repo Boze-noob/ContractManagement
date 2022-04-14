@@ -8,8 +8,9 @@ abstract class IClients {
 
 class ClientsRepo implements IClients {
   FirebaseFirestoreClass firebaseFirestoreClass;
+  INotifications notificationsRepo;
 
-  ClientsRepo({required this.firebaseFirestoreClass});
+  ClientsRepo({required this.firebaseFirestoreClass, required this.notificationsRepo});
 
   @override
   Future<List<UserModel>?> getClients() async {
@@ -25,6 +26,7 @@ class ClientsRepo implements IClients {
 
   @override
   Future<bool> sendClientRequest(ClientRequestModel clientRequestModel) async {
+    notificationsRepo.sendNotification(NotificationModel(userId: 'admin', message: 'You have new client request'));
     return await firebaseFirestoreClass.storeData('requests', null, clientRequestModel.toMap());
   }
 }

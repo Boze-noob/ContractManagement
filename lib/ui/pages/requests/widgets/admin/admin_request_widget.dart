@@ -262,6 +262,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       sendBtnOnTap: (index) => context.announcementBloc.add(
                                         AnnouncementSendEvent(
                                           announcementId: state.announcementsModels[index].id,
+                                          receiverId: state.announcementsModels[index].receiverId ?? null,
                                         ),
                                       ),
                                       deleteBtnOnTap: (index) => context.announcementBloc.add(

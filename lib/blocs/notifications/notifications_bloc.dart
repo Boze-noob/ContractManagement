@@ -15,7 +15,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<NotificationsDeleteEvent>(_delete);
     currentUserSubscription = currentUserBloc.stream.listen((state) {
       if (state.status == CurrentUserStateStatus.success) {
-        if (state.userModel!.role == RoleType.admin.translate()) {
+        if (state.userModel!.role == RoleType.admin.translate() ||
+            state.userModel!.role == RoleType.orderEmployer.translate()) {
           add(NotificationsLoadEvent(userId: 'admin'));
         } else
           add(NotificationsLoadEvent(userId: state.userModel!.id));
@@ -55,7 +56,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       emit(state.copyWith(
         status: NotificationStateStatus.successfullyDeleted,
       ));
-      //TODO check this
       emit(state.copyWith(status: NotificationStateStatus.loading));
       final result = await notificationsRepo.getNotifications(event.userId);
       if (result != null) emit(state.copyWith(model: result, status: NotificationStateStatus.loaded));

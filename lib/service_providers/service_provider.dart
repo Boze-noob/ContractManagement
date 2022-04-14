@@ -34,29 +34,23 @@ abstract class ServiceProvider {
     firebaseAuthClass = FirebaseAuthClass();
     firebaseFirestoreClass = FirebaseFirestoreClass();
 
+    notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
     accountRepo = AccountRepo();
     announcementRepo =
-        AnnouncementRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+        AnnouncementRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     billRepo = BillRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    companiesRepo = CompaniesRepo(
-        firebaseFirestoreClass: firebaseFirestoreClass,
-        firebaseAuthClass: firebaseAuthClass);
-    notificationsRepo =
-        NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    contractsRepo = ContractsRepo(
-        firebaseFirestoreClass: firebaseFirestoreClass,
-        notificationsRepo: notificationsRepo);
+    clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
+    companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
+    contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     orderRepo = OrderRepo(
         firebaseFirestoreClass: firebaseFirestoreClass,
         notificationsRepo: notificationsRepo,
         contractsRepo: contractsRepo,
         companiesRepo: companiesRepo);
     companyRequestRepo =
-        CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass);
+        CompanyRequestRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     revenueRepo = RevenueRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    userAuth = UserAuthRepo(
-        account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
+    userAuth = UserAuthRepo(account: accountRepo, firebaseFirestoreClass: firebaseFirestoreClass);
     workDiaries = WorkDiaries(firebaseFirestoreClass: firebaseFirestoreClass);
   }
 

@@ -11,9 +11,11 @@ abstract class ICompanyRequest {
 
 class CompanyRequestRepo implements ICompanyRequest {
   FirebaseFirestoreClass firebaseFirestoreClass;
+  INotifications notificationsRepo;
 
   CompanyRequestRepo({
     required this.firebaseFirestoreClass,
+    required this.notificationsRepo,
   });
 
   @override
@@ -24,6 +26,7 @@ class CompanyRequestRepo implements ICompanyRequest {
 
   @override
   Future<String?> editOrder(OrderStatusType orderStatusType, String orderId) async {
+    notificationsRepo.sendNotification(NotificationModel(userId: 'admin', message: 'Order $orderId: has been updated'));
     final result =
         await firebaseFirestoreClass.updateSpecificField('orders', orderId, 'orderStatusType', orderStatusType.index);
     return result;
@@ -45,6 +48,8 @@ class CompanyRequestRepo implements ICompanyRequest {
 
   @override
   Future<String?> editAnnouncement(AnnouncementStatusType announcementStatusType, String announcementId) async {
+    notificationsRepo.sendNotification(
+        NotificationModel(userId: 'admin', message: 'Announcement $announcementId: has been updated'));
     final result = await firebaseFirestoreClass.updateSpecificField(
         'announcements', announcementId, 'announcementStatusType', announcementStatusType.index);
     return result;
