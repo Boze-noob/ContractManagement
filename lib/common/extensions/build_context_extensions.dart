@@ -13,6 +13,7 @@ extension BuildContextExtensions on BuildContext {
   //Blocs
   AnnouncementBloc get announcementBloc => read<AnnouncementBloc>();
   AuthBloc get authBloc => read<AuthBloc>();
+  BillBloc get billBloc => read<BillBloc>();
   ClientsBloc get clientsBloc => read<ClientsBloc>();
   ClientRequestBloc get clientRequestBloc => read<ClientRequestBloc>();
   CompaniesBloc get companiesBloc => read<CompaniesBloc>();

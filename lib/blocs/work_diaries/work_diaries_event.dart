@@ -38,3 +38,10 @@ class WorkDiariesUpdateByIdEvent extends WorkDiariesEvent {
 
   WorkDiariesUpdateByIdEvent({required this.announcementId});
 }
+
+//TODO check if admin needs this
+class WorkDiaryGetSingleEvent extends WorkDiariesEvent {
+  final String announcementId;
+
+  WorkDiaryGetSingleEvent({required this.announcementId});
+}

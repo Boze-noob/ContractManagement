@@ -13,8 +13,7 @@ class BillRepo implements IBill {
 
   @override
   Future<BillModel> getBill(String id) async {
-    final jsonData =
-        await firebaseFirestoreClass.getDataWithFilter('bills', 'id', id);
+    final jsonData = await firebaseFirestoreClass.getDataWithFilter('bills', 'id', id);
     return jsonData != null ? BillModel.fromMap(jsonData) : jsonData;
   }
 
@@ -25,7 +24,7 @@ class BillRepo implements IBill {
 
   @override
   Future<bool> submitBill(BillModel billModel) async {
-    return await firebaseFirestoreClass.storeData(
-        'bills', billModel.id, billModel.toMap());
+    BillModel model = billModel.copyWith(id: generateRandomId());
+    return await firebaseFirestoreClass.storeData('bills', model.id, model.toMap());
   }
 }

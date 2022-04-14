@@ -40,20 +40,15 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
-                  text: workDiariesState.workDiaryModel!.projectName ??
-                      'Project name not provided',
+                  text: workDiariesState.workDiaryModel!.projectName ?? 'Project name not provided',
                 ),
                 IconButton(
                     onPressed: () => showDialog(
                           context: context,
-                          builder: (BuildContext context) =>
-                              ChangeProjectNameDialog(
-                            onEditTap: (projectName) =>
-                                context.workDiariesBloc.add(
+                          builder: (BuildContext context) => ChangeProjectNameDialog(
+                            onEditTap: (projectName) => context.workDiariesBloc.add(
                               WorkDiariesUpdateEvent(
-                                  workDiaryModel: workDiariesState
-                                      .workDiaryModel!
-                                      .copyWith(projectName: projectName)),
+                                  workDiaryModel: workDiariesState.workDiaryModel!.copyWith(projectName: projectName)),
                             ),
                           ),
                         ),
@@ -72,8 +67,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Announcement ID: ' +
-                  workDiariesState.workDiaryModel!.announcementId,
+              text: 'Announcement ID: ' + workDiariesState.workDiaryModel!.announcementId,
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -92,8 +86,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               ),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
-              decoration:
-                  TextFormFieldStyle.inputDecoration('Project description'),
+              decoration: TextFormFieldStyle.inputDecoration('Project description'),
             ),
             SizedBox(
               height: 8,
@@ -116,8 +109,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             TextFormField(
-              initialValue:
-                  workDiariesState.workDiaryModel!.additionalRequirements,
+              initialValue: workDiariesState.workDiaryModel!.additionalRequirements,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               onChanged: (text) => context.workDiariesBloc.add(
                 WorkDiariesUpdateEvent(
@@ -128,8 +120,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               ),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 3,
-              decoration:
-                  TextFormFieldStyle.inputDecoration('Additional requirements'),
+              decoration: TextFormFieldStyle.inputDecoration('Additional requirements'),
             ),
             SizedBox(
               height: 8,
@@ -155,10 +146,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Start date: ' +
-                  workDiariesState.workDiaryModel!.startDate
-                      .toLocal()
-                      .formatDDMMYY(),
+              text: 'Start date: ' + workDiariesState.workDiaryModel!.startDate.toLocal().formatDDMMYY(),
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -166,10 +154,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
               height: 8,
             ),
             CustomText(
-              text: 'Completion date: ' +
-                  workDiariesState.workDiaryModel!.completionDateTime
-                      .toLocal()
-                      .formatDDMMYY(),
+              text: 'Completion date: ' + workDiariesState.workDiaryModel!.completionDateTime.toLocal().formatDDMMYY(),
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -245,8 +230,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                   colorScheme: ColorScheme.light(),
                 ),
                 child: BlocProvider(
-                  create: (context) =>
-                      OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+                  create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
                   child: BlocBuilder<OrderBloc, OrderState>(
                     builder: (context, state) {
                       return CalendarDatePicker(
@@ -314,8 +298,12 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
 
   @override
   void initState() {
-    selectedDateTime = DateTime.now();
-    dateTimeTxtValue = DateTime.now();
+    selectedDateTime = (context.workDiariesBloc.state.workDiaryModel != null
+        ? context.workDiariesBloc.state.workDiaryModel!.endDate
+        : DateTime.now())!;
+    dateTimeTxtValue = (context.workDiariesBloc.state.workDiaryModel != null
+        ? context.workDiariesBloc.state.workDiaryModel!.endDate
+        : DateTime.now())!;
     super.initState();
   }
 }

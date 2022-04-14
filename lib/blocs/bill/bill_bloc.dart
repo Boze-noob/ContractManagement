@@ -1,5 +1,4 @@
 import 'package:contract_management/_all.dart';
-import 'package:contract_management/blocs/_all.dart';
 
 class BillBloc extends Bloc<BillEvent, BillState> {
   final IBill billRepo;
@@ -35,8 +34,7 @@ class BillBloc extends Bloc<BillEvent, BillState> {
     if (result != null)
       emit(state.copyWith(status: BillStateStatus.loaded, billModel: result));
     else
-      emit(state.copyWith(
-          status: BillStateStatus.error, message: 'Could not load bill'));
+      emit(state.copyWith(status: BillStateStatus.error, message: 'Could not load bill'));
   }
 
   Future<void> _getAll(BillGetAllEvent event, Emitter<BillState> emit) async {
@@ -45,8 +43,7 @@ class BillBloc extends Bloc<BillEvent, BillState> {
     if (result != null)
       emit(state.copyWith(status: BillStateStatus.loaded, billsModels: result));
     else
-      emit(state.copyWith(
-          status: BillStateStatus.error, message: 'Could not load bills'));
+      emit(state.copyWith(status: BillStateStatus.error, message: 'Could not load bills'));
   }
 
   Future<void> _update(BillUpdateEvent event, Emitter<BillState> emit) async {
@@ -60,12 +57,8 @@ class BillBloc extends Bloc<BillEvent, BillState> {
   Future<void> _submit(BillSubmitEvent event, Emitter<BillState> emit) async {
     final result = await billRepo.submitBill(state.billModel);
     if (result)
-      emit(state.copyWith(
-          status: BillStateStatus.submitSuccessful,
-          message: 'Submit successful'));
+      emit(state.copyWith(status: BillStateStatus.submitSuccessful, message: 'Submit successful'));
     else
-      emit(state.copyWith(
-          status: BillStateStatus.error,
-          message: 'Error happen, please try again'));
+      emit(state.copyWith(status: BillStateStatus.error, message: 'Error happen, please try again'));
   }
 }
