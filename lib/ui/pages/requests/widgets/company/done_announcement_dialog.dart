@@ -35,15 +35,10 @@ class _DoneAnnouncementDialogState extends State<DoneAnnouncementDialog> {
       child: CustomDialog(
         buttonText: 'Send',
         onButtonPressed: () {
-          context.companyRequestsBloc.add(
-              CompanyEditAnnouncementRequestsEvent(
-                  announcementStatusType:
-                  AnnouncementStatusType.inProgress,
-                  announcementId: widget.announcementModel.id));
+          context.companyRequestsBloc.add(CompanyEditAnnouncementRequestsEvent(
+              announcementStatusType: AnnouncementStatusType.inProgress, announcementId: widget.announcementModel.id));
           //TODO add announcement completed here
-
-
-        } ,
+        },
         message: 'Documents will be sent to admin for approve',
         child: Expanded(
           child: Padding(
