@@ -7,6 +7,7 @@ class AnnouncementDataTableWidget extends StatelessWidget {
   final void Function(int index) viewBtnOnTap;
   final void Function(int index) sendBtnOnTap;
   final void Function(int index) deleteBtnOnTap;
+  final void Function(int index) inspectOnTap;
   final List<AnnouncementModel> announcementsModels;
 
   AnnouncementDataTableWidget({
@@ -15,6 +16,7 @@ class AnnouncementDataTableWidget extends StatelessWidget {
     required this.viewBtnOnTap,
     required this.sendBtnOnTap,
     required this.deleteBtnOnTap,
+    required this.inspectOnTap,
     required this.announcementsModels,
   }) : super(key: key);
 
@@ -83,6 +85,11 @@ class AnnouncementDataTableWidget extends StatelessWidget {
         rows: List<DataRow>.generate(
           announcementsModels.length,
           (index) => DataRow(
+            color: MaterialStateProperty.all(
+              _getRowColor(
+                announcementsModels[index].announcementStatusType,
+              ),
+            ),
             cells: [
               DataCell(
                 CustomText(text: announcementsModels[index].orderId),
@@ -113,16 +120,30 @@ class AnnouncementDataTableWidget extends StatelessWidget {
               DataCell(
                 Row(
                   children: [
-                    Expanded(
-                      child: Button(
-                        text: 'View',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        onTap: () => viewBtnOnTap(index),
-                      ),
-                    ),
+                    (() {
+                      if (announcementsModels[index].announcementStatusType.translate() ==
+                          AnnouncementStatusType.done.translate())
+                        return Expanded(
+                          child: Button(
+                            text: 'Inspect',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => inspectOnTap(index),
+                          ),
+                        );
+                      return Expanded(
+                        child: Button(
+                          text: 'View',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          onTap: () => viewBtnOnTap(index),
+                        ),
+                      );
+                    }()),
                     Visibility(
                       visible: announcementsModels[index].announcementStatusType.translate() ==
                           AnnouncementStatusType.waiting.translate(),
@@ -139,7 +160,11 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                     ),
                     Visibility(
                       visible: announcementsModels[index].announcementStatusType.translate() ==
-                          AnnouncementStatusType.waiting.translate(),
+                              AnnouncementStatusType.waiting.translate() ||
+                          announcementsModels[index].announcementStatusType.translate() ==
+                              AnnouncementStatusType.approved.translate() ||
+                          announcementsModels[index].announcementStatusType.translate() ==
+                              AnnouncementStatusType.declined.translate(),
                       child: Expanded(
                         child: Button(
                           text: 'Delete',
@@ -159,5 +184,16 @@ class AnnouncementDataTableWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getRowColor(AnnouncementStatusType status) {
+    switch (status.index) {
+      case 3:
+        return Colors.yellow.withOpacity(0.8);
+      case 4:
+        return Colors.green.withOpacity(0.8);
+      default:
+        return Colors.transparent;
+    }
   }
 }

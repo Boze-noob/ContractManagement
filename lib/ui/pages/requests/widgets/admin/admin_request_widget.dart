@@ -267,6 +267,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       ),
                                       deleteBtnOnTap: (index) => context.announcementBloc.add(
                                           AnnouncementDeleteEvent(announcementId: state.announcementsModels[index].id)),
+                                      //TODO implement
+                                      inspectOnTap: (index) => null,
                                       announcementsModels: state.announcementsModels,
                                     );
                                   },

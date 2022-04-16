@@ -3,12 +3,15 @@ class AnnouncementStatusType {
   static const sent = AnnouncementStatusType._(1);
   static const inProgress = AnnouncementStatusType._(2);
   static const done = AnnouncementStatusType._(3);
+  static const approved = AnnouncementStatusType._(4);
+  static const declined = AnnouncementStatusType._(5);
 
   static List<AnnouncementStatusType> get values => [
         waiting,
         sent,
         inProgress,
         done,
+        approved,
       ];
 
   String translate() {
@@ -21,6 +24,10 @@ class AnnouncementStatusType {
         return "in progress";
       case 3:
         return "done";
+      case 4:
+        return "approved";
+      case 5:
+        return "declined";
       default:
         return " ";
     }
@@ -30,6 +37,5 @@ class AnnouncementStatusType {
 
   const AnnouncementStatusType._(this.index);
   static List<int> get indexes => values.map<int>((x) => x.index).toList();
-  static AnnouncementStatusType getValue(int index) =>
-      AnnouncementStatusType._(index);
+  static AnnouncementStatusType getValue(int index) => AnnouncementStatusType._(index);
 }
