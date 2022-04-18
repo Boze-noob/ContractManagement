@@ -47,7 +47,8 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
               announcementId: widget.announcementModel.id,
             ),
             WorkDiaryDataWidget(
-              isEmpty: false, announcementId: widget.announcementModel.id,
+              isEmpty: false,
+              announcementId: widget.announcementModel.id,
             ),
             SizedBox(
               height: 20,
@@ -59,13 +60,15 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                 Button(
                   text: 'Decline',
                   shrinkWrap: true,
-                  onTap: () => showDialog(context: context, builder: (context) => CustomDialog(
-                    message: 'Enter comment',
-                    child: TextFormField(
-                      style: TextFormFieldStyle.inputFieldTextStyle(),
-                      decoration: TextFormFieldStyle.inputDecoration('Start typing'),
-                    ),
-                  )),
+                  onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            message: 'Enter comment',
+                            child: TextFormField(
+                              style: TextFormFieldStyle.inputFieldTextStyle(),
+                              decoration: TextFormFieldStyle.inputDecoration('Start typing'),
+                            ),
+                          )),
                   color: Colors.red,
                 ),
                 SizedBox(
@@ -75,13 +78,15 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                 Button(
                   text: 'Approve',
                   shrinkWrap: true,
-                  onTap: () => showDialog(context: context, builder: (context) => CustomDialog(
-                    message: 'Enter profit',
-                    child: TextFormField(
-                      style: TextFormFieldStyle.inputFieldTextStyle(),
-                      decoration: TextFormFieldStyle.inputDecoration('Start typing'),
-                    ),
-                  )),
+                  onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => CustomDialog(
+                            message: 'Enter profit',
+                            child: TextFormField(
+                              style: TextFormFieldStyle.inputFieldTextStyle(),
+                              decoration: TextFormFieldStyle.inputDecoration('Start typing'),
+                            ),
+                          )),
                   color: active,
                 ),
               ],

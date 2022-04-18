@@ -63,7 +63,11 @@ class _WorkingDayDataWidgetState extends State<WorkingDayDataWidget> {
         Container(
           padding: const EdgeInsets.all(16),
           margin: EdgeInsets.only(bottom: 30),
-          child: Align(alignment: Alignment.centerLeft, child: _EditWorkingDayDataWidget(workingDayModel: dropdownValue,)),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: _EditWorkingDayDataWidget(
+                workingDayModel: dropdownValue,
+              )),
         )
       ],
     );
