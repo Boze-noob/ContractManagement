@@ -4,7 +4,8 @@ import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
 class AnnouncementDonePage extends StatefulWidget {
-  const AnnouncementDonePage({Key? key}) : super(key: key);
+  final AnnouncementModel announcementModel;
+  const AnnouncementDonePage({Key? key, required this.announcementModel}) : super(key: key);
 
   @override
   _AnnouncementDonePageState createState() => _AnnouncementDonePageState();
@@ -37,18 +38,16 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
             SizedBox(
               height: 20,
             ),
-            AnnouncementDataWidget(isEmpty: false),
+            AnnouncementDataWidget(
+              isEmpty: false,
+              announcementModel: widget.announcementModel,
+            ),
             BillDataWidget(
               isEmpty: false,
-              billModel: BillModel(
-                price: '120',
-                additionalReqPrice: '50',
-                announcementId: '12',
-                id: '15',
-              ),
+              announcementId: widget.announcementModel.id,
             ),
             WorkDiaryDataWidget(
-              isEmpty: false,
+              isEmpty: false, announcementId: widget.announcementModel.id,
             ),
             SizedBox(
               height: 20,
@@ -56,19 +55,33 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                //TODO add logic
                 Button(
                   text: 'Decline',
                   shrinkWrap: true,
-                  onTap: () => null,
+                  onTap: () => showDialog(context: context, builder: (context) => CustomDialog(
+                    message: 'Enter comment',
+                    child: TextFormField(
+                      style: TextFormFieldStyle.inputFieldTextStyle(),
+                      decoration: TextFormFieldStyle.inputDecoration('Start typing'),
+                    ),
+                  )),
                   color: Colors.red,
                 ),
                 SizedBox(
                   width: 20,
                 ),
+                //TODO add logic
                 Button(
                   text: 'Approve',
                   shrinkWrap: true,
-                  onTap: () => null,
+                  onTap: () => showDialog(context: context, builder: (context) => CustomDialog(
+                    message: 'Enter profit',
+                    child: TextFormField(
+                      style: TextFormFieldStyle.inputFieldTextStyle(),
+                      decoration: TextFormFieldStyle.inputDecoration('Start typing'),
+                    ),
+                  )),
                   color: active,
                 ),
               ],

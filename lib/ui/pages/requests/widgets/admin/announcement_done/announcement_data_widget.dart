@@ -3,12 +3,12 @@ import 'package:contract_management/_all.dart';
 
 class AnnouncementDataWidget extends StatelessWidget {
   final bool isEmpty;
-  //final AnnouncementModel announcementsModel;
+  final AnnouncementModel announcementModel;
 
   AnnouncementDataWidget({
     Key? key,
     required this.isEmpty,
-    //  required this.announcementsModel,
+    required this.announcementModel,
   }) : super(key: key);
 
   @override
@@ -60,43 +60,45 @@ class AnnouncementDataWidget extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Id: ' + announcementModel.id, context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Order id: ' + announcementModel.orderId, context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Receiver id: ' + announcementModel.receiverId.value, context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Receiver name: ' + announcementModel.receiverName.value, context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget(
+              'Contract items: ' + announcementModel.contractItems.map((e) => e.translate()).toString(), context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Price: ' + announcementModel.price, context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Created date time: ' + announcementModel.createdDateTime.toLocal().formatDDMMYY(), context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget(
+              'Completion date time: ' + announcementModel.completionDateTime.toLocal().formatDDMMYY(), context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Employer name: ' + announcementModel.employerName, context),
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('rowDataStr', context),
+          _dataRowWidget('Status type: ' + announcementModel.announcementStatusType.translate(), context),
           SizedBox(
             height: 10,
           ),

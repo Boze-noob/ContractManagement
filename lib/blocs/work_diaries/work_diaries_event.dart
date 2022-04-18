@@ -40,8 +40,8 @@ class WorkDiariesUpdateByIdEvent extends WorkDiariesEvent {
 }
 
 //TODO check if admin needs this
-class WorkDiaryGetSingleEvent extends WorkDiariesEvent {
+class WorkDiariesGetSingleEvent extends WorkDiariesEvent {
   final String announcementId;
 
-  WorkDiaryGetSingleEvent({required this.announcementId});
+  WorkDiariesGetSingleEvent({required this.announcementId});
 }

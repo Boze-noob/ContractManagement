@@ -2,14 +2,21 @@ import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
 class WorkingDayDataWidget extends StatefulWidget {
-  const WorkingDayDataWidget({Key? key}) : super(key: key);
+  final List<WorkingDayModel> workingDayModels;
+  const WorkingDayDataWidget({Key? key, required this.workingDayModels}) : super(key: key);
 
   @override
   _WorkingDayDataWidgetState createState() => _WorkingDayDataWidgetState();
 }
 
 class _WorkingDayDataWidgetState extends State<WorkingDayDataWidget> {
-  String dropdownValue = 'String1';
+  late WorkingDayModel dropdownValue;
+
+  @override
+  void initState() {
+    dropdownValue = widget.workingDayModels[0];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,7 @@ class _WorkingDayDataWidgetState extends State<WorkingDayDataWidget> {
           weight: FontWeight.bold,
         ),
         Material(
-          child: DropdownButton<String>(
+          child: DropdownButton<WorkingDayModel>(
             value: dropdownValue,
             icon: const Icon(Icons.access_time),
             elevation: 16,
@@ -34,16 +41,16 @@ class _WorkingDayDataWidgetState extends State<WorkingDayDataWidget> {
               height: 2,
               color: active,
             ),
-            onChanged: (String? pickedValue) {
+            onChanged: (WorkingDayModel? pickedValue) {
               setState(() {
                 dropdownValue = pickedValue!;
               });
             },
-            items: ['DateTime.now()', 'String1'].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
+            items: widget.workingDayModels.map<DropdownMenuItem<WorkingDayModel>>((WorkingDayModel value) {
+              return DropdownMenuItem<WorkingDayModel>(
                 value: value,
                 child: Text(
-                  value,
+                  value.dateTime.toLocal().formatDDMMYY(),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               );
@@ -56,7 +63,7 @@ class _WorkingDayDataWidgetState extends State<WorkingDayDataWidget> {
         Container(
           padding: const EdgeInsets.all(16),
           margin: EdgeInsets.only(bottom: 30),
-          child: Align(alignment: Alignment.centerLeft, child: _EditWorkingDayDataWidget()),
+          child: Align(alignment: Alignment.centerLeft, child: _EditWorkingDayDataWidget(workingDayModel: dropdownValue,)),
         )
       ],
     );
@@ -64,7 +71,8 @@ class _WorkingDayDataWidgetState extends State<WorkingDayDataWidget> {
 }
 
 class _EditWorkingDayDataWidget extends StatefulWidget {
-  const _EditWorkingDayDataWidget({Key? key}) : super(key: key);
+  final WorkingDayModel workingDayModel;
+  const _EditWorkingDayDataWidget({Key? key, required this.workingDayModel}) : super(key: key);
 
   @override
   __EditWorkingDayDataWidgetState createState() => __EditWorkingDayDataWidgetState();
@@ -98,23 +106,23 @@ class __EditWorkingDayDataWidgetState extends State<_EditWorkingDayDataWidget> {
         SizedBox(
           height: 10,
         ),
-        _dataRowWidget('rowDataStr', context),
+        _dataRowWidget('Date time: ' + widget.workingDayModel.dateTime.toLocal().formatDDMMYY(), context),
         SizedBox(
           height: 10,
         ),
-        _dataRowWidget('rowDataStr', context),
+        _dataRowWidget('Weather: ' + widget.workingDayModel.weather.value, context),
         SizedBox(
           height: 10,
         ),
-        _dataRowWidget('rowDataStr', context),
+        _dataRowWidget('Employers: ' + widget.workingDayModel.employers.value, context),
         SizedBox(
           height: 10,
         ),
-        _dataRowWidget('rowDataStr', context),
+        _dataRowWidget('Machines: ' + widget.workingDayModel.machines.value, context),
         SizedBox(
           height: 10,
         ),
-        _dataRowWidget('rowDataStr', context),
+        _dataRowWidget('Materials: ' + widget.workingDayModel.materials.value, context),
         SizedBox(
           height: 10,
         ),

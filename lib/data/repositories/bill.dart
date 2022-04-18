@@ -13,7 +13,9 @@ class BillRepo implements IBill {
 
   @override
   Future<BillModel> getBill(String id) async {
-    final jsonData = await firebaseFirestoreClass.getDataWithFilter('bills', 'id', id);
+    print('usli smo u repo');
+    final jsonData = await firebaseFirestoreClass.getDataWithFilter('bills', 'announcementId', id);
+    print('action ended in repo');
     return jsonData != null ? BillModel.fromMap(jsonData) : jsonData;
   }
 

@@ -9,7 +9,7 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
     on<WorkDiariesUpdateEvent>(_update);
     on<WorkDiariesSubmitUpdateEvent>(_submitUpdate);
     on<WorkDiariesUpdateByIdEvent>(_updateById);
-    on<WorkDiaryGetSingleEvent>(_getSingle);
+    on<WorkDiariesGetSingleEvent>(_getSingle);
   }
 
   static WorkDiariesState initialState() => WorkDiariesState(
@@ -106,7 +106,7 @@ class WorkDiariesBloc extends Bloc<WorkDiariesEvent, WorkDiariesState> {
     emit(state.copyWith(workDiaryModel: workDiaryModel, status: WorkDiariesStateStatus.loaded));
   }
 
-  Future<void> _getSingle(WorkDiaryGetSingleEvent event, Emitter<WorkDiariesState> emit) async {
+  Future<void> _getSingle(WorkDiariesGetSingleEvent event, Emitter<WorkDiariesState> emit) async {
     emit(state.copyWith(status: WorkDiariesStateStatus.loading));
     final result = await workDiariesRepo.getSingleDiary(event.announcementId);
     if (result != null)

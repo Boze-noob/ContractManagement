@@ -21,9 +21,9 @@ class BillUpdateEvent extends BillEvent {
 class BillSubmitEvent extends BillEvent {}
 
 class BillGetSingleEvent extends BillEvent {
-  final String billId;
+  final String announcementId;
 
-  BillGetSingleEvent({required this.billId});
+  BillGetSingleEvent({required this.announcementId});
 }
 
 class BillGetAllEvent extends BillEvent {}
