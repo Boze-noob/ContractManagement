@@ -3,6 +3,7 @@ import 'package:contract_management/_all.dart';
 import 'package:contract_management/ui/pages/requests/widgets/admin/announcement_data_table_widget.dart';
 import 'package:contract_management/ui/pages/requests/widgets/admin/create_announcement_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AdminRequestWidget extends StatefulWidget {
   const AdminRequestWidget({Key? key}) : super(key: key);
@@ -267,8 +268,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       ),
                                       deleteBtnOnTap: (index) => context.announcementBloc.add(
                                           AnnouncementDeleteEvent(announcementId: state.announcementsModels[index].id)),
-                                      //TODO implement
-                                      inspectOnTap: (index) => null,
+                                      inspectOnTap: (index) => Get.to(() => AnnouncementDonePage()),
                                       announcementsModels: state.announcementsModels,
                                     );
                                   },
