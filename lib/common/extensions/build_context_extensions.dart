@@ -30,6 +30,7 @@ extension BuildContextExtensions on BuildContext {
   MyContractBloc get myContractBloc => read<MyContractBloc>();
   NavigatorBloc get navigatorBloc => read<NavigatorBloc>();
   NotificationsBloc get notificationsBloc => read<NotificationsBloc>();
+  RevenueBloc get revenueBloc => read<RevenueBloc>();
   SendContractRequestBloc get sendContractRequestBloc => read<SendContractRequestBloc>();
   OrderBloc get orderBloc => read<OrderBloc>();
   WorkDiariesBloc get workDiariesBloc => read<WorkDiariesBloc>();

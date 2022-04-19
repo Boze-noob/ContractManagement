@@ -4,7 +4,7 @@ import 'package:contract_management/_all.dart';
 
 abstract class IRevenue {
   Future<RevenueModel?> getData();
-  Future<String?> updateData();
+  Future<bool> updateData(RevenueModel revenueModel);
 }
 
 class RevenueRepo implements IRevenue {
@@ -22,8 +22,7 @@ class RevenueRepo implements IRevenue {
   }
 
   @override
-  Future<String?> updateData() {
-    // TODO: implement updateData
-    throw UnimplementedError();
+  Future<bool> updateData(RevenueModel revenueModel) async {
+    return await firebaseFirestoreClass.storeData('revenue', 'companyRevenue', revenueModel.toMap());
   }
 }

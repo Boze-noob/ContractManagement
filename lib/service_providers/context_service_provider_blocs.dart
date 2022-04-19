@@ -57,6 +57,13 @@ class ContextServiceProviderBlocs extends StatelessWidget {
             billRepo: context.serviceProvider.billRepo,
           ),
         ),
+        BlocProvider<RevenueBloc>(
+          create: (BuildContext context) => RevenueBloc(
+            revenueRepo: context.serviceProvider.revenueRepo,
+          )..add(
+              RevenueLoadEvent(),
+            ),
+        )
       ],
       child: child,
     );

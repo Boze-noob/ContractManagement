@@ -1,17 +1,23 @@
 import 'dart:ui';
-
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
 
 class AnnouncementDonePage extends StatefulWidget {
   final AnnouncementModel announcementModel;
-  const AnnouncementDonePage({Key? key, required this.announcementModel}) : super(key: key);
+  final Function(String declineComment) announcementDeclineOnTap;
+  const AnnouncementDonePage({
+    Key? key,
+    required this.announcementModel,
+    required this.announcementDeclineOnTap,
+  }) : super(key: key);
 
   @override
   _AnnouncementDonePageState createState() => _AnnouncementDonePageState();
 }
 
 class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
+  final TextEditingController textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,19 +62,22 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                //TODO add logic
                 Button(
                   text: 'Decline',
                   shrinkWrap: true,
                   onTap: () => showDialog(
-                      context: context,
-                      builder: (context) => CustomDialog(
-                            message: 'Enter comment',
-                            child: TextFormField(
-                              style: TextFormFieldStyle.inputFieldTextStyle(),
-                              decoration: TextFormFieldStyle.inputDecoration('Start typing'),
-                            ),
-                          )),
+                    context: context,
+                    builder: (context) => CustomDialog(
+                      buttonText: 'Send',
+                      onButtonPressed: () => widget.announcementDeclineOnTap(textEditingController.text.value),
+                      message: 'Enter comment',
+                      child: TextFormField(
+                        controller: textEditingController,
+                        style: TextFormFieldStyle.inputFieldTextStyle(),
+                        decoration: TextFormFieldStyle.inputDecoration('Start typing...'),
+                      ),
+                    ),
+                  ),
                   color: Colors.red,
                 ),
                 SizedBox(

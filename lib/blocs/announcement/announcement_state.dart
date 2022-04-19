@@ -7,6 +7,7 @@ enum AnnouncementStateStatus {
   deleted,
   sent,
   created,
+  edited,
   error,
 }
 
@@ -15,7 +16,8 @@ class AnnouncementState {
   final List<AnnouncementModel> announcementsModels;
   final String? message;
 
-  AnnouncementState({required this.status, this.message, required this.announcementsModels});
+  AnnouncementState(
+      {required this.status, this.message, required this.announcementsModels});
 
   AnnouncementState copyWith({
     AnnouncementStateStatus? status,

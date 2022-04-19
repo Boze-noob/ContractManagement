@@ -4,6 +4,7 @@ enum RevenueStateStatus {
   init,
   loading,
   loaded,
+  edited,
   error,
 }
 

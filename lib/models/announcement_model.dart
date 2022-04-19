@@ -11,18 +11,21 @@ class AnnouncementModel {
   final DateTime completionDateTime;
   final String employerName;
   final AnnouncementStatusType announcementStatusType;
+  final String? declineComment;
 
-  AnnouncementModel(
-      {required this.id,
-      required this.orderId,
-      this.receiverId,
-      this.receiverName,
-      required this.contractItems,
-      required this.price,
-      required this.createdDateTime,
-      required this.completionDateTime,
-      required this.employerName,
-      required this.announcementStatusType});
+  AnnouncementModel({
+    required this.id,
+    required this.orderId,
+    this.receiverId,
+    this.receiverName,
+    required this.contractItems,
+    required this.price,
+    required this.createdDateTime,
+    required this.completionDateTime,
+    required this.employerName,
+    required this.announcementStatusType,
+    this.declineComment,
+  });
 
   AnnouncementModel copyWith({
     String? id,
@@ -36,6 +39,7 @@ class AnnouncementModel {
     DateTime? endDateTime,
     String? employerName,
     AnnouncementStatusType? announcementStatusType,
+    String? declineComment,
   }) =>
       AnnouncementModel(
         id: id ?? this.id,
@@ -47,7 +51,9 @@ class AnnouncementModel {
         createdDateTime: createdDateTime ?? this.createdDateTime,
         completionDateTime: completionDateTime ?? this.completionDateTime,
         employerName: employerName ?? this.employerName,
-        announcementStatusType: announcementStatusType ?? this.announcementStatusType,
+        announcementStatusType:
+            announcementStatusType ?? this.announcementStatusType,
+        declineComment: declineComment ?? this.declineComment,
       );
 
   Map<String, dynamic> toMap() {
@@ -62,6 +68,7 @@ class AnnouncementModel {
       'completionDateTime': completionDateTime.toUtc(),
       'employerName': employerName,
       'announcementStatusType': announcementStatusType.index,
+      'declineComment': declineComment,
     };
   }
 
@@ -71,12 +78,19 @@ class AnnouncementModel {
       orderId: map['orderId'],
       receiverId: map['receiverId'],
       receiverName: map['receiverName'],
-      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
+      contractItems: ContractItemsType.getContractItemsFromIndexList(
+          List<int>.from(map['contractItems'])),
       price: map['price'],
-      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
-      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
+      createdDateTime: map['createdDateTime'] != null
+          ? map['createdDateTime'].toDate()
+          : null,
+      completionDateTime: map['completionDateTime'] != null
+          ? map['completionDateTime'].toDate()
+          : null,
       employerName: map['employerName'],
-      announcementStatusType: AnnouncementStatusType.getValue(map['announcementStatusType']),
+      announcementStatusType:
+          AnnouncementStatusType.getValue(map['announcementStatusType']),
+      declineComment: map['declineComment'] ?? null,
     );
   }
 }

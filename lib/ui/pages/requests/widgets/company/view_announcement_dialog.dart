@@ -98,6 +98,17 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
+              (() {
+                if (announcementModel.announcementStatusType.translate() ==
+                    AnnouncementStatusType.declined.translate())
+                  return CustomText(
+                    text: 'Comment: ${announcementModel.declineComment.value}',
+                    weight: FontWeight.normal,
+                    color: Colors.black,
+                  );
+                else
+                  return SizedBox();
+              }()),
               Divider(
                 color: Colors.black12.withOpacity(0.6),
               ),

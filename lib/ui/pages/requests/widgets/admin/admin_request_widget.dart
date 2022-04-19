@@ -241,6 +241,8 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                     context.announcementBloc.add(AnnouncementGetEvent());
                                   } else if (state.status == AnnouncementStateStatus.sent)
                                     showInfoMessage(state.message ?? 'Sent', context);
+                                  else if (state.status == AnnouncementStateStatus.edited)
+                                    context.announcementBloc.add(AnnouncementGetEvent());
                                 },
                                 child: BlocBuilder<AnnouncementBloc, AnnouncementState>(
                                   builder: (context, state) {
@@ -271,6 +273,13 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                       inspectOnTap: (index) => Get.to(
                                         () => AnnouncementDonePage(
                                           announcementModel: state.announcementsModels[index],
+                                          announcementDeclineOnTap: (String declineComment) =>
+                                              context.announcementBloc.add(
+                                            AnnouncementDeclineEvent(
+                                                announcementId: state.announcementsModels[index].id,
+                                                announcementStatusType: AnnouncementStatusType.declined,
+                                                declineMessage: declineComment),
+                                          ),
                                         ),
                                       ),
                                       announcementsModels: state.announcementsModels,

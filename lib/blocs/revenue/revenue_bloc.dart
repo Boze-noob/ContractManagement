@@ -19,7 +19,11 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
           weeklyRevenue: List.filled(7, 0),
           monthlyRevenue: 0,
           yearlyRevenue: 0,
-          // revenueListDateTime: List.empty(),
+          monthNumber: 1,
+          weekNumber: 1,
+          revenueYear: DateTime.now().year,
+          revenueListDateTime: [],
+          dayNumber: 1,
         ),
       );
 
@@ -40,5 +44,11 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
       emit(state.copyWith(status: RevenueStateStatus.error, errorMessage: 'Error message'));
   }
 
-  void _update(RevenueUpdateEvent event, Emitter<RevenueState> emit) {}
+  void _update(RevenueUpdateEvent event, Emitter<RevenueState> emit) async {
+    final result = await revenueRepo.updateData(event.revenueModel);
+    if (result)
+      emit(state.copyWith(status: RevenueStateStatus.edited, revenueModel: event.revenueModel));
+    else
+      emit(state.copyWith(status: RevenueStateStatus.error, errorMessage: 'Error happen'));
+  }
 }

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class ViewAnnouncementDialog extends StatelessWidget {
   AnnouncementModel announcementModel;
-  ViewAnnouncementDialog({Key? key, required this.announcementModel}) : super(key: key);
+  ViewAnnouncementDialog({Key? key, required this.announcementModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,8 @@ class ViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
+                text:
+                    'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -71,7 +73,8 @@ class ViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Completion date time: ${announcementModel.completionDateTime.formatDDMMYY().value}',
+                text:
+                    'Completion date time: ${announcementModel.completionDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -87,13 +90,25 @@ class ViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Status type: ${announcementModel.announcementStatusType.translate()}',
+                text:
+                    'Status type: ${announcementModel.announcementStatusType.translate()}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
               SizedBox(
                 height: 10,
               ),
+              (() {
+                if (announcementModel.announcementStatusType.translate() ==
+                    AnnouncementStatusType.declined.translate())
+                  return CustomText(
+                    text: 'Comment: ${announcementModel.declineComment.value}',
+                    weight: FontWeight.normal,
+                    color: Colors.black,
+                  );
+                else
+                  return SizedBox();
+              }()),
               Divider(
                 color: Colors.black12.withOpacity(0.6),
               ),
@@ -106,7 +121,8 @@ class ViewAnnouncementDialog extends StatelessWidget {
                 itemCount: announcementModel.contractItems.length,
                 itemBuilder: (context, i) {
                   return ListTile(
-                    title: Text(' - ' + announcementModel.contractItems[i].translate()),
+                    title: Text(
+                        ' - ' + announcementModel.contractItems[i].translate()),
                   );
                 },
               ),

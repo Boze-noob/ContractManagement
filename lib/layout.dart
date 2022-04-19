@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
-class SiteLayout extends StatelessWidget {
+class SiteLayout extends StatefulWidget {
+  @override
+  State<SiteLayout> createState() => _SiteLayoutState();
+}
+
+class _SiteLayoutState extends State<SiteLayout> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  @override
+  void initState() {
+    if (context.currentUserBloc.state.userModel!.role != RoleType.client.translate() &&
+        context.currentUserBloc.state.userModel!.role != RoleType.company.translate()) {
+      InspectRevenue.checkRevenueDates(context.revenueBloc.state.revenueModel);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
