@@ -5,7 +5,7 @@ class RevenueModel {
   final int monthlyRevenue;
   final int yearlyRevenue;
 
-  final List<int> revenueListDateTime;
+  final List<int> weeklyRevenueDateTime;
   final int revenueYear;
   final int weekNumber;
   final int monthNumber;
@@ -17,7 +17,7 @@ class RevenueModel {
     required this.weeklyRevenue,
     required this.monthlyRevenue,
     required this.yearlyRevenue,
-    required this.revenueListDateTime,
+    required this.weeklyRevenueDateTime,
     required this.revenueYear,
     required this.weekNumber,
     required this.monthNumber,
@@ -28,7 +28,7 @@ class RevenueModel {
     int? dailyRevenue,
     int? totalWeeklyRevenue,
     List<int>? weeklyRevenue,
-    List<int>? revenueListDateTime,
+    List<int>? weeklyRevenueDateTime,
     int? monthlyRevenue,
     int? yearlyRevenue,
     int? revenueYear,
@@ -40,7 +40,7 @@ class RevenueModel {
         dailyRevenue: dailyRevenue ?? this.dailyRevenue,
         totalWeeklyRevenue: totalWeeklyRevenue ?? this.totalWeeklyRevenue,
         weeklyRevenue: weeklyRevenue ?? this.weeklyRevenue,
-        revenueListDateTime: revenueListDateTime ?? this.revenueListDateTime,
+        weeklyRevenueDateTime: weeklyRevenueDateTime ?? this.weeklyRevenueDateTime,
         monthlyRevenue: monthlyRevenue ?? this.monthlyRevenue,
         yearlyRevenue: yearlyRevenue ?? this.yearlyRevenue,
         revenueYear: revenueYear ?? this.revenueYear,
@@ -54,7 +54,7 @@ class RevenueModel {
       'dailyRevenue': dailyRevenue,
       'totalWeeklyRevenue': totalWeeklyRevenue,
       'weeklyRevenue': weeklyRevenue,
-      'revenueListDateTime': revenueListDateTime,
+      'weeklyRevenueDateTime': weeklyRevenueDateTime,
       'monthlyRevenue': monthlyRevenue,
       'yearlyRevenue': yearlyRevenue,
       'revenueYear': revenueYear,
@@ -69,7 +69,7 @@ class RevenueModel {
       dailyRevenue: map['dailyRevenue'],
       totalWeeklyRevenue: map['totalWeeklyRevenue'],
       weeklyRevenue: List<int>.from(map['weeklyRevenue']),
-      revenueListDateTime: List<int>.from(map['revenueListDateTime']),
+      weeklyRevenueDateTime: List<int>.from(map['weeklyRevenueDateTime']),
       monthlyRevenue: map['monthlyRevenue'],
       yearlyRevenue: map['yearlyRevenue'],
       revenueYear: map['revenueYear'],

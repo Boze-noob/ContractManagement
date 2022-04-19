@@ -22,7 +22,7 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
           monthNumber: 1,
           weekNumber: 1,
           revenueYear: DateTime.now().year,
-          revenueListDateTime: [],
+          weeklyRevenueDateTime: [],
           dayNumber: 1,
         ),
       );

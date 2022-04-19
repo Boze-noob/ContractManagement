@@ -69,7 +69,7 @@ class OverviewPage extends StatelessWidget {
                                 RevenueSectionLarge(revenueState.revenueModel)
                               else
                                 RevenueSectionSmall(revenueState.revenueModel),
-                              AvailableCompaniesTable(),
+                              OverviewRequestsDataTableWidget(),
                             ],
                           );
                       },

@@ -16,7 +16,7 @@ class InspectRevenue {
     if (currentDay > revenueModel.dayNumber) {
       List<int> newWeeklyRevenue = revenueModel.weeklyRevenue..removeAt(0);
       newWeeklyRevenue.insert(newWeeklyRevenue.length, 0);
-      List<int> newWeeklyDateTime = revenueModel.revenueListDateTime..removeAt(0);
+      List<int> newWeeklyDateTime = revenueModel.weeklyRevenueDateTime..removeAt(0);
       newWeeklyDateTime.insert(newWeeklyDateTime.length, currentDay);
       revenueModel.copyWith(dayNumber: currentDay, dailyRevenue: 0);
     }
@@ -27,17 +27,17 @@ class InspectRevenue {
       revenueModel.copyWith(revenueYear: currentYear, yearlyRevenue: 0);
     }
     if (currentModelMonth != currentMonth || currentModelMonth != DateTime.now().subtract(Duration(days: 30)).month) {
-      revenueModel.copyWith(revenueListDateTime: generateLastSevenDaysList(), weeklyRevenue: List.filled(7, 0));
+      revenueModel.copyWith(weeklyRevenueDateTime: generateLastSevenDaysList(), weeklyRevenue: List.filled(7, 0));
     } else {
       List<int> lastSevenDaysList = generateLastSevenDaysList();
       List<int> newWeeklyRevenue = List.filled(7, 0);
       for (int item in lastSevenDaysList) {
-        if (revenueModel.revenueListDateTime.contains(item)) {
+        if (revenueModel.weeklyRevenueDateTime.contains(item)) {
           newWeeklyRevenue.insert(lastSevenDaysList.indexOf(item),
-              revenueModel.weeklyRevenue[revenueModel.revenueListDateTime.indexOf(item)]);
+              revenueModel.weeklyRevenue[revenueModel.weeklyRevenueDateTime.indexOf(item)]);
         }
       }
-      revenueModel.copyWith(revenueListDateTime: lastSevenDaysList, weeklyRevenue: newWeeklyRevenue);
+      revenueModel.copyWith(weeklyRevenueDateTime: lastSevenDaysList, weeklyRevenue: newWeeklyRevenue);
     }
   }
 

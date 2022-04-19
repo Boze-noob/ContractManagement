@@ -11,10 +11,14 @@ class _SiteLayoutState extends State<SiteLayout> {
 
   @override
   void initState() {
+    //TODO cause null
+    /*
     if (context.currentUserBloc.state.userModel!.role != RoleType.client.translate() &&
         context.currentUserBloc.state.userModel!.role != RoleType.company.translate()) {
       InspectRevenue.checkRevenueDates(context.revenueBloc.state.revenueModel);
     }
+
+     */
     super.initState();
   }
 
