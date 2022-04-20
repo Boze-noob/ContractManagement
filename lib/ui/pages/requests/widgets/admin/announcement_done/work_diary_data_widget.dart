@@ -131,7 +131,7 @@ class WorkDiaryDataWidget extends StatelessWidget {
                   height: 10,
                 ),
                 WorkingDayDataWidget(
-                  workingDayModels: [],
+                  workingDayModels: state.workDiaryModel!.workingDayModels,
                 ),
                 SizedBox(
                   height: 20,

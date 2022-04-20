@@ -29,15 +29,14 @@ class SimpleBarChart extends StatelessWidget {
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<OrdinalSales, String>> _createSampleData(RevenueModel revenueModel) {
-    //TODO add dynamic date time
     final data = [
       new OrdinalSales('Today', revenueModel.weeklyRevenue[0]),
       new OrdinalSales('Yesterday', revenueModel.weeklyRevenue[1]),
-      new OrdinalSales('2 days', revenueModel.weeklyRevenue[2]),
-      new OrdinalSales('24 Jun', revenueModel.weeklyRevenue[3]),
-      new OrdinalSales('23 Jun', revenueModel.weeklyRevenue[4]),
-      new OrdinalSales('22 Jun', revenueModel.weeklyRevenue[5]),
-      new OrdinalSales('21 Jun', revenueModel.weeklyRevenue[6]),
+      new OrdinalSales(revenueModel.weeklyRevenueDateTime[4].toString(), revenueModel.weeklyRevenue[2]),
+      new OrdinalSales(revenueModel.weeklyRevenueDateTime[3].toString(), revenueModel.weeklyRevenue[3]),
+      new OrdinalSales(revenueModel.weeklyRevenueDateTime[2].toString(), revenueModel.weeklyRevenue[4]),
+      new OrdinalSales(revenueModel.weeklyRevenueDateTime[1].toString(), revenueModel.weeklyRevenue[5]),
+      new OrdinalSales(revenueModel.weeklyRevenueDateTime[0].toString(), revenueModel.weeklyRevenue[6]),
     ];
 
     return [

@@ -2,21 +2,15 @@ import 'package:contract_management/_all.dart';
 
 //This should be done on server side
 class InspectRevenue {
-  final BuildContext context;
-
-  InspectRevenue({
-    required this.context,
-  });
-
-  static checkRevenueDates(RevenueModel revenueModel) {
+  static checkRevenueDates(RevenueModel revenueModel, BuildContext context) {
     int currentDay = DateTime.now().day;
     int currentMonth = DateTime.now().month;
     int currentYear = DateTime.now().year;
     int currentModelMonth = revenueModel.monthNumber;
     if (currentDay > revenueModel.dayNumber) {
-      List<int> newWeeklyRevenue = revenueModel.weeklyRevenue..removeAt(0);
+      List<int> newWeeklyRevenue = List.from(revenueModel.weeklyRevenue).removeAt(0);
       newWeeklyRevenue.insert(newWeeklyRevenue.length, 0);
-      List<int> newWeeklyDateTime = revenueModel.weeklyRevenueDateTime..removeAt(0);
+      List<int> newWeeklyDateTime = List.from(revenueModel.weeklyRevenueDateTime).removeAt(0);
       newWeeklyDateTime.insert(newWeeklyDateTime.length, currentDay);
       revenueModel.copyWith(dayNumber: currentDay, dailyRevenue: 0);
     }
@@ -39,6 +33,8 @@ class InspectRevenue {
       }
       revenueModel.copyWith(weeklyRevenueDateTime: lastSevenDaysList, weeklyRevenue: newWeeklyRevenue);
     }
+
+    context.revenueBloc.add(RevenueUpdateModelEvent(revenueModel: revenueModel));
   }
 
   static List<int> generateLastSevenDaysList() {

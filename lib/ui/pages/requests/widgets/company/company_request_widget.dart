@@ -124,6 +124,7 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                               color: active,
                             );
                           return Builder(builder: (parentContext) {
+                            //TODO when we click on 'in progress' we create new work diary and bill no matter if it already exist or not(make it to be just one)
                             return CompanyAnnouncementDataTableWidget(
                               isEmpty: companyRequestsState.announcementsModels.isEmpty,
                               viewBtnOnTap: (index) => showDialog(

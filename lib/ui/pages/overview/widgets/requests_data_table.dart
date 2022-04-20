@@ -51,125 +51,139 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
               ),
               padding: const EdgeInsets.all(16),
               margin: EdgeInsets.only(bottom: 30),
-              child: DataTable2(
-                columnSpacing: 12,
-                horizontalMargin: 12,
-                minWidth: 600,
-                columns: [
-                  DataColumn2(
-                    label: Text('Display name'),
-                    size: ColumnSize.L,
+              child: Column(
+                children: [
+                  CustomText(
+                    text: 'Client requests',
+                    size: context.textSizeXL,
+                    color: Colors.black,
+                    weight: FontWeight.bold,
                   ),
-                  DataColumn(
-                    label: Text('Email'),
+                  SizedBox(
+                    height: 10,
                   ),
-                  DataColumn(
-                    label: Text('Location'),
-                  ),
-                  DataColumn(
-                    label: Text('Date time'),
-                  ),
-                  DataColumn(
-                    label: Text(' '),
-                  ),
-                ],
-                rows: List<DataRow>.generate(
-                  firstColumnValue!.length,
-                  (index) => DataRow(
-                    cells: [
-                      DataCell(
-                        CustomText(text: firstColumnValue![index]),
+                  DataTable2(
+                    columnSpacing: 12,
+                    horizontalMargin: 12,
+                    minWidth: 600,
+                    columns: [
+                      DataColumn2(
+                        label: Text('Display name'),
+                        size: ColumnSize.L,
                       ),
-                      DataCell(
-                        CustomText(text: secondColumnValue![index]),
+                      DataColumn(
+                        label: Text('Email'),
                       ),
-                      DataCell(
-                        CustomText(
-                          text: thirdColumnValue![index],
-                        ),
+                      DataColumn(
+                        label: Text('Location'),
                       ),
-                      DataCell(
-                        CustomText(
-                          text: fourthColumnValue![index],
-                        ),
+                      DataColumn(
+                        label: Text('Date time'),
                       ),
-                      DataCell(
-                        Button(
-                          text: 'View',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          //TOD add func
-                          onTap: () => showDialog(
-                            context: context,
-                            builder: (context) => CustomDialog(
-                              buttonText: 'Close',
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 15,
-                                  vertical: 15,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CustomText(
-                                      text: 'Request details',
-                                      size: context.textSizeXL,
-                                      color: Colors.black,
-                                      textAlign: TextAlign.center,
-                                      weight: FontWeight.bold,
+                      DataColumn(
+                        label: Text(' '),
+                      ),
+                    ],
+                    rows: List<DataRow>.generate(
+                      firstColumnValue!.length,
+                      (index) => DataRow(
+                        cells: [
+                          DataCell(
+                            CustomText(text: firstColumnValue![index]),
+                          ),
+                          DataCell(
+                            CustomText(text: secondColumnValue![index]),
+                          ),
+                          DataCell(
+                            CustomText(
+                              text: thirdColumnValue![index],
+                            ),
+                          ),
+                          DataCell(
+                            CustomText(
+                              text: fourthColumnValue![index],
+                            ),
+                          ),
+                          DataCell(
+                            Button(
+                              text: 'View',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              borderColor: active,
+                              //TOD add func
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => CustomDialog(
+                                  buttonText: 'Close',
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 15,
                                     ),
-                                    SizedBox(
-                                      height: 10,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          text: 'Request details',
+                                          size: context.textSizeXL,
+                                          color: Colors.black,
+                                          textAlign: TextAlign.center,
+                                          weight: FontWeight.bold,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomText(
+                                          text: 'Client email : ' + state.clientRequestModel[index].email,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomText(
+                                          text: 'Display name : ' + state.clientRequestModel[index].displayName,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomText(
+                                          text: 'Request type : ' +
+                                              state.clientRequestModel[index].requestType.translate(),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomText(
+                                          text: 'Description : ' + state.clientRequestModel[index].description.value,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomText(
+                                          text: 'Location : ' + state.clientRequestModel[index].location,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CustomText(
+                                          text: 'Created date time : ' +
+                                              state.clientRequestModel[index].createdDateTime.toString(),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        )
+                                      ],
                                     ),
-                                    CustomText(
-                                      text: 'Client email : ' + state.clientRequestModel[index].email,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomText(
-                                      text: 'Display name : ' + state.clientRequestModel[index].displayName,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomText(
-                                      text: 'Request type : ' + state.clientRequestModel[index].requestType.translate(),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomText(
-                                      text: 'Description : ' + state.clientRequestModel[index].description.value,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomText(
-                                      text: 'Location : ' + state.clientRequestModel[index].location,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    CustomText(
-                                      text: 'Created date time : ' +
-                                          state.clientRequestModel[index].createdDateTime.toString(),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             );
           }

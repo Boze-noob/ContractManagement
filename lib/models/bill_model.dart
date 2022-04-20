@@ -38,7 +38,7 @@ class BillModel {
     return BillModel(
       id: map['id'],
       price: map['price'],
-      additionalReqPrice: map['additionalReqPrice'],
+      additionalReqPrice: map['additionalReqPrice'] ?? null,
       announcementId: map['announcementId'],
     );
   }

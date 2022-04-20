@@ -1,5 +1,6 @@
 import 'package:contract_management/_all.dart';
 import 'package:contract_management/data/repositories/revenue.dart';
+import 'package:collection/collection.dart';
 
 class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
   IRevenue revenueRepo;
@@ -8,7 +9,8 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
   }) : super(initialState()) {
     on<RevenueInitEvent>(_init);
     on<RevenueLoadEvent>(_load);
-    on<RevenueUpdateEvent>(_update);
+    on<RevenueProfitEvent>(_update);
+    on<RevenueUpdateModelEvent>(_updateModel);
   }
 
   static RevenueState initialState() => RevenueState(
@@ -35,16 +37,41 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
     emit(state.copyWith(
       status: RevenueStateStatus.loading,
     ));
-    final result = await revenueRepo.getData();
-    if (result != null)
+    var result = await revenueRepo.getData();
+    if (result != null) {
+      result = result.copyWith(totalWeeklyRevenue: result.weeklyRevenue.sum);
       emit(
         state.copyWith(status: RevenueStateStatus.loaded, revenueModel: result),
       );
-    else
+    } else
       emit(state.copyWith(status: RevenueStateStatus.error, errorMessage: 'Error message'));
   }
 
-  void _update(RevenueUpdateEvent event, Emitter<RevenueState> emit) async {
+  //this should be done on server side, it would be nice if we could just send profit
+  void _update(RevenueProfitEvent event, Emitter<RevenueState> emit) async {
+    int profit = event.profit;
+    final RevenueModel currentRevenueModel = state.revenueModel;
+    currentRevenueModel.weeklyRevenue.insert(0, currentRevenueModel.weeklyRevenue.last + profit);
+    final RevenueModel newRevenueModel = RevenueModel(
+      dailyRevenue: currentRevenueModel.dailyRevenue + profit,
+      totalWeeklyRevenue: currentRevenueModel.totalWeeklyRevenue + profit,
+      weeklyRevenue: currentRevenueModel.weeklyRevenue,
+      monthlyRevenue: currentRevenueModel.monthlyRevenue + profit,
+      yearlyRevenue: currentRevenueModel.yearlyRevenue + profit,
+      revenueYear: currentRevenueModel.revenueYear,
+      dayNumber: currentRevenueModel.dayNumber,
+      weekNumber: currentRevenueModel.weekNumber,
+      weeklyRevenueDateTime: currentRevenueModel.weeklyRevenueDateTime,
+      monthNumber: currentRevenueModel.monthNumber,
+    );
+    final result = await revenueRepo.updateData(newRevenueModel);
+    if (result)
+      emit(state.copyWith(status: RevenueStateStatus.edited, revenueModel: newRevenueModel));
+    else
+      emit(state.copyWith(status: RevenueStateStatus.error, errorMessage: 'Error happen'));
+  }
+
+  void _updateModel(RevenueUpdateModelEvent event, Emitter<RevenueState> emit) async {
     final result = await revenueRepo.updateData(event.revenueModel);
     if (result)
       emit(state.copyWith(status: RevenueStateStatus.edited, revenueModel: event.revenueModel));

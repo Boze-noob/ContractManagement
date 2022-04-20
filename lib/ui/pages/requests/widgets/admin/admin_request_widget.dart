@@ -280,6 +280,12 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                                 announcementStatusType: AnnouncementStatusType.declined,
                                                 declineMessage: declineComment),
                                           ),
+                                          announcementApprovedOnTap: () => context.announcementBloc.add(
+                                            AnnouncementDeclineEvent(
+                                              announcementId: state.announcementsModels[index].id,
+                                              announcementStatusType: AnnouncementStatusType.approved,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       announcementsModels: state.announcementsModels,

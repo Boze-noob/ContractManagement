@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
+// ignore: must_be_immutable
 class RevenueSectionLarge extends StatelessWidget {
   RevenueModel revenueModel;
 

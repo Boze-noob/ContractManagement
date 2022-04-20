@@ -6,8 +6,14 @@ class RevenueInitEvent extends RevenueEvent {}
 
 class RevenueLoadEvent extends RevenueEvent {}
 
-class RevenueUpdateEvent extends RevenueEvent {
+class RevenueProfitEvent extends RevenueEvent {
+  final int profit;
+
+  RevenueProfitEvent({required this.profit});
+}
+
+class RevenueUpdateModelEvent extends RevenueEvent {
   final RevenueModel revenueModel;
 
-  RevenueUpdateEvent({required this.revenueModel});
+  RevenueUpdateModelEvent({required this.revenueModel});
 }

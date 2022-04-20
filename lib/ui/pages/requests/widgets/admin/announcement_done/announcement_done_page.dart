@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class AnnouncementDonePage extends StatefulWidget {
   final AnnouncementModel announcementModel;
   final Function(String declineComment) announcementDeclineOnTap;
+  final Function() announcementApprovedOnTap;
   const AnnouncementDonePage({
     Key? key,
     required this.announcementModel,
     required this.announcementDeclineOnTap,
+    required this.announcementApprovedOnTap,
   }) : super(key: key);
 
   @override
@@ -16,7 +18,15 @@ class AnnouncementDonePage extends StatefulWidget {
 }
 
 class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
-  final TextEditingController textEditingController = TextEditingController();
+  final TextEditingController declineTextEditingController = TextEditingController();
+  final TextEditingController approveTextEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    declineTextEditingController.dispose();
+    approveTextEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +79,35 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                     context: context,
                     builder: (context) => CustomDialog(
                       buttonText: 'Send',
-                      onButtonPressed: () => widget.announcementDeclineOnTap(textEditingController.text.value),
-                      message: 'Enter comment',
-                      child: TextFormField(
-                        controller: textEditingController,
-                        style: TextFormFieldStyle.inputFieldTextStyle(),
-                        decoration: TextFormFieldStyle.inputDecoration('Start typing...'),
+                      onButtonPressed: () async {
+                        widget.announcementDeclineOnTap(declineTextEditingController.text.value);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomText(
+                              text: 'Enter a comment',
+                              size: context.textSizeXL,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            SizedBox(
+                              width: 350,
+                              child: TextFormField(
+                                controller: declineTextEditingController,
+                                style: TextFormFieldStyle.inputFieldTextStyle(),
+                                decoration: TextFormFieldStyle.inputDecoration('Comment'),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -83,17 +116,49 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                 SizedBox(
                   width: 20,
                 ),
-                //TODO add logic
                 Button(
                   text: 'Approve',
                   shrinkWrap: true,
                   onTap: () => showDialog(
                       context: context,
                       builder: (context) => CustomDialog(
-                            message: 'Enter profit',
-                            child: TextFormField(
-                              style: TextFormFieldStyle.inputFieldTextStyle(),
-                              decoration: TextFormFieldStyle.inputDecoration('Start typing'),
+                            buttonText: 'Send',
+                            onButtonPressed: () {
+                              widget.announcementApprovedOnTap();
+                              context.revenueBloc.add(
+                                RevenueProfitEvent(
+                                  profit: int.parse(
+                                    approveTextEditingController.text,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomText(
+                                    text: 'Enter profit',
+                                    size: context.textSizeXL,
+                                    color: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 350,
+                                    child: TextFormField(
+                                      style: TextFormFieldStyle.inputFieldTextStyle(),
+                                      controller: approveTextEditingController,
+                                      decoration: TextFormFieldStyle.inputDecoration('Profit'),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                ],
+                              ),
                             ),
                           )),
                   color: active,
