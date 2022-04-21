@@ -61,7 +61,7 @@ class RevenueSectionSmall extends StatelessWidget {
                   children: [
                     RevenueInfo(
                       title: "Last 30 days",
-                      amount: revenueModel.weeklyRevenue.toString(),
+                      amount: revenueModel.monthlyRevenue.toString(),
                     ),
                     RevenueInfo(
                       title: "Last 12 months",

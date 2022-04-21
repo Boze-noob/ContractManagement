@@ -97,27 +97,30 @@ class RequestsDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Row(
-                  children: [
-                    Button(
-                      text: 'View',
-                      textColor: active,
-                      borderRadius: 20,
-                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      borderColor: active,
-                      //TOD add func
-                      onTap: () => viewOnTap(index),
-                    ),
-                    Button(
-                      text: actionBtnTxt ?? 'Action',
-                      textColor: active,
-                      borderRadius: 20,
-                      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      borderColor: active,
-                      //TOD add func
-                      onTap: () => createOnTap(index),
-                    ),
-                  ],
+                Visibility(
+                  visible: ResponsiveWidget.isLargeScreen(context),
+                  child: Row(
+                    children: [
+                      Button(
+                        text: 'View',
+                        textColor: active,
+                        borderRadius: 20,
+                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        borderColor: active,
+                        //TOD add func
+                        onTap: () => viewOnTap(index),
+                      ),
+                      Button(
+                        text: actionBtnTxt ?? 'Action',
+                        textColor: active,
+                        borderRadius: 20,
+                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        borderColor: active,
+                        //TOD add func
+                        onTap: () => createOnTap(index),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

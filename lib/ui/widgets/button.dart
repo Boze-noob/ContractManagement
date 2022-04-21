@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class Button extends StatefulWidget {
   final void Function()? onTap;
   final String? text;
+  final double textSize;
   final Widget? child;
   final bool isLoading;
   final bool isDisabled;
@@ -27,6 +28,7 @@ class Button extends StatefulWidget {
   const Button({
     this.onTap,
     this.text,
+    this.textSize = 14,
     this.child,
     this.isLoading = false,
     this.isDisabled = false,
@@ -68,7 +70,9 @@ class _ButtonState extends State<Button> {
           padding: widget.padding,
           decoration: BoxDecoration(
             color: _color,
-            border: widget.borderDotted ? null : Border.all(color: widget.borderColor ?? _color ?? Colors.transparent, width: widget.borderWidth),
+            border: widget.borderDotted
+                ? null
+                : Border.all(color: widget.borderColor ?? _color ?? Colors.transparent, width: widget.borderWidth),
             borderRadius: BorderRadius.circular(_borderRadius),
           ),
           alignment: Alignment.center,
@@ -80,7 +84,10 @@ class _ButtonState extends State<Button> {
             if (widget.text != null) {
               return Text(
                 widget.text ?? '',
-                style: TextStyle(color: widget.textColor ?? Colors.white),
+                style: TextStyle(
+                  color: widget.textColor ?? Colors.white,
+                  fontSize: widget.textSize,
+                ),
               );
             }
 

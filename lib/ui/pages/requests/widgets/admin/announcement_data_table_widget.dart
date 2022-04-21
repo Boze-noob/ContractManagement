@@ -118,65 +118,68 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Row(
-                  children: [
-                    (() {
-                      if (announcementsModels[index].announcementStatusType.translate() ==
-                          AnnouncementStatusType.done.translate())
+                Visibility(
+                  visible: ResponsiveWidget.isLargeScreen(context),
+                  child: Row(
+                    children: [
+                      (() {
+                        if (announcementsModels[index].announcementStatusType.translate() ==
+                            AnnouncementStatusType.done.translate())
+                          return Expanded(
+                            child: Button(
+                              text: 'Inspect',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              borderColor: active,
+                              onTap: () => inspectOnTap(index),
+                            ),
+                          );
                         return Expanded(
                           child: Button(
-                            text: 'Inspect',
+                            text: 'View',
                             textColor: active,
                             borderRadius: 20,
                             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                             borderColor: active,
-                            onTap: () => inspectOnTap(index),
+                            onTap: () => viewBtnOnTap(index),
                           ),
                         );
-                      return Expanded(
-                        child: Button(
-                          text: 'View',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => viewBtnOnTap(index),
-                        ),
-                      );
-                    }()),
-                    Visibility(
-                      visible: announcementsModels[index].announcementStatusType.translate() ==
-                          AnnouncementStatusType.waiting.translate(),
-                      child: Expanded(
-                        child: Button(
-                          text: 'Send',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => sendBtnOnTap(index),
+                      }()),
+                      Visibility(
+                        visible: announcementsModels[index].announcementStatusType.translate() ==
+                            AnnouncementStatusType.waiting.translate(),
+                        child: Expanded(
+                          child: Button(
+                            text: 'Send',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => sendBtnOnTap(index),
+                          ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: announcementsModels[index].announcementStatusType.translate() ==
-                              AnnouncementStatusType.waiting.translate() ||
-                          announcementsModels[index].announcementStatusType.translate() ==
-                              AnnouncementStatusType.approved.translate() ||
-                          announcementsModels[index].announcementStatusType.translate() ==
-                              AnnouncementStatusType.declined.translate(),
-                      child: Expanded(
-                        child: Button(
-                          text: 'Delete',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => deleteBtnOnTap(index),
+                      Visibility(
+                        visible: announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.waiting.translate() ||
+                            announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.approved.translate() ||
+                            announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.declined.translate(),
+                        child: Expanded(
+                          child: Button(
+                            text: 'Delete',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => deleteBtnOnTap(index),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -45,8 +45,9 @@ class CompaniesTable extends StatelessWidget {
                 DataColumn(
                   label: Text('Rating'),
                 ),
-                DataColumn(
+                DataColumn2(
                   label: Text(' '),
+                  size: ColumnSize.L,
                 ),
               ],
               rows: List<DataRow>.generate(
@@ -79,6 +80,7 @@ class CompaniesTable extends StatelessWidget {
                   DataCell(Row(
                     children: [
                       Button(
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                         child: CustomText(
                           text: 'View',
                         ),
@@ -140,10 +142,8 @@ class CompaniesTable extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
                       Button(
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                         child: CustomText(
                           text: 'Edit',
                           color: active,
@@ -154,7 +154,8 @@ class CompaniesTable extends StatelessWidget {
                         onTap: () => showDialog(
                           context: context,
                           builder: (context) => BlocProvider(
-                            create: (context) => CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)..add(CompanyEditInitEvent(companyModel: state.companies[index])),
+                            create: (context) => CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)
+                              ..add(CompanyEditInitEvent(companyModel: state.companies[index])),
                             child: Builder(
                               builder: (context) {
                                 return CustomDialog(
@@ -171,7 +172,6 @@ class CompaniesTable extends StatelessWidget {
                                               } else if (state.status == CompanyEditStateStatus.submittedSuccessfully) {
                                                 showInfoMessage('Company updated', context);
                                                 parentContext.companiesBloc.add(CompaniesGetEvent());
-                                                print('prosli smo companies get poziv');
                                               }
                                             },
                                             child: BlocBuilder<CompanyEditBloc, CompanyEditState>(
@@ -257,10 +257,8 @@ class CompaniesTable extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
                       Button(
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                         child: CustomText(
                           text: 'Delete',
                           color: delete,

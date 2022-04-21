@@ -65,14 +65,16 @@ class _CreateContractWidgetState extends State<CreateContractWidget> {
                           contractItemsIndexes.add(index);
                           context.createContractBloc.add(
                             CreateContractUpdateEvent(
-                              createContractModel: state.createContractModel.copyWith(contractItems: contractItemsIndexes),
+                              createContractModel:
+                                  state.createContractModel.copyWith(contractItems: contractItemsIndexes),
                             ),
                           );
                         } else {
                           contractItemsIndexes.remove(index);
                           context.createContractBloc.add(
                             CreateContractUpdateEvent(
-                              createContractModel: state.createContractModel.copyWith(contractItems: contractItemsIndexes),
+                              createContractModel:
+                                  state.createContractModel.copyWith(contractItems: contractItemsIndexes),
                             ),
                           );
                         }
@@ -120,7 +122,8 @@ class __ContractNameState extends State<_ContractName> {
           child: TextFormField(
             initialValue: state.createContractModel.contractName,
             // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
-            onChanged: (text) => context.createContractBloc.add(CreateContractUpdateEvent(createContractModel: state.createContractModel.copyWith(contractName: text))),
+            onChanged: (text) => context.createContractBloc.add(
+                CreateContractUpdateEvent(createContractModel: state.createContractModel.copyWith(contractName: text))),
             style: TextStyle(
               fontFamily: AppFonts.quicksandBold,
               fontSize: 14,
@@ -158,7 +161,8 @@ class __ContractDescriptionState extends State<_ContractDescription> {
           child: TextFormField(
             initialValue: state.createContractModel.contractDescription,
             // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
-            onChanged: (text) => context.createContractBloc.add(CreateContractUpdateEvent(createContractModel: state.createContractModel.copyWith(contractDescription: text))),
+            onChanged: (text) => context.createContractBloc.add(CreateContractUpdateEvent(
+                createContractModel: state.createContractModel.copyWith(contractDescription: text))),
             style: TextStyle(
               fontFamily: AppFonts.quicksandBold,
               fontSize: 14,

@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
 class OverviewRequestsDataTableWidget extends StatelessWidget {
-  late final List<String>? firstColumnValue;
-  late final List<String>? secondColumnValue;
-  late final List<String>? thirdColumnValue;
-  late final List<String>? fourthColumnValue;
-  late final List<String>? fifthColumnValue;
-
   OverviewRequestsDataTableWidget({
     Key? key,
   }) : super(key: key);
@@ -36,10 +30,12 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
               weight: FontWeight.bold,
             );
           else {
-            firstColumnValue = state.clientRequestModel.map((clientModel) => clientModel.displayName).toList();
-            secondColumnValue = state.clientRequestModel.map((clientModel) => clientModel.email).toList();
-            thirdColumnValue = state.clientRequestModel.map((clientModel) => clientModel.location).toList();
-            fourthColumnValue = state.clientRequestModel
+            List<String>? firstColumnValue =
+                state.clientRequestModel.map((clientModel) => clientModel.displayName).toList();
+            List<String>? secondColumnValue = state.clientRequestModel.map((clientModel) => clientModel.email).toList();
+            List<String>? thirdColumnValue =
+                state.clientRequestModel.map((clientModel) => clientModel.location).toList();
+            List<String>? fourthColumnValue = state.clientRequestModel
                 .map((clientModel) => clientModel.createdDateTime.toLocal().toString())
                 .toList();
             return Container(
@@ -85,23 +81,23 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
                       ),
                     ],
                     rows: List<DataRow>.generate(
-                      firstColumnValue!.length,
+                      firstColumnValue.length,
                       (index) => DataRow(
                         cells: [
                           DataCell(
-                            CustomText(text: firstColumnValue![index]),
+                            CustomText(text: firstColumnValue[index]),
                           ),
                           DataCell(
-                            CustomText(text: secondColumnValue![index]),
+                            CustomText(text: secondColumnValue[index]),
                           ),
                           DataCell(
                             CustomText(
-                              text: thirdColumnValue![index],
+                              text: thirdColumnValue[index],
                             ),
                           ),
                           DataCell(
                             CustomText(
-                              text: fourthColumnValue![index],
+                              text: fourthColumnValue[index],
                             ),
                           ),
                           DataCell(

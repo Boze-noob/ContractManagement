@@ -37,8 +37,6 @@ class _ContractsPageState extends State<ContractsPage> {
       builder: (context, state) {
         return BlocBuilder<ContractsBloc, ContractsState>(
           builder: (context, state) {
-            print('Status is contracts ${state.status} -------------');
-            print('Length of state model is ${state.contracts.length}-------------');
             if (state.status == ContractsStateStatus.loading)
               return Center(
                 child: Loader(
@@ -78,13 +76,16 @@ class _ContractsPageState extends State<ContractsPage> {
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
                               // ignore: unrelated_type_equality_checks
-                              color: controller.activeItem == activeContracts ? Colors.purple.withOpacity(0.7) : Colors.white,
+                              color: controller.activeItem == activeContracts
+                                  ? Colors.purple.withOpacity(0.7)
+                                  : Colors.white,
                               child: Text(
                                 'Active contracts',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: controller.activeItem.toString() == activeContracts ? Colors.white : Colors.black,
+                                  color:
+                                      controller.activeItem.toString() == activeContracts ? Colors.white : Colors.black,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -100,13 +101,17 @@ class _ContractsPageState extends State<ContractsPage> {
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
                               // ignore: unrelated_type_equality_checks
-                              color: controller.activeItem == completedContracts ? Colors.purple.withOpacity(0.7) : Colors.white,
+                              color: controller.activeItem == completedContracts
+                                  ? Colors.purple.withOpacity(0.7)
+                                  : Colors.white,
                               child: Text(
                                 'Completed contracts',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: controller.activeItem.toString() == completedContracts ? Colors.white : Colors.black,
+                                  color: controller.activeItem.toString() == completedContracts
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -122,13 +127,17 @@ class _ContractsPageState extends State<ContractsPage> {
                             child: Container(
                               padding: EdgeInsets.symmetric(vertical: 10),
                               // ignore: unrelated_type_equality_checks
-                              color: controller.activeItem == terminatedContracts ? Colors.purple.withOpacity(0.7) : Colors.white,
+                              color: controller.activeItem == terminatedContracts
+                                  ? Colors.purple.withOpacity(0.7)
+                                  : Colors.white,
                               child: Text(
                                 'Terminated contracts',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: controller.activeItem.toString() == terminatedContracts ? Colors.white : Colors.black,
+                                  color: controller.activeItem.toString() == terminatedContracts
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -159,7 +168,9 @@ class _ContractsPageState extends State<ContractsPage> {
                             action: 'Terminate',
                             contractsState: state,
                             onTap: (contractModel) => context.contractsBloc.add(
-                              ContractsTerminateEvent(contractModel: contractModel, userRoleType: context.currentUserBloc.state.userModel!.role),
+                              ContractsTerminateEvent(
+                                  contractModel: contractModel,
+                                  userRoleType: context.currentUserBloc.state.userModel!.role),
                             ),
                           ),
                         ],

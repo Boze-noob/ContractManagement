@@ -47,7 +47,8 @@ class ListOfContracts extends StatelessWidget {
                           IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
-                              context.createContractBloc.add(CreateContractUpdateEvent(createContractModel: state.createContractModel[i]));
+                              context.createContractBloc
+                                  .add(CreateContractUpdateEvent(createContractModel: state.createContractModel[i]));
                             },
                           ),
                           SizedBox(
@@ -57,19 +58,23 @@ class ListOfContracts extends StatelessWidget {
                             onPressed: () => showDialog(
                               context: context,
                               builder: (context) => Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 200),
+                                padding: EdgeInsets.symmetric(horizontal: 50),
                                 child: CustomDialog(
                                   child: BlocProvider(
-                                    create: (context) => SendContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo),
+                                    create: (context) =>
+                                        SendContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo),
                                     child: BlocProvider(
-                                      create: (context) => CompaniesBloc(companiesRepo: context.serviceProvider.companiesRepo)..add(CompaniesGetCompaniesWithoutContract()),
+                                      create: (context) =>
+                                          CompaniesBloc(companiesRepo: context.serviceProvider.companiesRepo)
+                                            ..add(CompaniesGetCompaniesWithoutContract()),
                                       child: BlocBuilder<CompaniesBloc, CompaniesState>(
                                         builder: (context, companiesState) {
                                           return BlocListener<SendContractRequestBloc, SendContractRequestState>(
                                             listener: (context, state) async {
                                               if (state.status == SendContractRequestStateStatus.error)
                                                 showInfoMessage(state.errorMessage ?? 'Error happen', context);
-                                              else if (state.status == SendContractRequestStateStatus.successfullySubmitted) {
+                                              else if (state.status ==
+                                                  SendContractRequestStateStatus.successfullySubmitted) {
                                                 showInfoMessage('Successfully sent', context);
                                                 context.notificationsBloc.add(NotificationsSendEvent(
                                                     notificationModel: NotificationModel(
@@ -106,8 +111,7 @@ class ListOfContracts extends StatelessWidget {
                                                               contractRequestModel: ContractRequestModel(
                                                                 contractId: state.createContractModel[i].contractName,
                                                                 companyId: companiesState.companies[index].id,
-                                                                //TODO zakucano
-                                                                message: 'Šaljemo vam zahtjev za kontrakt',
+                                                                message: 'We are sending you new contract',
                                                               ),
                                                             ),
                                                           ),
@@ -140,7 +144,8 @@ class ListOfContracts extends StatelessWidget {
                             width: 15,
                           ),
                           IconButton(
-                            onPressed: () => context.contractsTemplateListBloc.add(ContractsTemplateListDeleteEvent(contractName: state.createContractModel[i].contractName)),
+                            onPressed: () => context.contractsTemplateListBloc.add(ContractsTemplateListDeleteEvent(
+                                contractName: state.createContractModel[i].contractName)),
                             icon: Icon(Icons.delete),
                           ),
                         ],
