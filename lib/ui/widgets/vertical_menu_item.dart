@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/constants/controllers.dart';
 import 'package:get/get.dart';
 import 'package:contract_management/constants/style.dart';
-
 import 'custom_text.dart';
 
 class VerticalMenuItem extends StatelessWidget {
