@@ -24,7 +24,7 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
           monthNumber: 1,
           weekNumber: 1,
           revenueYear: DateTime.now().year,
-          weeklyRevenueDateTime: [],
+          weeklyRevenueDateTime: List.filled(7, 0),
           dayNumber: 1,
         ),
       );

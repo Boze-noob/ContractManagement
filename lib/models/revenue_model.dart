@@ -50,6 +50,7 @@ class RevenueModel {
       );
 
   Map<String, dynamic> toMap() {
+    print("we are into to map");
     return {
       'dailyRevenue': dailyRevenue,
       'totalWeeklyRevenue': totalWeeklyRevenue,
@@ -65,6 +66,7 @@ class RevenueModel {
   }
 
   factory RevenueModel.fromMap(dynamic map) {
+    print("we are into from map");
     return RevenueModel(
       dailyRevenue: map['dailyRevenue'],
       totalWeeklyRevenue: map['totalWeeklyRevenue'],
