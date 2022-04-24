@@ -1,4 +1,5 @@
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/blocs/revenue/_all.dart';
 import 'package:contract_management/data/repositories/revenue.dart';
 import 'package:collection/collection.dart';
 
@@ -72,6 +73,9 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
   }
 
   void _updateModel(RevenueUpdateModelEvent event, Emitter<RevenueState> emit) async {
+    print('we enter into revenue update model');
+    print('value in model is ' + event.revenueModel.dayNumber.toString());
+    emit(state.copyWith(status: RevenueStateStatus.loading));
     final result = await revenueRepo.updateData(event.revenueModel);
     if (result)
       emit(state.copyWith(status: RevenueStateStatus.edited, revenueModel: event.revenueModel));

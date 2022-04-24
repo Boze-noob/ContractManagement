@@ -12,7 +12,13 @@ class OverviewPage extends StatelessWidget {
         ),
       child: BlocListener<RevenueBloc, RevenueState>(
         listener: (context, state) {
-          if (state.status == RevenueStateStatus.error) showInfoMessage(state.errorMessage ?? 'Error happen', context);
+          if (state.status == RevenueStateStatus.error)
+            showInfoMessage(state.errorMessage ?? 'Error happen', context);
+          else if (state.status == RevenueStateStatus.loaded) {
+            if (context.currentUserBloc.state.userModel!.role != RoleType.client.translate() &&
+                context.currentUserBloc.state.userModel!.role != RoleType.company.translate())
+              InspectRevenue.checkRevenueDates(context.revenueBloc.state.revenueModel, context);
+          }
         },
         child: Container(
           child: Column(
