@@ -8,12 +8,10 @@ class InspectRevenue {
     int currentYear = DateTime.now().year;
     int currentModelMonth = revenueModel.monthNumber;
     if (currentDay > revenueModel.dayNumber) {
-      for (int item in revenueModel.weeklyRevenue) print(item);
-      List<int> newWeeklyRevenue = List.from(revenueModel.weeklyRevenue)..removeAt(0);
-      newWeeklyRevenue..insert(newWeeklyRevenue.length, 0);
-      List<int> newWeeklyDateTime = List.from(revenueModel.weeklyRevenueDateTime)..removeAt(0);
-      newWeeklyDateTime..insert(newWeeklyDateTime.length, currentDay);
-      print('current day is' + currentDay.toString());
+      List<int> newWeeklyRevenue = List.from(revenueModel.weeklyRevenue)..removeLast();
+      newWeeklyRevenue..insert(0, 0);
+      List<int> newWeeklyDateTime = List.from(revenueModel.weeklyRevenueDateTime)..removeLast();
+      newWeeklyDateTime..insert(0, currentDay);
       revenueModel = revenueModel.copyWith(
           dayNumber: currentDay,
           dailyRevenue: 0,
@@ -26,16 +24,13 @@ class InspectRevenue {
     if (currentYear > revenueModel.revenueYear) {
       revenueModel = revenueModel.copyWith(revenueYear: currentYear, yearlyRevenue: 0);
     }
-    if (currentModelMonth != currentMonth || currentModelMonth != DateTime.now().subtract(Duration(days: 30)).month) {
-      revenueModel =
-          revenueModel.copyWith(weeklyRevenueDateTime: generateLastSevenDaysList(), weeklyRevenue: List.filled(7, 0));
-    } else {
+    if (currentModelMonth != currentMonth) {
       List<int> lastSevenDaysList = generateLastSevenDaysList();
       List<int> newWeeklyRevenue = List.filled(7, 0);
       for (int item in lastSevenDaysList) {
         if (revenueModel.weeklyRevenueDateTime.contains(item)) {
           newWeeklyRevenue
-            ..insert(lastSevenDaysList.indexOf(item),
+            ..insert(revenueModel.weeklyRevenueDateTime.indexOf(item),
                 revenueModel.weeklyRevenue[revenueModel.weeklyRevenueDateTime.indexOf(item)]);
         }
       }
@@ -50,7 +45,6 @@ class InspectRevenue {
     for (int i = 0; i <= 6; i++) {
       weekDaysList..insert(i, DateTime.now().subtract(Duration(days: i)).day);
     }
-    for (int item in weekDaysList) print(item);
     return weekDaysList;
   }
 }
