@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 import 'package:get/get.dart';
 
-class SideMenu extends StatelessWidget {
+class SideMenu extends StatefulWidget {
   const SideMenu({Key? key}) : super(key: key);
 
+  @override
+  State<SideMenu> createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -73,6 +78,17 @@ class SideMenu extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    final role = context.currentUserBloc.state.userModel!.role;
+    if (role == RoleType.client.translate()) {
+      menuController.changeActiveItemTo(createRequestDisplayName);
+    } else if (role == RoleType.company.translate()) {
+      menuController.changeActiveItemTo(requestsPageDisplayName);
+    }
+    super.initState();
   }
 }
 

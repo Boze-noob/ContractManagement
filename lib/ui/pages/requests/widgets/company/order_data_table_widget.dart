@@ -103,35 +103,38 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Row(
-                  children: [
-                    Expanded(
-                      child: Button(
-                        text: 'View',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        onTap: () => viewBtnOnTap(index),
+                Visibility(
+                  visible: !ResponsiveWidget.isSmallScreen(context),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Button(
+                          text: 'View',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          onTap: () => viewBtnOnTap(index),
+                        ),
                       ),
-                    ),
-                    (() {
-                      if (orderModels[index].orderStatusType.translate() == OrderStatusType.declined.translate() ||
-                          orderModels[index].orderStatusType.translate() == OrderStatusType.accepted.translate())
-                        return SizedBox();
-                      else
-                        return Expanded(
-                          child: Button(
-                            text: 'Response',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                            borderColor: active,
-                            onTap: () => respondBtnOnTap(index),
-                          ),
-                        );
-                    }())
-                  ],
+                      (() {
+                        if (orderModels[index].orderStatusType.translate() == OrderStatusType.declined.translate() ||
+                            orderModels[index].orderStatusType.translate() == OrderStatusType.accepted.translate())
+                          return SizedBox();
+                        else
+                          return Expanded(
+                            child: Button(
+                              text: 'Response',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              borderColor: active,
+                              onTap: () => respondBtnOnTap(index),
+                            ),
+                          );
+                      }())
+                    ],
+                  ),
                 ),
               ),
             ],

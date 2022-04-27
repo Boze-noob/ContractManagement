@@ -41,8 +41,9 @@ class Clientstable extends StatelessWidget {
                 DataColumn(
                   label: Text('Rating'),
                 ),
-                DataColumn(
+                DataColumn2(
                   label: Text(''),
+                  size: ColumnSize.L,
                 ),
               ],
               rows: List<DataRow>.generate(

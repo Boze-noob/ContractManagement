@@ -326,7 +326,8 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
     return BlocListener<NotificationsBloc, NotificationsState>(
       listener: (context, state) {
         if (state.status == NotificationStateStatus.successfullyDeleted) {
-          if (context.currentUserBloc.state.userModel!.role != RoleType.admin.translate())
+          if (context.currentUserBloc.state.userModel!.role == RoleType.client.translate() ||
+              context.currentUserBloc.state.userModel!.role == RoleType.company.translate())
             context.notificationsBloc.add(NotificationsLoadEvent(userId: context.currentUserBloc.state.userModel!.id));
           else
             context.notificationsBloc.add(NotificationsLoadEvent(userId: 'admin'));

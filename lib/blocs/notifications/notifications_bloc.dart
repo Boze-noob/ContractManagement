@@ -15,11 +15,11 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<NotificationsDeleteEvent>(_delete);
     currentUserSubscription = currentUserBloc.stream.listen((state) {
       if (state.status == CurrentUserStateStatus.success) {
-        if (state.userModel!.role == RoleType.admin.translate() ||
-            state.userModel!.role == RoleType.orderEmployer.translate()) {
-          add(NotificationsLoadEvent(userId: 'admin'));
-        } else
+        if (state.userModel!.role == RoleType.client.translate() ||
+            state.userModel!.role == RoleType.company.translate()) {
           add(NotificationsLoadEvent(userId: state.userModel!.id));
+        } else
+          add(NotificationsLoadEvent(userId: 'admin'));
       }
     });
   }
