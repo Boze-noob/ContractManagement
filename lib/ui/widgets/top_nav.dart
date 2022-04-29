@@ -142,12 +142,6 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                     );
                   }),
             ),
-            IconButton(
-                icon: Icon(
-                  Icons.settings,
-                  color: dark,
-                ),
-                onPressed: () {}),
             _NotificationBellWidget(),
             Container(
               width: 1,

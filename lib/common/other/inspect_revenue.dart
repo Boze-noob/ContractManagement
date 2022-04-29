@@ -25,8 +25,9 @@ class InspectRevenue {
       revenueModel = revenueModel.copyWith(revenueYear: currentYear, yearlyRevenue: 0);
     }
     if (currentModelMonth != currentMonth) {
-      List<int> lastSevenDaysList = generateLastSevenDaysList();
-      List<int> newWeeklyRevenue = List.filled(7, 0);
+      Iterable<int> reversedLastSevenDays = generateLastSevenDaysList().reversed;
+      List<int> lastSevenDaysList = reversedLastSevenDays.toList();
+      List<int> newWeeklyRevenue = new List<int>.generate(7, (i) => 0);
       for (int item in lastSevenDaysList) {
         if (revenueModel.weeklyRevenueDateTime.contains(item)) {
           newWeeklyRevenue

@@ -67,7 +67,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 ),
                 TextField(
                   controller: _editTextEmail,
-                  decoration: InputDecoration(labelText: "Email", hintText: "abc@domain.com", border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                  decoration: InputDecoration(
+                      labelText: "Email",
+                      hintText: "abc@domain.com",
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
                 ),
                 SizedBox(
                   height: 15,
@@ -75,7 +78,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 TextField(
                   obscureText: true,
                   controller: _editTextPassword,
-                  decoration: InputDecoration(labelText: "Password", hintText: "123", border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                    hintText: "123",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 15,
@@ -97,7 +106,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         ),
                       ],
                     ),
-                    CustomText(text: "Forgot password?", color: active)
                   ],
                 ),
                 SizedBox(
@@ -108,7 +116,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     return InkWell(
                       onTap: () {
                         if (_editTextPassword.text.isNotEmpty && _editTextEmail.text.isNotEmpty) {
-                          context.read<AuthBloc>().add(AuthSignInEvent(email: _editTextEmail.text, password: _editTextPassword.text, rememberMe: _rememberMeCheckBox));
+                          context.read<AuthBloc>().add(AuthSignInEvent(
+                              email: _editTextEmail.text,
+                              password: _editTextPassword.text,
+                              rememberMe: _rememberMeCheckBox));
                         }
                       },
                       child: Container(

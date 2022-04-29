@@ -34,13 +34,13 @@ class UserAuthRepo implements IUserAuth {
         var box = await Hive.openBox('authBox');
         box.put('auth', true);
       }
-      //TODO check this
       //"Current user bloc" is here because I can't delete user from FirebaseAuth only from database, so I'm checking if user is in database here
       //One of possible solutions is using firebase cloud function
       final result = await firebaseFirestoreClass.getData('users', _userAuth.currentUser!.uid);
-      if (result == null)
+      if (result == null) {
+        if (_userAuth.currentUser != null) signOut();
         return 'User doesn\'t exist in database';
-      else
+      } else
         return null;
     } catch (error) {
       print(error.toString());
