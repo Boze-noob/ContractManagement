@@ -35,28 +35,29 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
             Expanded(child: Container()),
             Visibility(
               visible: RoleType.values[0].translate() == context.currentUserBloc.state.userModel!.role ? true : false,
-              child: IconButton(
-                  icon: Icon(
-                    Icons.person_add,
-                    color: dark,
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => CustomDialog(
-                          buttonText: 'Create account',
-                          child: Container(
-                            width: context.screenWidth / 2,
-                            child: Form(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30),
-                                child: BlocListener<CreateUserBloc, CreateUserState>(
-                                  listener: (context, state) {
-                                    if (state.status == CreateUserStateStatus.error) {
-                                      print('error happen in creating');
-                                      if (state.errorMessage != null) showInfoMessage(state.errorMessage!, context);
-                                    }
-                                  },
+              child: BlocListener<CreateUserBloc, CreateUserState>(
+                listener: (context, state) {
+                  if (state.status == CreateUserStateStatus.error) {
+                    print('error happen in creating');
+                    if (state.errorMessage != null) showInfoMessage(state.errorMessage!, context);
+                  } else if (state.status == CreateUserStateStatus.submitSuccess)
+                    showInfoMessage('User created successfully ', context);
+                },
+                child: IconButton(
+                    icon: Icon(
+                      Icons.person_add,
+                      color: dark,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => CustomDialog(
+                            buttonText: 'Create account',
+                            child: Container(
+                              width: context.screenWidth / 2,
+                              child: Form(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 30),
                                   child: BlocBuilder<CreateUserBloc, CreateUserState>(
                                     builder: (context, state) {
                                       return Column(
@@ -133,14 +134,14 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                 ),
                               ),
                             ),
-                          ),
-                          onButtonPressed: () {
-                            context.createUserBloc.add(
-                              CreateUserSubmitEvent(),
-                            );
-                          }),
-                    );
-                  }),
+                            onButtonPressed: () {
+                              context.createUserBloc.add(
+                                CreateUserSubmitEvent(),
+                              );
+                            }),
+                      );
+                    }),
+              ),
             ),
             _NotificationBellWidget(),
             Container(

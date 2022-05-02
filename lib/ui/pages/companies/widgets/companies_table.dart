@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
 
 class CompaniesTable extends StatelessWidget {
-  //Not good practice
-  final BuildContext parentContext;
+  final Function(String message, bool successfulFlag) onEdited;
 
-  CompaniesTable({required this.parentContext});
+  CompaniesTable({
+    required this.onEdited,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +151,6 @@ class CompaniesTable extends StatelessWidget {
                         ),
                         shrinkWrap: true,
                         borderRadius: 40,
-                        //TODO update doesn't work properly
                         onTap: () => showDialog(
                           context: context,
                           builder: (context) => BlocProvider(
@@ -168,10 +168,9 @@ class CompaniesTable extends StatelessWidget {
                                           child: BlocListener<CompanyEditBloc, CompanyEditState>(
                                             listener: (context, state) {
                                               if (state.status == CompanyEditStateStatus.error) {
-                                                showInfoMessage(state.errorMessage ?? 'Error happen', context);
+                                                onEdited('Error happen', false);
                                               } else if (state.status == CompanyEditStateStatus.submittedSuccessfully) {
-                                                showInfoMessage('Company updated', context);
-                                                parentContext.companiesBloc.add(CompaniesGetEvent());
+                                                onEdited('Company updated', true);
                                               }
                                             },
                                             child: BlocBuilder<CompanyEditBloc, CompanyEditState>(

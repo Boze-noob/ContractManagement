@@ -36,7 +36,8 @@ class AccountRepo implements IAccount {
   Future<String?> createAccount(String email, String password, String role, String displayName) async {
     try {
       final account = await firebaseAuthClass.createUser(email, password);
-      UserModel userModel = UserModel(id: account.user!.uid, email: email, password: password, displayName: displayName, role: role);
+      UserModel userModel =
+          UserModel(id: account.user!.uid, email: email, password: password, displayName: displayName, role: role);
       storeUserToDatabase(userModel);
       return null;
     } catch (error) {

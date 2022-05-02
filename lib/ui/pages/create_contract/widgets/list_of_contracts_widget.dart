@@ -47,8 +47,8 @@ class ListOfContracts extends StatelessWidget {
                           IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
-                              context.createContractBloc
-                                  .add(CreateContractUpdateEvent(createContractModel: state.createContractModel[i]));
+                              context.createContractBloc.add(
+                                  CreateContractSetForUpdateEvent(createContractModel: state.createContractModel[i]));
                             },
                           ),
                           SizedBox(

@@ -6,6 +6,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     required this.contractsRepo,
   }) : super(initialState()) {
     on<CreateContractInitEvent>(_init);
+    on<CreateContractSetForUpdateEvent>(_prepare);
     on<CreateContractUpdateEvent>(_update);
     on<CreateContractSubmitEvent>(_submit);
   }
@@ -20,14 +21,16 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
       );
 
   void _init(CreateContractInitEvent event, Emitter<CreateContractState> emit) {
-    emit(CreateContractState(
-      status: CreateContractStateStatus.init,
-      createContractModel: CreateContractModel(
-        contractName: '',
-        contractItems: List.empty(),
-        contractDescription: '',
-      ),
-    ));
+    emit(initialState());
+  }
+
+  void _prepare(CreateContractSetForUpdateEvent event, Emitter<CreateContractState> emit) {
+    emit(
+      state.copyWith(
+          createContractModel: event.createContractModel,
+          status: CreateContractStateStatus.updated,
+          previousContractName: event.createContractModel.contractName),
+    );
   }
 
   void _update(CreateContractUpdateEvent event, Emitter<CreateContractState> emit) {
@@ -41,7 +44,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
 
   void _submit(CreateContractSubmitEvent event, Emitter<CreateContractState> emit) async {
     emit(state.copyWith(status: CreateContractStateStatus.submitting));
-    final result = await contractsRepo.createContractTemplate(state.createContractModel);
+    final result = await contractsRepo.createContractTemplate(state.createContractModel, state.previousContractName);
     if (result) {
       emit(state.copyWith(status: CreateContractStateStatus.successfullySubmitted));
     } else

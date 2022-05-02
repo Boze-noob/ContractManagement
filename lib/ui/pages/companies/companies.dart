@@ -66,7 +66,10 @@ class _CompaniesPageState extends State<CompaniesPage> {
                               height: 20,
                             ),
                             CompaniesTable(
-                              parentContext: context,
+                              onEdited: (message, successfulFlag) {
+                                showInfoMessage(message, context);
+                                if (successfulFlag) context.companiesBloc.add(CompaniesGetEvent());
+                              },
                             ),
                           ],
                         ),

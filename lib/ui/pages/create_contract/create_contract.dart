@@ -36,7 +36,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
           if (state.status == CreateContractStateStatus.error)
             showInfoMessage(state.errorMessage ?? 'Error happen', context);
           else if (state.status == CreateContractStateStatus.successfullySubmitted) {
-            showInfoMessage('Successfully create new contract', context);
+            showInfoMessage('Request successful', context);
             context.contractsTemplateListBloc.add(ContractsTemplateListInitEvent());
           }
         },
