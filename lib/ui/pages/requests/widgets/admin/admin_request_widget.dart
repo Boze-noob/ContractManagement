@@ -75,13 +75,27 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                               return BlocBuilder<RequestsBloc, RequestsState>(
                                 builder: (context, requestsState) {
                                   if (requestsState.clientRequestModel.isEmpty)
-                                    return Center(
-                                      child: Container(
+                                    return Container(
+                                      width: 600,
+                                      height: 300,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: active.withOpacity(.4), width: .5),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)
+                                        ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      padding: const EdgeInsets.all(16),
+                                      margin: EdgeInsets.only(bottom: 30),
+                                      child: Center(
                                         child: CustomText(
                                           text: 'No data to display',
-                                          textAlign: TextAlign.center,
-                                          size: context.textSizeL,
+                                          size: context.textSizeXL,
                                           color: Colors.black,
+                                          textAlign: TextAlign.center,
+                                          weight: FontWeight.bold,
                                         ),
                                       ),
                                     );
@@ -90,7 +104,6 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                         requestState: requestsState,
                                         //not good practice but context of CreateOrderWidget is not in scope of adminRequest in widget tree(not its parent cuz Custom dialog I think), so I use callback function
                                         onCreate: () {
-                                          print('order listener was called');
                                           context.orderBloc.add(OrderGetEvent());
                                         });
                                 },

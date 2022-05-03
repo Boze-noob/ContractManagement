@@ -161,6 +161,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                     width: 20,
                                   ),
                                   _DatePickerWidget(
+                                    lastDateTime: DateTime.now(),
                                     onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(
                                         orderModel: state.orderModel.copyWith(createdDateTime: dateTime))),
                                   ),
@@ -181,6 +182,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                     width: 20,
                                   ),
                                   _DatePickerWidget(
+                                    lastDateTime: DateTime(2030),
                                     onDateSelected: (dateTime) => context.orderBloc.add(OrderUpdateEvent(
                                         orderModel: state.orderModel.copyWith(completionDateTime: dateTime))),
                                   ),
@@ -328,9 +330,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
 
 class _DatePickerWidget extends StatefulWidget {
   final void Function(DateTime dateTime) onDateSelected;
-  _DatePickerWidget({
-    required this.onDateSelected,
-  }) : super();
+  final DateTime lastDateTime;
+  _DatePickerWidget({required this.onDateSelected, required this.lastDateTime}) : super();
 
   @override
   State<_DatePickerWidget> createState() => _DatePickerWidgetState();
@@ -368,7 +369,7 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
                     builder: (context, state) {
                       return CalendarDatePicker(
                         firstDate: DateTime(1960),
-                        lastDate: DateTime.now(),
+                        lastDate: widget.lastDateTime,
                         initialDate: selectedDateTime,
                         onDateChanged: (DateTime dateTime) {
                           setState(() {

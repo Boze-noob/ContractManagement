@@ -7,6 +7,19 @@ class InspectRevenue {
     int currentMonth = DateTime.now().month;
     int currentYear = DateTime.now().year;
     int currentModelMonth = revenueModel.monthNumber;
+    if (currentModelMonth != currentMonth) {
+      Iterable<int> reversedLastSevenDays = generateLastSevenDaysList().reversed;
+      List<int> lastSevenDaysList = reversedLastSevenDays.toList();
+      List<int> newWeeklyRevenue = new List<int>.generate(7, (i) => 0);
+      for (int item in lastSevenDaysList) {
+        if (revenueModel.weeklyRevenueDateTime.contains(item)) {
+          newWeeklyRevenue
+            ..insert(revenueModel.weeklyRevenueDateTime.indexOf(item),
+                revenueModel.weeklyRevenue[revenueModel.weeklyRevenueDateTime.indexOf(item)]);
+        }
+      }
+      revenueModel = revenueModel.copyWith(weeklyRevenueDateTime: lastSevenDaysList, weeklyRevenue: newWeeklyRevenue);
+    }
     if (currentDay > revenueModel.dayNumber) {
       List<int> newWeeklyRevenue = List.from(revenueModel.weeklyRevenue)..removeLast();
       newWeeklyRevenue..insert(0, 0);
@@ -23,19 +36,6 @@ class InspectRevenue {
     }
     if (currentYear > revenueModel.revenueYear) {
       revenueModel = revenueModel.copyWith(revenueYear: currentYear, yearlyRevenue: 0);
-    }
-    if (currentModelMonth != currentMonth) {
-      Iterable<int> reversedLastSevenDays = generateLastSevenDaysList().reversed;
-      List<int> lastSevenDaysList = reversedLastSevenDays.toList();
-      List<int> newWeeklyRevenue = new List<int>.generate(7, (i) => 0);
-      for (int item in lastSevenDaysList) {
-        if (revenueModel.weeklyRevenueDateTime.contains(item)) {
-          newWeeklyRevenue
-            ..insert(revenueModel.weeklyRevenueDateTime.indexOf(item),
-                revenueModel.weeklyRevenue[revenueModel.weeklyRevenueDateTime.indexOf(item)]);
-        }
-      }
-      revenueModel = revenueModel.copyWith(weeklyRevenueDateTime: lastSevenDaysList, weeklyRevenue: newWeeklyRevenue);
     }
     context.revenueBloc.add(RevenueUpdateModelEvent(revenueModel: revenueModel));
   }

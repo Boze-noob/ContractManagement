@@ -36,7 +36,9 @@ class _CreateContractWidgetState extends State<CreateContractWidget> {
         SizedBox(
           height: 40,
         ),
-        _ContractName(),
+        _ContractName(
+          btnFlag: _btnFlag,
+        ),
         SizedBox(
           height: 20,
         ),
@@ -106,7 +108,8 @@ class _CreateContractWidgetState extends State<CreateContractWidget> {
 }
 
 class _ContractName extends StatefulWidget {
-  const _ContractName({Key? key}) : super(key: key);
+  final bool btnFlag;
+  const _ContractName({Key? key, required this.btnFlag}) : super(key: key);
 
   @override
   __ContractNameState createState() => __ContractNameState();
@@ -121,6 +124,8 @@ class __ContractNameState extends State<_ContractName> {
           padding: EdgeInsets.only(right: context.screenWidth / 2),
           child: TextFormField(
             initialValue: state.createContractModel.contractName,
+            enabled: widget.btnFlag,
+            onTap: () => widget.btnFlag != true ? showInfoMessage('Update is not avaliable', context) : null,
             // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
             onChanged: (text) => context.createContractBloc.add(
                 CreateContractUpdateEvent(createContractModel: state.createContractModel.copyWith(contractName: text))),

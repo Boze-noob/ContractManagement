@@ -27,7 +27,6 @@ class ContractsDataTableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("length of contract is ${contractsState.contracts.length}------------");
     if (contractsState.contracts.isEmpty)
       return CustomText(
         text: 'No data to display',

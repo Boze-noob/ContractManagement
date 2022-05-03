@@ -9,7 +9,7 @@ abstract class IContracts {
 
   Future<List<CreateContractModel>?> loadContractsTemplates();
   Future<CreateContractModel?> loadSingleContractTemplate(String contractDisplayName);
-  Future<bool> createContractTemplate(CreateContractModel createContractModel, String? previousContractName);
+  Future<bool> createContractTemplate(CreateContractModel createContractModel);
   Future<String?> deleteContractTemplate(String contractName);
 
   Future<String?> deleteContractRequest(String companyId);
@@ -63,10 +63,10 @@ class ContractsRepo implements IContracts {
   }
 
   @override
-  Future<bool> createContractTemplate(CreateContractModel createContractModel, String? previousContractName) async {
+  Future<bool> createContractTemplate(CreateContractModel createContractModel) async {
     //Better practice is to let firebase to create document uid but for simplicity I will use contractName
     return await firebaseFirestoreClass.storeData(
-        'contractTemplates', previousContractName ?? createContractModel.contractName, createContractModel.toMap());
+        'contractTemplates', createContractModel.contractName, createContractModel.toMap());
   }
 
   @override

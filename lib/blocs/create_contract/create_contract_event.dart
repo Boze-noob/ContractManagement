@@ -4,12 +4,6 @@ abstract class CreateContractEvent {}
 
 class CreateContractInitEvent extends CreateContractEvent {}
 
-class CreateContractSetForUpdateEvent extends CreateContractEvent {
-  final CreateContractModel createContractModel;
-
-  CreateContractSetForUpdateEvent({required this.createContractModel});
-}
-
 class CreateContractUpdateEvent extends CreateContractEvent {
   final CreateContractModel createContractModel;
   CreateContractUpdateEvent({

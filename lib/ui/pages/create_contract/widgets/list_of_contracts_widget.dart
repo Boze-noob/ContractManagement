@@ -47,8 +47,8 @@ class ListOfContracts extends StatelessWidget {
                           IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
-                              context.createContractBloc.add(
-                                  CreateContractSetForUpdateEvent(createContractModel: state.createContractModel[i]));
+                              context.createContractBloc
+                                  .add(CreateContractUpdateEvent(createContractModel: state.createContractModel[i]));
                             },
                           ),
                           SizedBox(
@@ -79,7 +79,7 @@ class ListOfContracts extends StatelessWidget {
                                                 context.notificationsBloc.add(NotificationsSendEvent(
                                                     notificationModel: NotificationModel(
                                                   userId: state.contractRequestModel!.companyId,
-                                                  message: 'Imate novi zahtjev za kontrakt',
+                                                  message: 'You have new contract request',
                                                 )));
                                                 Get.back();
                                               }
