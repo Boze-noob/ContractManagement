@@ -184,7 +184,8 @@ class OrderDataTableWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         Visibility(
-                          visible: isSent[index].translate() == OrderStatusType.accepted.translate(),
+                          visible: context.currentUserBloc.state.userModel!.role ==
+                              RoleType.announcementEmployer.translate(),
                           child: Expanded(
                             child: Button(
                               text: 'Create',

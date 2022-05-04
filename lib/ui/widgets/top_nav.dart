@@ -38,7 +38,6 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
               child: BlocListener<CreateUserBloc, CreateUserState>(
                 listener: (context, state) {
                   if (state.status == CreateUserStateStatus.error) {
-                    print('error happen in creating');
                     if (state.errorMessage != null) showInfoMessage(state.errorMessage!, context);
                   } else if (state.status == CreateUserStateStatus.submitSuccess)
                     showInfoMessage('User created successfully ', context);
@@ -316,6 +315,14 @@ class _NotificationBellWidget extends StatefulWidget {
 }
 
 class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
+  getId() {
+    if (context.currentUserBloc.state.userModel!.role == RoleType.client.translate() ||
+        context.currentUserBloc.state.userModel!.role == RoleType.company.translate())
+      return context.currentUserBloc.state.userModel!.id;
+    else
+      return 'admin';
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<NotificationsBloc, NotificationsState>(
@@ -339,10 +346,14 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
                   ),
                   onPressed: () {
                     _showOverlay(
-                        parentContext: context,
-                        state: state,
-                        onCloseDialog: () => context.notificationsBloc
-                            .add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id)));
+                      parentContext: context,
+                      state: state,
+                      onCloseDialog: () => context.notificationsBloc.add(
+                        NotificationsDeleteEvent(
+                          userId: getId(),
+                        ),
+                      ),
+                    );
                   }),
               (() {
                 if (state.status == NotificationStateStatus.loading) {

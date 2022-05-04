@@ -112,7 +112,7 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
                           Row(
                             children: [
                               CustomText(
-                                text: 'Pick payment option',
+                                text: 'Pick payment option:',
                                 color: Colors.black,
                                 size: context.textSizeM,
                                 weight: FontWeight.bold,
@@ -120,17 +120,33 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
                               SizedBox(
                                 width: 20,
                               ),
-                              TextFormField(
-                                initialValue: orderState.orderModel.price.value,
-                                decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  labelText: 'Enter price',
+                              SizedBox(
+                                width: 150,
+                                child: TextFormField(
+                                  initialValue: orderState.orderModel.price.value,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'Enter price',
+                                  ),
+                                  onChanged: (text) => context.orderBloc
+                                      .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(price: text))),
                                 ),
-                                onChanged: (text) => context.orderBloc
-                                    .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(price: text))),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              CustomText(
+                                text: 'Pick payment option:',
+                                color: Colors.black,
+                                size: context.textSizeM,
+                                weight: FontWeight.bold,
                               ),
                               SizedBox(
-                                height: 10,
+                                width: 20,
                               ),
                               DropdownButton(
                                 value: selectedPaymentTypeValue,
@@ -152,10 +168,7 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
                             ],
                           ),
                           SizedBox(
-                            height: 10,
-                          ),
-                          Divider(
-                            color: Colors.black12.withOpacity(0.4),
+                            height: 20,
                           ),
                           CustomText(text: 'Contract items:'),
                           SizedBox(
