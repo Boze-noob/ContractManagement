@@ -130,7 +130,8 @@ class OrderDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell((() {
-                if (isSent[index].translate() == OrderStatusType.waiting.translate()) {
+                if (isSent[index].translate() == OrderStatusType.waiting.translate() &&
+                    context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate()) {
                   return Visibility(
                     visible: ResponsiveWidget.isLargeScreen(context),
                     child: Row(
@@ -178,7 +179,7 @@ class OrderDataTableWidget extends StatelessWidget {
                       ],
                     ),
                   );
-                } else
+                } else if (isSent[index].translate() != OrderStatusType.waiting.translate())
                   return Visibility(
                     visible: ResponsiveWidget.isLargeScreen(context),
                     child: Row(
@@ -211,6 +212,13 @@ class OrderDataTableWidget extends StatelessWidget {
                         ),
                       ],
                     ),
+                  );
+                else
+                  return CustomText(
+                    text: 'No actions allowed',
+                    color: Colors.black,
+                    weight: FontWeight.normal,
+                    textAlign: TextAlign.center,
                   );
               }())),
             ],

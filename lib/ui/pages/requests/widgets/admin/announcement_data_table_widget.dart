@@ -148,7 +148,8 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                       }()),
                       Visibility(
                         visible: announcementsModels[index].announcementStatusType.translate() ==
-                            AnnouncementStatusType.waiting.translate(),
+                                AnnouncementStatusType.waiting.translate() &&
+                            context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate(),
                         child: Expanded(
                           child: Button(
                             text: 'Send',
@@ -172,9 +173,10 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                             text: 'Delete',
                             textColor: active,
                             borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                             borderColor: active,
                             onTap: () => deleteBtnOnTap(index),
+                            shrinkWrap: true,
                           ),
                         ),
                       ),

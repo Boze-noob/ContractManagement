@@ -172,6 +172,7 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
                   width: 10,
                 ),
                 _DatePickerWidget(
+                  endDateTime: workDiariesState.workDiaryModel!.endDate ?? DateTime.now(),
                   onDateSelected: (dateTime) => context.workDiariesBloc.add(
                     WorkDiariesUpdateEvent(
                       workDiaryModel: workDiariesState.workDiaryModel!.copyWith(
@@ -195,8 +196,10 @@ class _WorkDiaryEditState extends State<WorkDiaryEdit> {
 
 class _DatePickerWidget extends StatefulWidget {
   final void Function(DateTime dateTime) onDateSelected;
+  final DateTime endDateTime;
   _DatePickerWidget({
     required this.onDateSelected,
+    required this.endDateTime,
   }) : super();
 
   @override
@@ -298,12 +301,8 @@ class _DatePickerWidgetState extends State<_DatePickerWidget> {
 
   @override
   void initState() {
-    selectedDateTime = (context.workDiariesBloc.state.workDiaryModel != null
-        ? context.workDiariesBloc.state.workDiaryModel!.endDate
-        : DateTime.now())!;
-    dateTimeTxtValue = (context.workDiariesBloc.state.workDiaryModel != null
-        ? context.workDiariesBloc.state.workDiaryModel!.endDate
-        : DateTime.now())!;
+    selectedDateTime = widget.endDateTime;
+    dateTimeTxtValue = selectedDateTime;
     super.initState();
   }
 }

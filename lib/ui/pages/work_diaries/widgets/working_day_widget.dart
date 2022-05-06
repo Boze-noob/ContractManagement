@@ -17,10 +17,10 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
     return BlocListener<WorkDiariesBloc, WorkDiariesState>(
       listener: (context, state) {
         if (state.status == WorkDiariesStateStatus.updateSuccessful) {
-          showInfoMessage(state.message ?? 'Update successful', context);
+          //showInfoMessage(state.message ?? 'Update successful', context);
           dropdownValue = state.workDiaryModel!.workingDayModels.last;
-          context.workDiariesBloc.add(WorkDiariesInitEvent(
-              workingDayModel: state.workDiaryModel!.workingDayModels.last));
+          context.workDiariesBloc
+              .add(WorkDiariesInitEvent(workingDayModel: state.workDiaryModel!.workingDayModels.last));
         }
       },
       child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
@@ -68,8 +68,7 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
                   );
                 },
                 items: state.workDiaryModel!.workingDayModels
-                    .map<DropdownMenuItem<WorkingDayModel>>(
-                        (WorkingDayModel value) {
+                    .map<DropdownMenuItem<WorkingDayModel>>((WorkingDayModel value) {
                   return DropdownMenuItem<WorkingDayModel>(
                     value: value,
                     child: Text(
@@ -86,12 +85,7 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: active.withOpacity(.4), width: .5),
-                  boxShadow: [
-                    BoxShadow(
-                        offset: Offset(0, 6),
-                        color: lightGrey.withOpacity(.1),
-                        blurRadius: 12)
-                  ],
+                  boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16),
@@ -110,27 +104,19 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
     super.initState();
     //Creating new empty work day
     if (context.workDiariesBloc.state.workDiaryModel != null) {
-      if (context
-          .workDiariesBloc.state.workDiaryModel!.workingDayModels.isEmpty) {
-        List<WorkingDayModel> workingDays = [
-          WorkingDayModel(dateTime: DateTime.now())
-        ];
+      if (context.workDiariesBloc.state.workDiaryModel!.workingDayModels.isEmpty) {
+        List<WorkingDayModel> workingDays = [WorkingDayModel(dateTime: DateTime.now())];
         context.workDiariesBloc.add(WorkDiariesSubmitUpdateEvent(workingDays));
       } else {
-        DateTime lastWorkingDayDate = context.workDiariesBloc.state
-            .workDiaryModel!.workingDayModels.last.dateTime;
+        DateTime lastWorkingDayDate = context.workDiariesBloc.state.workDiaryModel!.workingDayModels.last.dateTime;
         bool comparisonResult = lastWorkingDayDate.isEqualDate(DateTime.now());
 
         if (comparisonResult != true) {
-          List<WorkingDayModel> workingDays =
-              context.workDiariesBloc.state.workDiaryModel!.workingDayModels;
-          workingDays.insert(
-              workingDays.length, WorkingDayModel(dateTime: DateTime.now()));
-          context.workDiariesBloc
-              .add(WorkDiariesSubmitUpdateEvent(workingDays));
+          List<WorkingDayModel> workingDays = context.workDiariesBloc.state.workDiaryModel!.workingDayModels;
+          workingDays.insert(workingDays.length, WorkingDayModel(dateTime: DateTime.now()));
+          context.workDiariesBloc.add(WorkDiariesSubmitUpdateEvent(workingDays));
         } else {
-          final lastWorkingDay = context
-              .workDiariesBloc.state.workDiaryModel!.workingDayModels.last;
+          final lastWorkingDay = context.workDiariesBloc.state.workDiaryModel!.workingDayModels.last;
           context.workDiariesBloc.add(
             WorkDiariesInitEvent(
               workingDayModel: lastWorkingDay,
@@ -164,10 +150,8 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.materials.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              onChanged: (text) => context.workDiariesBloc.add(
-                  WorkDiariesUpdateEvent(
-                      workingDayModel:
-                          state.workingDayModel!.copyWith(materials: text))),
+              onChanged: (text) => context.workDiariesBloc
+                  .add(WorkDiariesUpdateEvent(workingDayModel: state.workingDayModel!.copyWith(materials: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 4,
               decoration: TextFormFieldStyle.inputDecoration('Used materials'),
@@ -178,10 +162,8 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.machines.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              onChanged: (text) => context.workDiariesBloc.add(
-                  WorkDiariesUpdateEvent(
-                      workingDayModel:
-                          state.workingDayModel!.copyWith(machines: text))),
+              onChanged: (text) => context.workDiariesBloc
+                  .add(WorkDiariesUpdateEvent(workingDayModel: state.workingDayModel!.copyWith(machines: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 4,
               decoration: TextFormFieldStyle.inputDecoration('Used machines'),
@@ -192,10 +174,8 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.employers.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              onChanged: (text) => context.workDiariesBloc.add(
-                  WorkDiariesUpdateEvent(
-                      workingDayModel:
-                          state.workingDayModel!.copyWith(employers: text))),
+              onChanged: (text) => context.workDiariesBloc
+                  .add(WorkDiariesUpdateEvent(workingDayModel: state.workingDayModel!.copyWith(employers: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 4,
               decoration: TextFormFieldStyle.inputDecoration('Employers'),
@@ -206,10 +186,8 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             TextFormField(
               initialValue: state.workingDayModel!.weather.value,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              onChanged: (text) => context.workDiariesBloc.add(
-                  WorkDiariesUpdateEvent(
-                      workingDayModel:
-                          state.workingDayModel!.copyWith(weather: text))),
+              onChanged: (text) => context.workDiariesBloc
+                  .add(WorkDiariesUpdateEvent(workingDayModel: state.workingDayModel!.copyWith(weather: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
               maxLines: 2,
               decoration: TextFormFieldStyle.inputDecoration('Weather'),
@@ -222,8 +200,7 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
               shrinkWrap: true,
               color: active,
               isLoading: state.status == WorkDiariesStateStatus.loading,
-              onTap: () => context.workDiariesBloc
-                  .add(WorkDiariesSubmitUpdateEvent(null)),
+              onTap: () => context.workDiariesBloc.add(WorkDiariesSubmitUpdateEvent(null)),
             ),
           ],
         );
