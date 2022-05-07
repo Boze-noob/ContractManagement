@@ -89,6 +89,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 SizedBox(
                   height: 15,
                 ),
+                /*
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -108,6 +109,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     ),
                   ],
                 ),
+
+                 */
                 SizedBox(
                   height: 15,
                 ),
