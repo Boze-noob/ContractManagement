@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:contract_management/_all.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AnnouncementDonePage extends StatefulWidget {
   final AnnouncementModel announcementModel;
@@ -132,6 +133,7 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                                   ),
                                 ),
                               );
+                              Get.back();
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),

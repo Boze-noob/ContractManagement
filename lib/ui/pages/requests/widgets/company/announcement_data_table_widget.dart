@@ -125,7 +125,9 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                       ),
                       Visibility(
                         visible: announcementsModels[index].announcementStatusType.translate() !=
-                            AnnouncementStatusType.inProgress.translate(),
+                                AnnouncementStatusType.inProgress.translate() &&
+                            announcementsModels[index].announcementStatusType.translate() !=
+                                AnnouncementStatusType.approved.translate(),
                         child: Expanded(
                           child: Button(
                             text: 'In progress',
