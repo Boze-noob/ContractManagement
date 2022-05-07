@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'info_card_small.dart';
 import 'package:contract_management/_all.dart';
 
 class OverviewCardsSmallScreen extends StatelessWidget {
