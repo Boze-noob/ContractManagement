@@ -22,6 +22,7 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
           location: '',
           email: firebaseAuthInstance.currentUser!.email!,
           displayName: '',
+          description: '',
         ),
       );
 

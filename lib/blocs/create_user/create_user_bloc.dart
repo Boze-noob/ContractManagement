@@ -8,11 +8,17 @@ class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
   }) : super(
           CreateUserState(
             status: CreateUserStateStatus.init,
-            userModel: UserModel(id: '', email: '', password: '', displayName: '', role: RoleType.getValue(0).translate()),
+            userModel:
+                UserModel(id: '', email: '', password: '', displayName: '', role: RoleType.getValue(0).translate()),
           ),
         ) {
+    on<CreateUserInitEvent>(_init);
     on<CreateUserUpdateModelEvent>(_updateState);
     on<CreateUserSubmitEvent>(_submit);
+  }
+
+  void _init(CreateUserInitEvent event, Emitter<CreateUserState> emit) async {
+    emit(state.copyWith(status: CreateUserStateStatus.init));
   }
 
   void _updateState(CreateUserUpdateModelEvent event, Emitter<CreateUserState> emit) async {

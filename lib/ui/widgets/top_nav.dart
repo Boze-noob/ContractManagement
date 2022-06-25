@@ -39,8 +39,10 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                 listener: (context, state) {
                   if (state.status == CreateUserStateStatus.error) {
                     if (state.errorMessage != null) showInfoMessage(state.errorMessage!, context);
-                  } else if (state.status == CreateUserStateStatus.submitSuccess)
+                  } else if (state.status == CreateUserStateStatus.submitSuccess) {
                     showInfoMessage('User created successfully ', context);
+                    context.createUserBloc.add(CreateUserInitEvent());
+                  }
                 },
                 child: IconButton(
                     icon: Icon(

@@ -22,10 +22,7 @@ class FirebaseFirestoreClass {
 
   Future getData(String collection, String document) async {
     try {
-      var jsonData = await FirebaseFirestore.instance
-          .collection(collection)
-          .doc(document)
-          .get();
+      var jsonData = await FirebaseFirestore.instance.collection(collection).doc(document).get();
       return jsonData.exists ? jsonData.data() : null;
     } catch (e) {
       print(e);
@@ -33,15 +30,13 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future getDataWithFilter(
-      String collection, String fieldName, dynamic fieldValue) async {
+  Future getDataWithFilter(String collection, String fieldName, dynamic fieldValue) async {
     try {
       final jsonData = await fireStoreInstance
           .collection(collection)
           .where(fieldName, isEqualTo: fieldValue)
           .get()
-          .catchError((onError) =>
-              print('Error happen in get data with filter $onError'));
+          .catchError((onError) => print('Error happen in get data with filter $onError'));
       return jsonData.docs.isEmpty ? null : jsonData.docs;
     } catch (e) {
       print(e);
@@ -49,8 +44,8 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future getDataWithTwoFilters(String collection, String fieldName,
-      dynamic fieldValue, String fieldName2, String? fieldValue2) async {
+  Future getDataWithTwoFilters(
+      String collection, String fieldName, dynamic fieldValue, String fieldName2, dynamic fieldValue2) async {
     try {
       final jsonData = await fireStoreInstance
           .collection(collection)
@@ -64,8 +59,23 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future getNumberOfSpecificFields(
-      String collection, String fieldName, dynamic fieldValue) async {
+  Future getDataWithFilterAndNotEqual(
+      String collection, String fieldName, dynamic fieldValue, String notFieldName, dynamic notFieldValue) async {
+    try {
+      final jsonData = await fireStoreInstance
+          .collection(collection)
+          .where(notFieldName, isNotEqualTo: notFieldValue)
+          .where(fieldName, isEqualTo: fieldValue)
+          .get()
+          .catchError((onError) => print('Error happen in get data with filter $onError'));
+      return jsonData.docs.isEmpty ? null : jsonData.docs;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future getNumberOfSpecificFields(String collection, String fieldName, dynamic fieldValue) async {
     try {
       num counter = 0;
       await fireStoreInstance
@@ -94,8 +104,7 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future<String?> deleteDataWithSpecificField(
-      String collection, String fieldName, dynamic fieldValue) async {
+  Future<String?> deleteDataWithSpecificField(String collection, String fieldName, dynamic fieldValue) async {
     String? errorMessage;
     var snapshot = await fireStoreInstance
         .collection(collection)
@@ -109,17 +118,13 @@ class FirebaseFirestoreClass {
     return errorMessage;
   }
 
-  Future getAllDataFromCollection(
-      String collection, String? sortFieldName) async {
+  Future getAllDataFromCollection(String collection, String? sortFieldName) async {
     try {
       final jsonData;
       if (sortFieldName == null)
         jsonData = await fireStoreInstance.collection(collection).get();
       else
-        jsonData = await fireStoreInstance
-            .collection(collection)
-            .orderBy(sortFieldName)
-            .get();
+        jsonData = await fireStoreInstance.collection(collection).orderBy(sortFieldName).get();
       return jsonData.docs;
     } catch (e) {
       print(e);
@@ -127,29 +132,25 @@ class FirebaseFirestoreClass {
     }
   }
 
-  Future updateSpecificField(String collection, String document,
-      String fieldName, dynamic fieldValue) async {
+  Future updateSpecificField(String collection, String document, String fieldName, dynamic fieldValue) async {
     String? errorMessage;
     await FirebaseFirestore.instance
         .collection(collection)
         .doc(document)
-        .update({fieldName: fieldValue}).catchError(
-            (onError) => errorMessage = onError.toString());
+        .update({fieldName: fieldValue}).catchError((onError) => errorMessage = onError.toString());
     if (errorMessage != null) return errorMessage;
 
     return errorMessage;
   }
 
-  Future updaterSpecificFields(String collection, String document,
-      List<String> fieldName, List fieldValue) async {
+  Future updaterSpecificFields(String collection, String document, List<String> fieldName, List fieldValue) async {
     String? errorMessage;
 
     for (int i = 0; i < fieldName.length; i++) {
       await FirebaseFirestore.instance
           .collection(collection)
           .doc(document)
-          .update({fieldName[i]: fieldValue[i]}).catchError(
-              (onError) => errorMessage = onError.toString());
+          .update({fieldName[i]: fieldValue[i]}).catchError((onError) => errorMessage = onError.toString());
       if (errorMessage != null) return errorMessage;
     }
     return errorMessage;

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class CompanyViewOrderDialog extends StatelessWidget {
   OrderModel orderModel;
-  CompanyViewOrderDialog({Key? key, required this.orderModel})
-      : super(key: key);
+  CompanyViewOrderDialog({Key? key, required this.orderModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +55,7 @@ class CompanyViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Payment type: ${orderModel.paymentType.translate().value}',
+                text: 'Payment type: ${orderModel.paymentType.translate().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -65,8 +63,15 @@ class CompanyViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Create date time: ${orderModel.createdDateTime.formatDDMMYY().value}',
+                text: 'Description: ${orderModel.description.value}',
+                weight: FontWeight.normal,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CustomText(
+                text: 'Create date time: ${orderModel.createdDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -94,8 +99,7 @@ class CompanyViewOrderDialog extends StatelessWidget {
                 itemCount: orderModel.contractItems.length,
                 itemBuilder: (context, i) {
                   return ListTile(
-                    title:
-                        Text(' - ' + orderModel.contractItems[i].translate()),
+                    title: Text(' - ' + orderModel.contractItems[i].translate()),
                   );
                 },
               ),
@@ -114,8 +118,7 @@ class CompanyViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Order status type: ${orderModel.orderStatusType.translate().value}',
+                text: 'Order status type: ${orderModel.orderStatusType.translate().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -123,8 +126,7 @@ class CompanyViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Admin request type: ${orderModel.adminRequestType.translate().value}',
+                text: 'Admin request type: ${orderModel.adminRequestType.translate().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -140,7 +142,7 @@ class CompanyViewOrderDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Price: ${orderModel.price.value}',
+                text: 'Price: ${orderModel.price.value} \$',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),

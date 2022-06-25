@@ -2,6 +2,8 @@ import 'package:contract_management/_all.dart';
 
 abstract class CreateUserEvent {}
 
+class CreateUserInitEvent extends CreateUserEvent {}
+
 class CreateUserUpdateModelEvent extends CreateUserEvent {
   final UserModel userModel;
 

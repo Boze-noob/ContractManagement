@@ -30,6 +30,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
           id: '',
           price: '',
           completionDateTime: DateTime.now(),
+          description: '',
         ),
         orderModels: List.empty(),
         companiesForOrder: {},

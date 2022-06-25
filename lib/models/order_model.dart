@@ -17,6 +17,7 @@ class OrderModel {
   final AdminRequestType adminRequestType;
   final String clientName;
   final String price;
+  final String description;
 
   OrderModel({
     required this.id,
@@ -34,6 +35,7 @@ class OrderModel {
     required this.adminRequestType,
     required this.clientName,
     required this.price,
+    required this.description,
   });
 
   OrderModel copyWith({
@@ -52,6 +54,7 @@ class OrderModel {
     AdminRequestType? adminRequestType,
     String? clientName,
     String? price,
+    String? description,
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -69,6 +72,7 @@ class OrderModel {
         adminRequestType: adminRequestType ?? this.adminRequestType,
         clientName: clientName ?? this.clientName,
         price: price ?? this.price,
+        description: description ?? this.description,
       );
 
   Map<String, dynamic> toMap() {
@@ -88,25 +92,26 @@ class OrderModel {
       'adminRequestType': adminRequestType.index,
       'clientName': clientName,
       'price': price,
+      'description': description,
     };
   }
 
   factory OrderModel.fromMap(dynamic map) {
     return OrderModel(
-      id: map['id'],
-      senderName: map['senderName'],
-      receiverName: map['receiverName'],
-      receiverId: map['receiverId'] ?? null,
-      orderLocation: map['orderLocation'],
-      paymentType: PaymentType.getValue(map['paymentType']),
-      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
-      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
-      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
-      employerName: map['employerName'],
-      orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
-      adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
-      clientName: map['clientName'],
-      price: map['price'],
-    );
+        id: map['id'],
+        senderName: map['senderName'],
+        receiverName: map['receiverName'],
+        receiverId: map['receiverId'] ?? null,
+        orderLocation: map['orderLocation'],
+        paymentType: PaymentType.getValue(map['paymentType']),
+        createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+        completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
+        contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
+        employerName: map['employerName'],
+        orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
+        adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
+        clientName: map['clientName'],
+        price: map['price'],
+        description: map['description']);
   }
 }

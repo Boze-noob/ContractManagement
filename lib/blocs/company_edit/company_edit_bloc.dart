@@ -37,11 +37,14 @@ class CompanyEditBloc extends Bloc<CompanyEditEvent, CompanyEditState> {
   void _submit(CompanyEditSubmitEvent event, Emitter<CompanyEditState> emit) async {
     emit(state.copyWith(status: CompanyEditStateStatus.submitting));
     final result = await companiesRepo.editCompany(state.companyModel);
-    if (result)
+    if (result) {
       emit(state.copyWith(
         status: CompanyEditStateStatus.submittedSuccessfully,
       ));
-    else
+      await Future.delayed(Duration(milliseconds: 500));
+      emit(state.copyWith(status: CompanyEditStateStatus.loaded));
+      print("we are into submit");
+    } else
       emit(state.copyWith(status: CompanyEditStateStatus.error, errorMessage: 'Error happen'));
   }
 }

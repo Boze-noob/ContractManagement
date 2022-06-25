@@ -40,7 +40,8 @@ class CompanyRequestRepo implements ICompanyRequest {
 
   @override
   Future<List<AnnouncementModel>?> getAnnouncements(String receiverId) async {
-    final jsonData = await firebaseFirestoreClass.getDataWithFilter('announcements', 'receiverId', receiverId);
+    final jsonData = await firebaseFirestoreClass.getDataWithFilterAndNotEqual(
+        'announcements', 'receiverId', receiverId, 'announcementStatusType', 0);
     return jsonData != null
         ? jsonData.map<AnnouncementModel>((json) => AnnouncementModel.fromMap(json))?.toList()
         : null;

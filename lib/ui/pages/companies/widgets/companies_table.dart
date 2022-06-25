@@ -11,278 +11,289 @@ class CompaniesTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CompaniesBloc, CompaniesState>(
-      builder: (context, state) {
-        if (state.status == CompaniesStateStatus.loading)
-          return Center(
-            child: Loader(
-              width: 100,
-              height: 100,
-              color: active,
-            ),
-          );
-        else if (state.companies.isNotEmpty) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: active.withOpacity(.4), width: .5),
-              boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.all(16),
-            margin: EdgeInsets.only(bottom: 30),
-            child: DataTable2(
-              columnSpacing: 12,
-              horizontalMargin: 12,
-              minWidth: 700,
-              columns: [
-                DataColumn2(
-                  label: Text("Name"),
-                  size: ColumnSize.L,
-                ),
-                DataColumn(
-                  label: Text('Location'),
-                ),
-                DataColumn(
-                  label: Text('Rating'),
-                ),
-                DataColumn2(
-                  label: Text(' '),
-                  size: ColumnSize.L,
-                ),
-              ],
-              rows: List<DataRow>.generate(
-                state.companies.length,
-                (index) => DataRow(cells: [
-                  DataCell(
-                    CustomText(
-                      text: state.companies[index].displayName,
-                    ),
+    return BlocProvider(
+      create: (context) => CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo),
+      child: BlocBuilder<CompanyEditBloc, CompanyEditState>(
+        builder: (context, companyEditState) {
+          return BlocBuilder<CompaniesBloc, CompaniesState>(
+            builder: (context, state) {
+              if (state.status == CompaniesStateStatus.loading ||
+                  companyEditState.status == CompanyEditStateStatus.submittedSuccessfully)
+                return Center(
+                  child: Loader(
+                    width: 100,
+                    height: 100,
+                    color: active,
                   ),
-                  DataCell(
-                    CustomText(text: state.companies[index].location ?? ' '),
+                );
+              else if (state.companies.isNotEmpty) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: active.withOpacity(.4), width: .5),
+                    boxShadow: [BoxShadow(offset: Offset(0, 6), color: lightGrey.withOpacity(.1), blurRadius: 12)],
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  DataCell(Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.deepOrange,
-                        size: 18,
+                  padding: const EdgeInsets.all(16),
+                  margin: EdgeInsets.only(bottom: 30),
+                  child: DataTable2(
+                    columnSpacing: 12,
+                    horizontalMargin: 12,
+                    minWidth: 700,
+                    columns: [
+                      DataColumn2(
+                        label: Text("Name"),
+                        size: ColumnSize.L,
                       ),
-                      SizedBox(
-                        width: 5,
+                      DataColumn(
+                        label: Text('Location'),
                       ),
-                      CustomText(
-                        text: state.companies[index].rating ?? ' ',
-                      )
+                      DataColumn(
+                        label: Text('Rating'),
+                      ),
+                      DataColumn2(
+                        label: Text(' '),
+                        size: ColumnSize.L,
+                      ),
                     ],
-                  )),
-                  DataCell(Row(
-                    children: [
-                      Button(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                        child: CustomText(
-                          text: 'View',
+                    rows: List<DataRow>.generate(
+                      state.companies.length,
+                      (index) => DataRow(cells: [
+                        DataCell(
+                          CustomText(
+                            text: state.companies[index].displayName,
+                          ),
                         ),
-                        textColor: black,
-                        shrinkWrap: true,
-                        borderRadius: 40,
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => CustomDialog(
-                            buttonText: 'Close',
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomText(
-                                    text: 'Company details',
-                                    size: context.textSizeXL,
-                                    weight: FontWeight.bold,
+                        DataCell(
+                          CustomText(text: state.companies[index].location ?? ' '),
+                        ),
+                        DataCell(Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.deepOrange,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            CustomText(
+                              text: state.companies[index].rating ?? ' ',
+                            )
+                          ],
+                        )),
+                        DataCell(Row(
+                          children: [
+                            Button(
+                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                              child: CustomText(
+                                text: 'View',
+                              ),
+                              textColor: black,
+                              shrinkWrap: true,
+                              borderRadius: 40,
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => CustomDialog(
+                                  buttonText: 'Close',
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          text: 'Company details',
+                                          size: context.textSizeXL,
+                                          weight: FontWeight.bold,
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        CustomText(
+                                          text: 'Display name: ' + state.companies[index].displayName,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomText(
+                                          text: 'Email: ' + state.companies[index].email,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomText(
+                                          text: 'Role: ' + state.companies[index].role,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomText(
+                                          text: 'Phone number: ' + state.companies[index].phoneNumber.value,
+                                          size: context.textSizeM,
+                                        ),
+                                        CustomText(
+                                          text: 'Signed contract: ' + state.companies[index].contractId.value,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  CustomText(
-                                    text: 'Display name: ' + state.companies[index].displayName,
-                                    size: context.textSizeM,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  CustomText(
-                                    text: 'Email: ' + state.companies[index].email,
-                                    size: context.textSizeM,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  CustomText(
-                                    text: 'Role: ' + state.companies[index].role,
-                                    size: context.textSizeM,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  CustomText(
-                                    text: 'Phone number: ' + state.companies[index].phoneNumber.value,
-                                    size: context.textSizeM,
-                                  ),
-                                  CustomText(
-                                    text: 'Signed contract: ' + state.companies[index].contractId.value,
-                                    size: context.textSizeM,
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      Button(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                        child: CustomText(
-                          text: 'Edit',
-                          color: active,
-                        ),
-                        shrinkWrap: true,
-                        borderRadius: 40,
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => BlocProvider(
-                            create: (context) => CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)
-                              ..add(CompanyEditInitEvent(companyModel: state.companies[index])),
-                            child: Builder(
-                              builder: (context) {
-                                return CustomDialog(
-                                    buttonText: 'Save',
-                                    child: Container(
-                                      width: context.screenWidth / 2,
-                                      child: Form(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                                          child: BlocListener<CompanyEditBloc, CompanyEditState>(
-                                            listener: (context, state) {
-                                              if (state.status == CompanyEditStateStatus.error) {
-                                                onEdited('Error happen', false);
-                                              } else if (state.status == CompanyEditStateStatus.submittedSuccessfully) {
-                                                onEdited('Company updated', true);
-                                              }
-                                            },
-                                            child: BlocBuilder<CompanyEditBloc, CompanyEditState>(
-                                              builder: (context, state) {
-                                                if (state.status == CompanyEditStateStatus.loading)
-                                                  return Loader(
-                                                    width: 80,
-                                                    height: 80,
-                                                    color: active,
-                                                  );
-                                                return Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 16,
-                                                    ),
-                                                    CustomText(
-                                                      text: 'Edit company parameters',
-                                                      size: 22,
-                                                      weight: FontWeight.bold,
-                                                      color: Colors.black,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 16,
-                                                    ),
-                                                    TextFormField(
-                                                      initialValue: state.companyModel.displayName,
-                                                      decoration: InputDecoration(
-                                                        icon: const Icon(Icons.email),
-                                                        hintText: 'Edit displayName',
-                                                        labelText: 'Display name',
-                                                        fillColor: active,
-                                                      ),
-                                                      onChanged: (text) => context.companyEditBloc.add(
-                                                        CompanyEditUpdateEvent(
-                                                          companyModel: state.companyModel.copyWith(displayName: text),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    TextFormField(
-                                                      initialValue: state.companyModel.rating,
-                                                      decoration: const InputDecoration(
-                                                        icon: const Icon(Icons.password),
-                                                        hintText: 'Edit rating',
-                                                        labelText: 'Rating',
-                                                      ),
-                                                      onChanged: (text) => context.companyEditBloc.add(
-                                                        CompanyEditUpdateEvent(
-                                                          companyModel: state.companyModel.copyWith(rating: text),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    _RoleWidget(
-                                                      onRoleUpdate: (role) => context.companyEditBloc.add(
-                                                        CompanyEditUpdateEvent(
-                                                          companyModel: state.companyModel.copyWith(role: role),
-                                                        ),
-                                                      ),
-                                                      role: state.companyModel.role,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 30,
-                                                    ),
-                                                  ],
-                                                );
-                                              },
+                            Button(
+                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                              child: CustomText(
+                                text: 'Edit',
+                                color: active,
+                              ),
+                              shrinkWrap: true,
+                              borderRadius: 40,
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => BlocProvider(
+                                  create: (context) =>
+                                      CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)
+                                        ..add(CompanyEditInitEvent(companyModel: state.companies[index])),
+                                  child: Builder(
+                                    builder: (context) {
+                                      return CustomDialog(
+                                          buttonText: 'Save',
+                                          child: Container(
+                                            width: context.screenWidth / 2,
+                                            child: Form(
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                                child: BlocListener<CompanyEditBloc, CompanyEditState>(
+                                                  listener: (context, state) {
+                                                    if (state.status == CompanyEditStateStatus.error) {
+                                                      onEdited('Error happen', false);
+                                                    } else if (state.status ==
+                                                        CompanyEditStateStatus.submittedSuccessfully) {
+                                                      onEdited('Company updated', true);
+                                                    }
+                                                  },
+                                                  child: BlocBuilder<CompanyEditBloc, CompanyEditState>(
+                                                    builder: (context, state) {
+                                                      if (state.status == CompanyEditStateStatus.loading)
+                                                        return Loader(
+                                                          width: 80,
+                                                          height: 80,
+                                                          color: active,
+                                                        );
+                                                      return Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 16,
+                                                          ),
+                                                          CustomText(
+                                                            text: 'Edit company parameters',
+                                                            size: 22,
+                                                            weight: FontWeight.bold,
+                                                            color: Colors.black,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 16,
+                                                          ),
+                                                          TextFormField(
+                                                            initialValue: state.companyModel.displayName,
+                                                            decoration: InputDecoration(
+                                                              icon: const Icon(Icons.email),
+                                                              hintText: 'Edit displayName',
+                                                              labelText: 'Display name',
+                                                              fillColor: active,
+                                                            ),
+                                                            onChanged: (text) => context.companyEditBloc.add(
+                                                              CompanyEditUpdateEvent(
+                                                                companyModel:
+                                                                    state.companyModel.copyWith(displayName: text),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          TextFormField(
+                                                            initialValue: state.companyModel.rating,
+                                                            decoration: const InputDecoration(
+                                                              icon: const Icon(Icons.password),
+                                                              hintText: 'Edit rating',
+                                                              labelText: 'Rating',
+                                                            ),
+                                                            onChanged: (text) => context.companyEditBloc.add(
+                                                              CompanyEditUpdateEvent(
+                                                                companyModel: state.companyModel.copyWith(rating: text),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          _RoleWidget(
+                                                            onRoleUpdate: (role) => context.companyEditBloc.add(
+                                                              CompanyEditUpdateEvent(
+                                                                companyModel: state.companyModel.copyWith(role: role),
+                                                              ),
+                                                            ),
+                                                            role: state.companyModel.role,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 30,
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                    onButtonPressed: () {
-                                      context.companyEditBloc.add(CompanyEditSubmitEvent());
-                                    });
-                              },
+                                          onButtonPressed: () {
+                                            context.companyEditBloc.add(CompanyEditSubmitEvent());
+                                          });
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      Button(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                        child: CustomText(
-                          text: 'Delete',
-                          color: delete,
-                        ),
-                        shrinkWrap: true,
-                        borderRadius: 40,
-                        onTap: () => context.companiesBloc.add(
-                          CompaniesDeleteEvent(uid: state.companies[index].id),
-                        ),
-                      ),
-                    ],
-                  )),
-                ]),
-              ),
-            ),
+                            Button(
+                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                              child: CustomText(
+                                text: 'Delete',
+                                color: delete,
+                              ),
+                              shrinkWrap: true,
+                              borderRadius: 40,
+                              onTap: () => context.companiesBloc.add(
+                                CompaniesDeleteEvent(uid: state.companies[index].id),
+                              ),
+                            ),
+                          ],
+                        )),
+                      ]),
+                    ),
+                  ),
+                );
+              }
+              return Container(
+                child: CustomText(
+                  text: 'No companies yet',
+                  size: context.textSizeXL,
+                  weight: FontWeight.bold,
+                ),
+              );
+            },
           );
-        }
-        return Container(
-          child: CustomText(
-            text: 'No companies yet',
-            size: context.textSizeXL,
-            weight: FontWeight.bold,
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 }

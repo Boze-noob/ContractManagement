@@ -5,7 +5,7 @@ class ClientRequestModel {
   final String email;
   final String displayName;
   final RequestType requestType;
-  final String? description;
+  final String description;
   final String location;
   final DateTime createdDateTime;
 
@@ -14,7 +14,7 @@ class ClientRequestModel {
     required this.email,
     required this.displayName,
     required this.requestType,
-    this.description,
+    required this.description,
     required this.location,
     required this.createdDateTime,
   });
@@ -44,7 +44,7 @@ class ClientRequestModel {
       'email': email,
       'displayName': displayName,
       'requestType': requestType.index,
-      'description': description ?? null,
+      'description': description,
       'location': location,
       'createdDateTime': createdDateTime.toUtc().toString(),
     };

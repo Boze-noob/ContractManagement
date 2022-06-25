@@ -20,8 +20,9 @@ class OrderSubmitUpdateEvent extends OrderEvent {}
 
 class OrderCreateEvent extends OrderEvent {
   final String clientName;
+  final String description;
 
-  OrderCreateEvent({required this.clientName});
+  OrderCreateEvent({required this.clientName, required this.description});
 }
 
 class OrderSendEvent extends OrderEvent {

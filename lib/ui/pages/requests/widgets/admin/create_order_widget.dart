@@ -44,11 +44,16 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
             return CustomDialog(
               buttonText: 'Create',
               onButtonPressed: () async {
-                context.orderBloc
-                    .add(OrderCreateEvent(clientName: widget.requestState.clientRequestModel[index].displayName));
+                context.orderBloc.add(
+                  OrderCreateEvent(
+                    clientName: widget.requestState.clientRequestModel[index].displayName,
+                    description: widget.requestState.clientRequestModel[index].description,
+                  ),
+                );
                 //This should be done via listener
                 await Future.delayed(Duration(milliseconds: 500));
                 widget.onCreate();
+                selectedContractItemsIndex = List.empty();
               },
               child: StatefulBuilder(builder: (context, setState) {
                 return Container(
