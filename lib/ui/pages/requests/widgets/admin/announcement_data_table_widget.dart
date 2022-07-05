@@ -128,9 +128,10 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                           return Expanded(
                             child: Button(
                               text: 'Inspect',
+                              textSize: 13,
                               textColor: active,
                               borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
                               borderColor: active,
                               onTap: () => inspectOnTap(index),
                             ),
@@ -138,11 +139,13 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                         return Expanded(
                           child: Button(
                             text: 'View',
+                            textSize: 13,
                             textColor: active,
                             borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
                             borderColor: active,
                             onTap: () => viewBtnOnTap(index),
+                            shrinkWrap: true,
                           ),
                         );
                       }()),
@@ -153,11 +156,13 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                         child: Expanded(
                           child: Button(
                             text: 'Send',
+                            textSize: 13,
                             textColor: active,
                             borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
                             borderColor: active,
                             onTap: () => sendBtnOnTap(index),
+                            shrinkWrap: true,
                           ),
                         ),
                       ),
@@ -171,9 +176,10 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                         child: Expanded(
                           child: Button(
                             text: 'Delete',
+                            textSize: 13,
                             textColor: active,
                             borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
                             borderColor: active,
                             onTap: () => deleteBtnOnTap(index),
                             shrinkWrap: true,

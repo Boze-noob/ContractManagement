@@ -144,9 +144,6 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                   },
                                   child: BlocBuilder<OrderBloc, OrderState>(
                                     builder: (context, orderState) {
-                                      print('this is updating , order --------------');
-                                      print(orderState.status.toString());
-                                      print(orderState.orderModels.length.toString());
                                       if (orderState.status == OrderStateStatus.loading)
                                         return Loader(
                                           width: 100,

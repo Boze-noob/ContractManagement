@@ -12,6 +12,8 @@ class InspectRevenue {
       List<int> lastSevenDaysList = reversedLastSevenDays.toList();
       List<int> newWeeklyRevenue = new List<int>.generate(7, (i) => 0);
       for (int item in lastSevenDaysList) {
+        print("This is your item value in inspect revenue");
+        print(item);
         if (revenueModel.weeklyRevenueDateTime.contains(item)) {
           newWeeklyRevenue
             ..insert(revenueModel.weeklyRevenueDateTime.indexOf(item),
@@ -24,7 +26,7 @@ class InspectRevenue {
       List<int> newWeeklyRevenue = List.from(revenueModel.weeklyRevenue)..removeLast();
       newWeeklyRevenue..insert(0, 0);
       List<int> newWeeklyDateTime = List.from(revenueModel.weeklyRevenueDateTime)..removeLast();
-      newWeeklyDateTime..insert(0, currentDay);
+      newWeeklyDateTime..insert(6, currentDay);
       revenueModel = revenueModel.copyWith(
           dayNumber: currentDay,
           dailyRevenue: 0,

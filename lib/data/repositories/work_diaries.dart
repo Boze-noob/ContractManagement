@@ -14,7 +14,12 @@ class WorkDiaries implements IWorkDiaries {
 
   @override
   Future<bool> createDiary(WorkDiaryModel workDiaryModel) async {
-    return await firebaseFirestoreClass.storeData('workDiaries', workDiaryModel.id, workDiaryModel.toMap());
+    if (await firebaseFirestoreClass.getNumberOfSpecificFields(
+            "workDiaries", "announcementId", workDiaryModel.announcementId) >
+        0)
+      return true;
+    else
+      return await firebaseFirestoreClass.storeData('workDiaries', workDiaryModel.id, workDiaryModel.toMap());
   }
 
   @override

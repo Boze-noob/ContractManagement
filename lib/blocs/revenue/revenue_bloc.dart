@@ -51,7 +51,7 @@ class RevenueBloc extends Bloc<RevenueEvent, RevenueState> {
   void _update(RevenueProfitEvent event, Emitter<RevenueState> emit) async {
     int profit = event.profit;
     final RevenueModel currentRevenueModel = state.revenueModel;
-    currentRevenueModel.weeklyRevenue.insert(0, currentRevenueModel.weeklyRevenue.last + profit);
+    currentRevenueModel.weeklyRevenue[0] = currentRevenueModel.weeklyRevenue.first + profit;
     final RevenueModel newRevenueModel = RevenueModel(
       dailyRevenue: currentRevenueModel.dailyRevenue + profit,
       totalWeeklyRevenue: currentRevenueModel.totalWeeklyRevenue + profit,

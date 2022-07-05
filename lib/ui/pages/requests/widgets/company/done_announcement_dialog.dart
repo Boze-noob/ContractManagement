@@ -193,7 +193,7 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
                             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 CustomText(
                                   text: 'Additional costs details',
@@ -248,12 +248,15 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
                               SizedBox(
                                 height: 10,
                               ),
-                              TextFormField(
-                                initialValue: billState.billModel.additionalReqPrice.value,
-                                onChanged: (text) => context.billBloc.add(
-                                    BillUpdateEvent(billModel: billState.billModel.copyWith(additionalReqPrice: text))),
-                                style: TextFormFieldStyle.inputFieldTextStyle(),
-                                decoration: TextFormFieldStyle.inputDecoration('Additional cost'),
+                              SizedBox(
+                                width: 300,
+                                child: TextFormField(
+                                  initialValue: billState.billModel.additionalReqPrice.value,
+                                  onChanged: (text) => context.billBloc.add(BillUpdateEvent(
+                                      billModel: billState.billModel.copyWith(additionalReqPrice: text))),
+                                  style: TextFormFieldStyle.inputFieldTextStyle(),
+                                  decoration: TextFormFieldStyle.inputDecoration('Additional cost'),
+                                ),
                               ),
                               SizedBox(
                                 height: 10,
