@@ -7,10 +7,11 @@ abstract class IClients {
 }
 
 class ClientsRepo implements IClients {
+  Api api;
   FirebaseFirestoreClass firebaseFirestoreClass;
   INotifications notificationsRepo;
 
-  ClientsRepo({required this.firebaseFirestoreClass, required this.notificationsRepo});
+  ClientsRepo({required this.api, required this.firebaseFirestoreClass, required this.notificationsRepo});
 
   @override
   Future<List<UserModel>?> getClients() async {
@@ -19,8 +20,9 @@ class ClientsRepo implements IClients {
   }
 
   @override
-  Future<String?> deleteClient(String userId) async {
-    final result = await firebaseFirestoreClass.deleteData('users', userId);
+  Future<String?> deleteClient(String uid) async {
+    await api.delete("user/delete", {"id": uid});
+    final result = await firebaseFirestoreClass.deleteData('users', uid);
     return result;
   }
 

@@ -5,6 +5,7 @@ enum CreateUserStateStatus {
   submitting,
   submitSuccess,
   error,
+  updating,
 }
 
 class CreateUserState {

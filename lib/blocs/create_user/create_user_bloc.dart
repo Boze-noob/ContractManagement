@@ -1,5 +1,4 @@
 import 'package:contract_management/_all.dart';
-import 'package:contract_management/common/enumerations/role_type.dart';
 
 class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
   IAccount accountRepo;
@@ -25,6 +24,7 @@ class CreateUserBloc extends Bloc<CreateUserEvent, CreateUserState> {
     emit(
       state.copyWith(
         userModel: event.userModel,
+        status: CreateUserStateStatus.updating,
       ),
     );
   }

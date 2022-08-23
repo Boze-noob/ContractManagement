@@ -8,19 +8,20 @@ abstract class ICompanies {
 }
 
 class CompaniesRepo implements ICompanies {
+  Api api;
   FirebaseFirestoreClass firebaseFirestoreClass;
   FirebaseAuthClass firebaseAuthClass;
 
-  CompaniesRepo({required this.firebaseFirestoreClass, required this.firebaseAuthClass});
+  CompaniesRepo({required this.api, required this.firebaseFirestoreClass, required this.firebaseAuthClass});
 
   @override
   Future<String?> deleteCompany(String uid) async {
+    await api.delete("user/delete", {"id": uid});
     return await firebaseFirestoreClass.deleteData('users', uid);
   }
 
   @override
   Future<bool> editCompany(UserModel model) async {
-    // if (model.email.isNotEmpty) await firebaseAuthClass.changeUserEmail(model.email);
     return await firebaseFirestoreClass.storeData('users', model.id, model.toMap());
   }
 

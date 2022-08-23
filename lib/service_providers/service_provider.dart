@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 class DevelopmentServiceProvider extends ServiceProvider {}
 
 abstract class ServiceProvider {
+  late Api api;
   late IUserAuth userAuth;
   late IAccount accountRepo;
   late IAnnouncement announcementRepo;
@@ -26,6 +27,7 @@ abstract class ServiceProvider {
   //...
 
   Future<void> init() async {
+    await initApi();
     await initFirebase();
     await initRepositories();
   }
@@ -35,12 +37,14 @@ abstract class ServiceProvider {
     firebaseFirestoreClass = FirebaseFirestoreClass();
 
     notificationsRepo = NotificationsRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    accountRepo = AccountRepo();
+    accountRepo = AccountRepo(api: api);
     announcementRepo =
         AnnouncementRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     billRepo = BillRepo(firebaseFirestoreClass: firebaseFirestoreClass);
-    clientsRepo = ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
-    companiesRepo = CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass);
+    clientsRepo =
+        ClientsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo, api: api);
+    companiesRepo =
+        CompaniesRepo(firebaseFirestoreClass: firebaseFirestoreClass, firebaseAuthClass: firebaseAuthClass, api: api);
     contractsRepo = ContractsRepo(firebaseFirestoreClass: firebaseFirestoreClass, notificationsRepo: notificationsRepo);
     orderRepo = OrderRepo(
         firebaseFirestoreClass: firebaseFirestoreClass,
@@ -70,6 +74,12 @@ abstract class ServiceProvider {
             measurementId: "G-68H02GDMN1"),
       );
     }
+  }
+
+  Future<void> initApi() async {
+    final dio = Dio();
+    dio.options.baseUrl = "http://localhost:5000/api/";
+    api = ApiImpl(dio: dio);
   }
 }
 

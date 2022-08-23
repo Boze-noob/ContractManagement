@@ -17,9 +17,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   static AuthState initialState() => AuthState(status: AuthStateStatus.Unauthenticated);
 
   void _init(AuthInitEvent event, Emitter<AuthState> emit) async {
-    //TODO change back to unauth
     emit(
-      AuthState(status: AuthStateStatus.Authenticated),
+      AuthState(status: AuthStateStatus.Unauthenticated),
     );
     //initialState();
   }

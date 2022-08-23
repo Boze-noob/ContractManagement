@@ -5,18 +5,18 @@ abstract class IAccount {
   Future<UserModel?> getUserFromDatabase();
   Future<String?> createAccount(String email, String password, String displayName, String role);
   Future<bool> editAccount(UserModel userModel);
-  Future<String?> deleteCurrentUser();
+  Future<String?> deleteCurrentUser(String uid);
 }
 
 class AccountRepo implements IAccount {
-  AccountRepo();
+  Api api;
+  AccountRepo({required this.api});
   FirebaseFirestoreClass firebaseFirestoreClass = FirebaseFirestoreClass();
   FirebaseAuthClass firebaseAuthClass = FirebaseAuthClass();
   FirebaseAuth firebaseAuthInstance = FirebaseAuth.instance;
 
   @override
   Future<bool> storeUserToDatabase(UserModel userModel) async {
-    //TODO vidit sta je sa ovim usklicnikom, moze li se slusat u auth blocu ili provjeravat jeli current user null ili nije(automatski generirat uid ako jest
     bool result = await firebaseFirestoreClass.storeData('users', userModel.id, userModel.toMap());
     return result;
   }
@@ -61,9 +61,8 @@ class AccountRepo implements IAccount {
   }
 
   @override
-  Future<String?> deleteCurrentUser() async {
-    final result = await firebaseFirestoreClass.deleteData('users', firebaseAuthInstance.currentUser!.uid);
-    await firebaseAuthClass.deleteCurrentUser();
-    return result;
+  Future<String?> deleteCurrentUser(String uid) async {
+    await api.delete("user/delete", {"id": uid});
+    return await firebaseFirestoreClass.deleteData('users', firebaseAuthInstance.currentUser!.uid);
   }
 }

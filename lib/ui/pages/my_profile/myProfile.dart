@@ -18,7 +18,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
       create: (context) => EditProfileBloc(accountRepo: context.serviceProvider.accountRepo)
         ..add(
           EditProfileInitEvent(
-            userModel: context.currentUserBloc.state.userModel ?? UserModel(displayName: '', email: '', role: '', id: ''),
+            userModel:
+                context.currentUserBloc.state.userModel ?? UserModel(displayName: '', email: '', role: '', id: ''),
           ),
         ),
       child: BlocListener<EditProfileBloc, EditProfileState>(
@@ -27,9 +28,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
             showInfoMessage("Error happen", context);
           } else if (state.status == EditProfileStateStatus.submitSuccess) {
             showInfoMessage("Profile successfully updated", context, duration: 5);
-            context.currentUserBloc.add(CurrentUserGetEvent());
+            context.currentUserBloc.add(CurrentUserUpdateEvent(userModel: state.userModel));
           } else if (state.status == EditProfileStateStatus.userSuccessfullyDeleted) {
-            //This part is possible to do with stream subscription but I like it this way in this situation where I put Bloc Provider "locally"
             context.authBloc.add(AuthInitEvent());
           }
         },
@@ -164,7 +164,8 @@ class _DisplayNameWidget extends StatelessWidget {
             child: TextFormField(
               initialValue: state.userModel.displayName,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
+              onChanged: (text) => context.editProfileBloc
+                  .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
               style: TextStyle(
                 fontFamily: AppFonts.quicksandBold,
                 fontSize: 14,
@@ -212,7 +213,8 @@ class _PhoneNumberWidget extends StatelessWidget {
             child: TextFormField(
               initialValue: state.userModel.phoneNumber,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
-              onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(phoneNumber: text))),
+              onChanged: (text) => context.editProfileBloc
+                  .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(phoneNumber: text))),
               style: TextStyle(
                 fontFamily: AppFonts.quicksandBold,
                 fontSize: 14,
@@ -261,7 +263,8 @@ class _EmailWidget extends StatelessWidget {
               child: TextFormField(
                 initialValue: state.userModel.email,
                 // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
-                onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(email: text))),
+                onChanged: (text) => context.editProfileBloc
+                    .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(email: text))),
                 style: TextStyle(
                   fontFamily: AppFonts.quicksandBold,
                   fontSize: 14,
@@ -311,7 +314,8 @@ class _LocationWidget extends StatelessWidget {
               child: TextFormField(
                 initialValue: state.userModel.location,
                 // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
-                onChanged: (text) => context.editProfileBloc.add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(location: text))),
+                onChanged: (text) => context.editProfileBloc
+                    .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(location: text))),
                 style: TextStyle(
                   fontFamily: AppFonts.quicksandBold,
                   fontSize: 14,
@@ -419,7 +423,7 @@ class _ButtonRowWidget extends StatelessWidget {
           borderRadius: 20,
           shrinkWrap: true,
           onTap: () => context.editProfileBloc.add(
-            EditProfileDeleteEvent(),
+            EditProfileDeleteEvent(uid: context.currentUserBloc.state.userModel!.id),
           ),
         ),
         Spacer(),
@@ -433,7 +437,9 @@ class _ButtonRowWidget extends StatelessWidget {
             ),
           ),
           onTap: () => context.editProfileBloc.add(
-            EditProfileInitEvent(userModel: context.currentUserBloc.state.userModel ?? UserModel(displayName: '', email: '', role: '', id: '')),
+            EditProfileInitEvent(
+                userModel:
+                    context.currentUserBloc.state.userModel ?? UserModel(displayName: '', email: '', role: '', id: '')),
           ),
           color: Colors.transparent,
           borderRadius: 20,

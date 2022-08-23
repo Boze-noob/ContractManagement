@@ -273,7 +273,7 @@ class CompaniesTable extends StatelessWidget {
                               shrinkWrap: true,
                               borderRadius: 40,
                               onTap: () => context.companiesBloc.add(
-                                CompaniesDeleteEvent(uid: state.companies[index].id),
+                                CompaniesDeleteEvent(companyId: state.companies[index].id),
                               ),
                             ),
                           ],

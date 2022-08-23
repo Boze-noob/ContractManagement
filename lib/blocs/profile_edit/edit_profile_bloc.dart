@@ -43,7 +43,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   }
 
   void _deleteUser(EditProfileDeleteEvent event, Emitter<EditProfileState> emit) async {
-    final result = await accountRepo.deleteCurrentUser();
+    final result = await accountRepo.deleteCurrentUser(event.uid);
     if (result == null)
       emit(
         state.copyWith(status: EditProfileStateStatus.userSuccessfullyDeleted),

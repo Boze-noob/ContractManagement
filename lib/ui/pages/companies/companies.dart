@@ -67,6 +67,7 @@ class _CompaniesPageState extends State<CompaniesPage> {
                             ),
                             CompaniesTable(
                               onEdited: (message, successfulFlag) {
+                                print("we are in edited $successfulFlag");
                                 showInfoMessage(message, context);
                                 if (successfulFlag) context.companiesBloc.add(CompaniesGetEvent());
                               },

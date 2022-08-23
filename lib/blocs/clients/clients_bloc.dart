@@ -38,11 +38,13 @@ class ClientsBloc extends Bloc<ClientsEvent, ClientsState> {
 
     final result = await clientsRepo.deleteClient(event.clientId);
 
-    if (result == null)
+    if (result == null) {
+      List<UserModel> clients = state.clients;
+      clients.removeWhere((client) => client.id == event.clientId);
       emit(
-        state.copyWith(status: ClientsStateStatus.deletedSuccessfully),
+        state.copyWith(status: ClientsStateStatus.deletedSuccessfully, clients: clients),
       );
-    else
+    } else
       emit(
         state.copyWith(status: ClientsStateStatus.error, errorMessage: result),
       );

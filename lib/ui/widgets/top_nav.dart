@@ -68,7 +68,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                             height: 16,
                                           ),
                                           CustomText(
-                                            text: 'Enter required parameters',
+                                            text: 'ADD NEW USER',
                                             size: 22,
                                             weight: FontWeight.bold,
                                             color: Colors.black,

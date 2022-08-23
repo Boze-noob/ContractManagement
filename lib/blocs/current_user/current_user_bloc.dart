@@ -10,6 +10,7 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
   }) : super(initialState()) {
     on<CurrentUserGetEvent>(_get);
     on<CurrentUserInitEvent>(_init);
+    on<CurrentUserUpdateEvent>(_update);
     authStreamSubscription = authBloc.stream.listen((state) {
       if (state.status == AuthStateStatus.Authenticated) {
         add(CurrentUserGetEvent());
@@ -47,6 +48,10 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
         status: CurrentUserStateStatus.error,
       ));
     }
+  }
+
+  void _update(CurrentUserUpdateEvent event, Emitter<CurrentUserState> emit) async {
+    emit(state.copyWith(userModel: event.userModel));
   }
 
   void _init(CurrentUserInitEvent event, Emitter<CurrentUserState> emit) {

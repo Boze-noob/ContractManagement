@@ -22,18 +22,17 @@ class CompaniesBloc extends Bloc<CompaniesEvent, CompaniesState> {
 
   void _get(CompaniesGetEvent event, Emitter<CompaniesState> emit) async {
     emit(state.copyWith(status: CompaniesStateStatus.loading));
-    final result = await companiesRepo.getCompanies();
-    if (result != null)
-      emit(state.copyWith(status: CompaniesStateStatus.loaded, companies: result));
-    else
-      emit(state.copyWith(status: CompaniesStateStatus.error));
+    emit(state.copyWith(status: CompaniesStateStatus.loaded, companies: await companiesRepo.getCompanies()));
   }
 
   void _delete(CompaniesDeleteEvent event, Emitter<CompaniesState> emit) async {
-    final result = await companiesRepo.deleteCompany(event.uid);
+    emit(state.copyWith(status: CompaniesStateStatus.loading));
+    final result = await companiesRepo.deleteCompany(event.companyId);
     if (result == null) {
+      List<UserModel> companies = state.companies;
+      companies.removeWhere((company) => company.id == event.companyId);
       emit(
-        state.copyWith(status: CompaniesStateStatus.deletedSuccessfully),
+        state.copyWith(status: CompaniesStateStatus.deletedSuccessfully, companies: companies),
       );
     } else
       emit(
