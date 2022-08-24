@@ -177,6 +177,7 @@ class CompaniesTable extends StatelessWidget {
                                                       onEdited('Error happen', false);
                                                     } else if (state.status ==
                                                         CompanyEditStateStatus.submittedSuccessfully) {
+                                                      print("Submit success");
                                                       onEdited('Company updated', true);
                                                     }
                                                   },

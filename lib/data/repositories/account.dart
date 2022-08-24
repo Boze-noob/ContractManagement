@@ -63,6 +63,6 @@ class AccountRepo implements IAccount {
   @override
   Future<String?> deleteCurrentUser(String uid) async {
     await api.delete("user/delete", {"id": uid});
-    return await firebaseFirestoreClass.deleteData('users', firebaseAuthInstance.currentUser!.uid);
+    return await firebaseFirestoreClass.deleteData('users', uid);
   }
 }

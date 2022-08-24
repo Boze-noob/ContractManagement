@@ -60,17 +60,19 @@ class CustomDialog extends StatelessWidget {
                     Button(
                       margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                      onTap: () {
+                      onTap: () async {
                         if (onButtonPressed != null) {
                           onButtonPressed!();
                         }
                         if (onClose != null) {
                           onClose!();
                         }
+                        await Future.delayed(Duration(milliseconds: 200));
                         Get.back();
                       },
                       color: active,
-                      child: Text(buttonText!, style: TextStyle(color: Colors.white, fontFamily: AppFonts.quicksandRegular)),
+                      child: Text(buttonText!,
+                          style: TextStyle(color: Colors.white, fontFamily: AppFonts.quicksandRegular)),
                     ),
                   ],
                 ),

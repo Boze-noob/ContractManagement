@@ -26,7 +26,7 @@ class CompanyEditBloc extends Bloc<CompanyEditEvent, CompanyEditState> {
         status: CompanyEditStateStatus.loading,
       ),
     );
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 500));
     emit(state.copyWith(status: CompanyEditStateStatus.loaded, companyModel: event.companyModel));
   }
 
@@ -37,7 +37,6 @@ class CompanyEditBloc extends Bloc<CompanyEditEvent, CompanyEditState> {
   void _submit(CompanyEditSubmitEvent event, Emitter<CompanyEditState> emit) async {
     emit(state.copyWith(status: CompanyEditStateStatus.submitting));
     final result = await companiesRepo.editCompany(state.companyModel);
-
     if (result) {
       emit(state.copyWith(
         status: CompanyEditStateStatus.submittedSuccessfully,

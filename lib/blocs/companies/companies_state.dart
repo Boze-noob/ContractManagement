@@ -26,7 +26,7 @@ class CompaniesState {
   }) =>
       CompaniesState(
         status: status ?? this.status,
-        companies: companies ?? this.companies,
+        companies: companies ?? List.empty(),
         errorMessage: errorMessage ?? this.errorMessage,
       );
 }
