@@ -16,6 +16,7 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
   static ClientRequestState initialState() => ClientRequestState(
         status: ClientRequestStateStatus.init,
         requestModel: ClientRequestModel(
+          id: '',
           createdDateTime: DateTime.now(),
           clientId: firebaseAuthInstance.currentUser!.uid,
           requestType: RequestType.activate,
@@ -45,7 +46,7 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
       state.copyWith(status: ClientRequestStateStatus.submitting),
     );
 
-    final result = await clientsRepo.sendClientRequest(state.requestModel);
+    final result = await clientsRepo.sendClientRequest(state.requestModel.copyWith(id: generateRandomId()));
     if (result) {
       emit(
         state.copyWith(status: ClientRequestStateStatus.submittedSuccessfully),

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/blocs/_all.dart';
 import 'package:contract_management/ui/pages/requests/widgets/admin/announcement_data_table_widget.dart';
 import 'package:contract_management/ui/pages/requests/widgets/admin/create_announcement_dialog.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,15 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                 currentUserState.userModel!.role == RoleType.orderEmployer.translate())
                               return BlocBuilder<RequestsBloc, RequestsState>(
                                 builder: (context, requestsState) {
-                                  if (requestsState.clientRequestModel.isEmpty)
+                                  print("State status is" + requestsState.status.toString());
+                                  if (requestsState.status == RequestsStateStatus.loading) {
+                                    print("we enter into loader");
+                                    return Loader(
+                                      width: 100,
+                                      height: 100,
+                                      color: active,
+                                    );
+                                  } else if (requestsState.clientRequestModel.isEmpty)
                                     return Container(
                                       width: 600,
                                       height: 300,

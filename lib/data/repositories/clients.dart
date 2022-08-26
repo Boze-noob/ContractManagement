@@ -29,6 +29,6 @@ class ClientsRepo implements IClients {
   @override
   Future<bool> sendClientRequest(ClientRequestModel clientRequestModel) async {
     notificationsRepo.sendNotification(NotificationModel(userId: 'admin', message: 'You have new client request'));
-    return await firebaseFirestoreClass.storeData('requests', null, clientRequestModel.toMap());
+    return await firebaseFirestoreClass.storeData('requests', clientRequestModel.id, clientRequestModel.toMap());
   }
 }

@@ -1,6 +1,7 @@
 import 'package:contract_management/_all.dart';
 
 class ClientRequestModel {
+  final String id;
   final String clientId;
   final String email;
   final String displayName;
@@ -10,6 +11,7 @@ class ClientRequestModel {
   final DateTime createdDateTime;
 
   ClientRequestModel({
+    required this.id,
     required this.clientId,
     required this.email,
     required this.displayName,
@@ -20,6 +22,7 @@ class ClientRequestModel {
   });
 
   ClientRequestModel copyWith({
+    String? id,
     String? clientId,
     String? email,
     String? displayName,
@@ -29,6 +32,7 @@ class ClientRequestModel {
     DateTime? createdDateTime,
   }) =>
       ClientRequestModel(
+        id: id ?? this.id,
         clientId: clientId ?? this.clientId,
         email: email ?? this.email,
         displayName: displayName ?? this.displayName,
@@ -40,6 +44,7 @@ class ClientRequestModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'clientId': clientId,
       'email': email,
       'displayName': displayName,
@@ -52,6 +57,7 @@ class ClientRequestModel {
 
   factory ClientRequestModel.fromMap(dynamic map) {
     return ClientRequestModel(
+      id: map['id'],
       clientId: map['clientId'],
       email: map['email'],
       displayName: map['displayName'],

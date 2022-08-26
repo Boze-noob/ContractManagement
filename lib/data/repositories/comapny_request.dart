@@ -7,6 +7,7 @@ abstract class ICompanyRequest {
   Future<String?> editAnnouncement(AnnouncementStatusType announcementStatusType, String announcementId);
 
   Future<List<ClientRequestModel>?> getRequests(String collection, String sortFieldName);
+  Future<String?> deleteRequest(String id);
 }
 
 class CompanyRequestRepo implements ICompanyRequest {
@@ -54,5 +55,10 @@ class CompanyRequestRepo implements ICompanyRequest {
     final result = await firebaseFirestoreClass.updateSpecificField(
         'announcements', announcementId, 'announcementStatusType', announcementStatusType.index);
     return result;
+  }
+
+  @override
+  Future<String?> deleteRequest(String id) async {
+    return await firebaseFirestoreClass.deleteData('requests', id);
   }
 }

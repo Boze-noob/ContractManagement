@@ -45,7 +45,8 @@ class OrderRepo implements IOrder {
 
   @override
   Future<String?> sendOrder(String orderId, String receiverId, String receiverName) async {
-    await notificationsRepo.sendNotification(NotificationModel(userId: receiverId, message: 'You have new order request'));
+    await notificationsRepo
+        .sendNotification(NotificationModel(userId: receiverId, message: 'You have new order request'));
     List<String> fields = ['receiverId', 'receiverName', 'sentDateTime', 'orderStatusType'];
     List values = [receiverId, receiverName, DateTime.now().toUtc(), 2];
 
