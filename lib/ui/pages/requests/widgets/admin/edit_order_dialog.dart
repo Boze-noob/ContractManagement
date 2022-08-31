@@ -22,7 +22,6 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
 
   @override
   void initState() {
-    //PaymentType getValue static method doesn't work properly below, idk exactly why?
     selectedPaymentTypeValue = PaymentType.values[widget.orderModel.paymentType.index];
     selectedContractItemsIndex = ContractItemsType.getIndexValueList(widget.orderModel.contractItems);
     super.initState();
@@ -50,162 +49,134 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
                   buttonText: 'Submit',
                   onButtonPressed: () {
                     context.orderBloc.add(OrderSubmitUpdateEvent());
-                    //This should be done via listener when edit is successful
                     widget.orderEdited();
                   },
-                  title: '',
+                  title: 'Edit order',
                   child: Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: CustomText(
-                              text: 'Edit order',
-                              weight: FontWeight.bold,
-                              size: context.textSizeXL,
-                              color: Colors.black,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 18,
-                          ),
-                          TextFormField(
-                            initialValue: orderState.orderModel.senderName.value,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Enter sender name',
-                            ),
-                            onChanged: (text) => context.orderBloc
-                                .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(senderName: text))),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            initialValue: orderState.orderModel.receiverName.value,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Enter receiver name',
-                            ),
-                            onChanged: (text) => context.orderBloc
-                                .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(receiverName: text))),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            initialValue: orderState.orderModel.orderLocation.value,
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: 'Enter order location',
-                            ),
-                            onChanged: (text) => context.orderBloc
-                                .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(orderLocation: text))),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              CustomText(
-                                text: 'Pick payment option:',
-                                color: Colors.black,
-                                size: context.textSizeM,
-                                weight: FontWeight.bold,
+                      child: Container(
+                        height: context.screenHeight / 1.5,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+                            TextFormField(
+                              initialValue: orderState.orderModel.senderName.value,
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Enter sender name',
                               ),
-                              SizedBox(
-                                width: 20,
+                              onChanged: (text) => context.orderBloc
+                                  .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(senderName: text))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              enabled: false,
+                              initialValue: orderState.orderModel.receiverName.value,
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Receiver name',
                               ),
-                              SizedBox(
-                                width: 150,
-                                child: TextFormField(
-                                  initialValue: orderState.orderModel.price.value,
-                                  decoration: const InputDecoration(
-                                    border: UnderlineInputBorder(),
-                                    labelText: 'Enter price',
-                                  ),
-                                  onChanged: (text) => context.orderBloc
-                                      .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(price: text))),
+                              onChanged: (text) => context.orderBloc.add(
+                                  OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(receiverName: text))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              initialValue: orderState.orderModel.orderLocation.value,
+                              decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                labelText: 'Enter order location',
+                              ),
+                              onChanged: (text) => context.orderBloc.add(
+                                  OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(orderLocation: text))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              initialValue: orderState.orderModel.price.value,
+                              decoration: const InputDecoration(
+                                  border: UnderlineInputBorder(), labelText: 'Enter price', suffixText: ' KM'),
+                              onChanged: (text) => context.orderBloc
+                                  .add(OrderUpdateEvent(orderModel: orderState.orderModel.copyWith(price: text))),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                CustomText(
+                                  text: 'Pick payment option:',
+                                  color: Colors.black,
+                                  size: context.textSizeM,
+                                  weight: FontWeight.bold,
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              CustomText(
-                                text: 'Pick payment option:',
-                                color: Colors.black,
-                                size: context.textSizeM,
-                                weight: FontWeight.bold,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              DropdownButton(
-                                value: selectedPaymentTypeValue,
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                items: PaymentType.values.map((PaymentType items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items.translate()),
-                                  );
-                                }).toList(),
-                                onChanged: (PaymentType? newValue) {
-                                  setState(() {
-                                    context.orderBloc.add(OrderUpdateEvent(
-                                        orderModel: orderState.orderModel.copyWith(paymentType: newValue)));
-                                    selectedPaymentTypeValue = newValue!;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          CustomText(text: 'Contract items:'),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          ListView.builder(
-                              itemCount: ContractItemsType.values.length,
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                return GestureDetector(
-                                  onTap: () {
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                DropdownButton(
+                                  value: selectedPaymentTypeValue,
+                                  icon: const Icon(Icons.keyboard_arrow_down),
+                                  items: PaymentType.values.map((PaymentType items) {
+                                    return DropdownMenuItem(
+                                      value: items,
+                                      child: Text(items.translate()),
+                                    );
+                                  }).toList(),
+                                  onChanged: (PaymentType? newValue) {
                                     setState(() {
-                                      if (selectedContractItemsIndex.contains(index)) {
-                                        selectedContractItemsIndex = List.from(selectedContractItemsIndex)
-                                          ..remove(index);
-                                      } else {
-                                        selectedContractItemsIndex = List.from(selectedContractItemsIndex)..add(index);
-                                      }
                                       context.orderBloc.add(OrderUpdateEvent(
-                                          orderModel: orderState.orderModel.copyWith(
-                                              contractItems: selectedContractItemsIndex
-                                                  .map((index) => ContractItemsType.getValue(index))
-                                                  .toList())));
+                                          orderModel: orderState.orderModel.copyWith(paymentType: newValue)));
+                                      selectedPaymentTypeValue = newValue!;
                                     });
                                   },
-                                  child: ListTile(
-                                    title: Text(ContractItemsType.getValue(index).translate()),
-                                    tileColor: Colors.green.withOpacity(0.4),
-                                    selected: selectedContractItemsIndex.contains(index) ? true : false,
-                                  ),
-                                );
-                              }),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            CustomText(text: 'Contract items:'),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            ListView.builder(
+                                itemCount: ContractItemsType.values.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (selectedContractItemsIndex.contains(index)) {
+                                          selectedContractItemsIndex = List.from(selectedContractItemsIndex)
+                                            ..remove(index);
+                                        } else {
+                                          selectedContractItemsIndex = List.from(selectedContractItemsIndex)
+                                            ..add(index);
+                                        }
+                                        context.orderBloc.add(OrderUpdateEvent(
+                                            orderModel: orderState.orderModel.copyWith(
+                                                contractItems: selectedContractItemsIndex
+                                                    .map((index) => ContractItemsType.getValue(index))
+                                                    .toList())));
+                                      });
+                                    },
+                                    child: ListTile(
+                                      title: Text(ContractItemsType.getValue(index).translate()),
+                                      tileColor: Colors.green.withOpacity(0.4),
+                                      selected: selectedContractItemsIndex.contains(index) ? true : false,
+                                    ),
+                                  );
+                                }),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

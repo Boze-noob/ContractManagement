@@ -74,6 +74,7 @@ class RequestsDataTableWidget extends StatelessWidget {
         horizontalMargin: 12,
         minWidth: 600,
         dataRowHeight: context.screenHeight / 13,
+        showCheckboxColumn: false,
         columns: [
           DataColumn2(
             label: Text(firstColumnName),
@@ -95,6 +96,7 @@ class RequestsDataTableWidget extends StatelessWidget {
         rows: List<DataRow>.generate(
           firstColumnValue!.length,
           (index) => DataRow(
+            onSelectChanged: (isSelected) => viewOnTap(index),
             cells: [
               DataCell(
                 CustomText(text: firstColumnValue![index]),
@@ -113,32 +115,22 @@ class RequestsDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Visibility(
-                    visible: ResponsiveWidget.isLargeScreen(context),
-                    child: Row(
-                      children: [
-                        Button(
-                          text: 'View',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          //TOD add func
-                          onTap: () => viewOnTap(index),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Visibility(
+                        visible: ResponsiveWidget.isLargeScreen(context),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () => createOnTap(index),
+                            ),
+                          ],
                         ),
-                        Button(
-                          text: actionBtnTxt ?? 'Action',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          //TOD add func
-                          onTap: () => createOnTap(index),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

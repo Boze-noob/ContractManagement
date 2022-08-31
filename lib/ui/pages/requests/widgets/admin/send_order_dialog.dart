@@ -47,43 +47,40 @@ class SendOrderDialog extends StatelessWidget {
           List<String> companiesNames = orderState.companiesForOrder['companiesName'];
           return CustomDialog(
             buttonText: 'Close',
-            title: 'Select company to send order',
+            title: 'Send order',
             child: Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    DropdownButton(
-                      value: companiesNames[0],
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      items: companiesNames.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) async {
-                        //This should be in listener
-                        Get.back();
-                        int index = companiesNames.indexOf(newValue!);
-                        context.orderBloc.add(OrderSendEvent(
-                            orderId: orderModel.id,
-                            receiverId: companiesIds[index],
-                            receiverName: companiesNames[index]));
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  DropdownButton(
+                    value: companiesNames[0],
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: companiesNames.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) async {
+                      //This should be in listener
+                      Get.back();
+                      int index = companiesNames.indexOf(newValue!);
+                      context.orderBloc.add(OrderSendEvent(
+                          orderId: orderModel.id,
+                          receiverId: companiesIds[index],
+                          receiverName: companiesNames[index]));
 
-                        //Not good practice
-                        await Future.delayed(Duration(milliseconds: 500));
-                        //This should be in listener
-                        orderSent();
-                      },
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
+                      //Not good practice
+                      await Future.delayed(Duration(milliseconds: 500));
+                      //This should be in listener
+                      orderSent();
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
             ),
           );

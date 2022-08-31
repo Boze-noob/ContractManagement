@@ -10,6 +10,7 @@ extension BuildContextExtensions on BuildContext {
   double get textSizeL => 20;
   double get textSizeXL => 23;
   double get textSizeXXL => 26;
+  AppThemeData get appTheme => AppTheme.of(this);
 
   //Blocs
   AnnouncementBloc get announcementBloc => read<AnnouncementBloc>();

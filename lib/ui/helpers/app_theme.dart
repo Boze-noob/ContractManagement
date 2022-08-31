@@ -46,8 +46,7 @@ class _InheritedAppTheme extends InheritedWidget {
   }) : super(child: child);
 
   @override
-  bool updateShouldNotify(_InheritedAppTheme old) =>
-      appThemeData != old.appThemeData;
+  bool updateShouldNotify(_InheritedAppTheme old) => appThemeData != old.appThemeData;
 }
 
 class AppTheme extends StatelessWidget {
@@ -64,7 +63,7 @@ class AppTheme extends StatelessWidget {
       grey3: const Color(0xFFA6A6A6),
       pageContentPadding: const EdgeInsets.symmetric(horizontal: 20),
       success: const Color(0xFF00ae40),
-      danger: Colors.red,
+      danger: Color(0xFFff3d00),
       warning: Colors.orange,
       borderColor: const Color(0xFFCCCCCC),
       theme: ThemeData(
@@ -152,8 +151,7 @@ class AppTheme extends StatelessWidget {
             fontFamily: AppFonts.quicksandMedium,
           ),
           unselectedItemColor: Colors.black38,
-          unselectedIconTheme:
-              IconThemeData(size: 22, color: Color(0xFFCCCCCC)),
+          unselectedIconTheme: IconThemeData(size: 22, color: Color(0xFFCCCCCC)),
           unselectedLabelStyle: TextStyle(
             fontSize: 10,
             color: Colors.black38,
@@ -424,8 +422,7 @@ class AppTheme extends StatelessWidget {
           ),
           errorMaxLines: null,
           isDense: false,
-          contentPadding:
-              EdgeInsets.only(top: 12, bottom: 12, left: 0, right: 0),
+          contentPadding: EdgeInsets.only(top: 12, bottom: 12, left: 0, right: 0),
           isCollapsed: false,
           prefixStyle: TextStyle(
             color: Color(0xdd000000),
@@ -602,7 +599,6 @@ class AppTheme extends StatelessWidget {
   }
 
   static AppThemeData of(BuildContext context) {
-    return (context.dependOnInheritedWidgetOfExactType<_InheritedAppTheme>())!
-        .appThemeData;
+    return (context.dependOnInheritedWidgetOfExactType<_InheritedAppTheme>())!.appThemeData;
   }
 }

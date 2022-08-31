@@ -83,6 +83,7 @@ class OrderDataTableWidget extends StatelessWidget {
         horizontalMargin: 12,
         minWidth: 600,
         dataRowHeight: context.screenHeight / 13,
+        showCheckboxColumn: false,
         columns: [
           DataColumn2(
             label: Text(firstColumnName),
@@ -102,12 +103,12 @@ class OrderDataTableWidget extends StatelessWidget {
           ),
           DataColumn2(
             label: Text(sixthColumnName),
-            size: ColumnSize.L,
           ),
         ],
         rows: List<DataRow>.generate(
           firstColumnValue!.length,
           (index) => DataRow(
+            onSelectChanged: (isSelected) => viewBtnOnTap(index),
             cells: [
               DataCell(
                 CustomText(text: firstColumnValue![index]),
@@ -130,101 +131,86 @@ class OrderDataTableWidget extends StatelessWidget {
                   text: fifthColumnValue![index],
                 ),
               ),
-              DataCell((() {
-                if (isSent[index].translate() == OrderStatusType.waiting.translate() &&
-                    context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate()) {
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Visibility(
+              DataCell(
+                (() {
+                  if (isSent[index].translate() == OrderStatusType.waiting.translate() &&
+                      context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate()) {
+                    return Visibility(
                       visible: ResponsiveWidget.isLargeScreen(context),
                       child: Row(
                         children: [
                           Expanded(
-                            child: Button(
-                              text: 'Send',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                              borderColor: active,
-                              onTap: () => sendBtnOnTap(index),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.send,
+                                color: active,
+                              ),
+                              onPressed: () => sendBtnOnTap(index),
                             ),
                           ),
                           Expanded(
-                            child: Button(
-                              text: 'View',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                              borderColor: active,
-                              onTap: () => viewBtnOnTap(index),
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                              ),
+                              onPressed: () => editBtnOnTap(index),
                             ),
                           ),
                           Expanded(
-                            child: Button(
-                              text: 'Edit',
-                              textColor: Colors.lightBlueAccent,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                              borderColor: active,
-                              onTap: () => editBtnOnTap(index),
+                            child: IconButton(
+                              onPressed: () => deleteBtnOnTap(index),
+                              icon: Icon(
+                                Icons.delete,
+                                color: context.appTheme.danger,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (isSent[index].translate() != OrderStatusType.waiting.translate())
+                    return Visibility(
+                      visible: ResponsiveWidget.isLargeScreen(context),
+                      child: Row(
+                        children: [
+                          Visibility(
+                            visible: context.currentUserBloc.state.userModel!.role ==
+                                RoleType.announcementEmployer.translate(),
+                            child: Expanded(
+                              child: Button(
+                                text: 'Create',
+                                textColor: active,
+                                borderRadius: 20,
+                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                                borderColor: active,
+                                //TOD add func
+                                onTap: () => createBtnOnTap(index),
+                              ),
                             ),
                           ),
                           Expanded(
                             child: Button(
                               text: 'Delete',
-                              textColor: Colors.red.withOpacity(0.5),
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                              borderColor: active,
-                              onTap: () => deleteBtnOnTap(index),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else if (isSent[index].translate() != OrderStatusType.waiting.translate())
-                  return Visibility(
-                    visible: ResponsiveWidget.isLargeScreen(context),
-                    child: Row(
-                      children: [
-                        Visibility(
-                          visible: context.currentUserBloc.state.userModel!.role ==
-                              RoleType.announcementEmployer.translate(),
-                          child: Expanded(
-                            child: Button(
-                              text: 'Create',
                               textColor: active,
                               borderRadius: 20,
                               padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                               borderColor: active,
                               //TOD add func
-                              onTap: () => createBtnOnTap(index),
+                              onTap: () => deleteBtnOnTap(index),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Button(
-                            text: 'Delete',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                            borderColor: active,
-                            //TOD add func
-                            onTap: () => deleteBtnOnTap(index),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                else
-                  return CustomText(
-                    text: 'No actions allowed',
-                    color: Colors.black,
-                    weight: FontWeight.normal,
-                    textAlign: TextAlign.center,
-                  );
-              }())),
+                        ],
+                      ),
+                    );
+                  else
+                    return CustomText(
+                      text: 'No actions allowed',
+                      color: Colors.black,
+                      weight: FontWeight.normal,
+                      textAlign: TextAlign.center,
+                    );
+                }()),
+              ),
             ],
           ),
         ),
