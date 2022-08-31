@@ -50,6 +50,7 @@ class _DoneAnnouncementDialogState extends State<DoneAnnouncementDialog> {
                 showInfoMessage('Please define end date of project in work diary', context);
             },
             message: 'Documents will be sent to admin for approve',
+            title: 'Documentation',
             child: Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -65,19 +66,6 @@ class _DoneAnnouncementDialogState extends State<DoneAnnouncementDialog> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: CustomText(
-                            text: 'Documentation',
-                            weight: FontWeight.bold,
-                            size: context.textSizeXL,
-                            color: Colors.black,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 18,
-                        ),
                         CustomText(
                           text: 'Announcement id: ${widget.announcementModel.id}',
                           size: context.textSizeM,

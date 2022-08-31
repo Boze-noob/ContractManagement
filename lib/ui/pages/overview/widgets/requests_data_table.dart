@@ -59,7 +59,7 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
             List<String>? thirdColumnValue =
                 state.clientRequestModel.map((clientModel) => clientModel.location).toList();
             List<String>? fourthColumnValue = state.clientRequestModel
-                .map((clientModel) => clientModel.createdDateTime.toLocal().toString())
+                .map((clientModel) => clientModel.createdDateTime.formatDDMMYYHHMMSS())
                 .toList();
             return Container(
               decoration: BoxDecoration(
@@ -85,6 +85,7 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
                     columnSpacing: 12,
                     horizontalMargin: 12,
                     minWidth: 600,
+                    dataRowHeight: context.screenHeight / 13,
                     columns: [
                       DataColumn2(
                         label: Text('Display name'),
@@ -124,74 +125,102 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
                             ),
                           ),
                           DataCell(
-                            Button(
-                              text: 'View',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                              borderColor: active,
-                              //TOD add func
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => CustomDialog(
-                                  buttonText: 'Close',
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 15,
-                                      vertical: 15,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          text: 'Request details',
-                                          size: context.textSizeXL,
-                                          color: Colors.black,
-                                          textAlign: TextAlign.center,
-                                          weight: FontWeight.bold,
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Button(
+                                text: 'View',
+                                textColor: active,
+                                borderRadius: 20,
+                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                                borderColor: active,
+                                //TOD add func
+                                onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => CustomDialog(
+                                    buttonText: 'Close',
+                                    title: 'Request details',
+                                    child: Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 15,
+                                          vertical: 15,
                                         ),
-                                        SizedBox(
-                                          height: 10,
+                                        child: Flex(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          direction:
+                                              ResponsiveWidget.isSmallScreen(context) ? Axis.vertical : Axis.horizontal,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                CustomText(
+                                                  text: 'Display name : ' + state.clientRequestModel[index].displayName,
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomText(
+                                                  text: 'Phone number : ' +
+                                                      state.clientRequestModel[index].phoneNumber.value,
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomText(
+                                                  text: 'Email : ' + state.clientRequestModel[index].email,
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomText(
+                                                  text: 'Location : ' + state.clientRequestModel[index].location,
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                CustomText(
+                                                  text: 'Description : ' +
+                                                      state.clientRequestModel[index].description.value,
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomText(
+                                                  text: 'Request type : ' +
+                                                      state.clientRequestModel[index].requestType.translate(),
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                CustomText(
+                                                  text: 'Created date time : ' +
+                                                      state.clientRequestModel[index].createdDateTime
+                                                          .formatDDMMYYHHMMSS(),
+                                                  size: 18,
+                                                  weight: FontWeight.normal,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        CustomText(
-                                          text: 'Client email : ' + state.clientRequestModel[index].email,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomText(
-                                          text: 'Display name : ' + state.clientRequestModel[index].displayName,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomText(
-                                          text: 'Request type : ' +
-                                              state.clientRequestModel[index].requestType.translate(),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomText(
-                                          text: 'Description : ' + state.clientRequestModel[index].description.value,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomText(
-                                          text: 'Location : ' + state.clientRequestModel[index].location,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomText(
-                                          text: 'Created date time : ' +
-                                              state.clientRequestModel[index].createdDateTime.toString(),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        )
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),

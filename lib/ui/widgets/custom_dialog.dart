@@ -8,6 +8,7 @@ class CustomDialog extends StatelessWidget {
   final Function? onClose;
   final String? buttonText;
   final Function? onButtonPressed;
+  final String title;
 
   CustomDialog({
     this.child,
@@ -15,11 +16,13 @@ class CustomDialog extends StatelessWidget {
     this.onClose,
     this.buttonText,
     this.onButtonPressed,
+    required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: context.screenWidth / 8),
       backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -34,19 +37,52 @@ class CustomDialog extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                child ??
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                      child: Text(
-                        message ?? ' ',
-                        softWrap: true,
-                        style: const TextStyle(fontFamily: AppFonts.quicksandRegular),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: active,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                        ),
+                        child: CustomText(
+                          weight: FontWeight.bold,
+                          text: title,
+                          color: Colors.white,
+                          size: 20,
+                          paddingAllValue: 15,
+                        ),
                       ),
-                    ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    child ??
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                          child: Text(
+                            message ?? ' ',
+                            softWrap: true,
+                            style: const TextStyle(fontFamily: AppFonts.quicksandRegular),
+                          ),
+                        ),
+                  ],
+                ),
               ],
             ),
           ),

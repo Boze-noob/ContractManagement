@@ -8,6 +8,14 @@ class OrderInitEvent extends OrderEvent {
   OrderInitEvent({required this.orderModel});
 }
 
+class OrderInitClientDataEvent extends OrderEvent {
+  final String employerName;
+  final String senderName;
+  final String orderLocation;
+
+  OrderInitClientDataEvent({required this.employerName, required this.senderName, required this.orderLocation});
+}
+
 class OrderGetEvent extends OrderEvent {}
 
 class OrderUpdateEvent extends OrderEvent {

@@ -55,6 +55,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 600,
+        dataRowHeight: context.screenHeight / 13,
         columns: [
           DataColumn2(
             label: Text('Order id'),
@@ -109,53 +110,56 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Visibility(
-                  visible: !ResponsiveWidget.isSmallScreen(context),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Button(
-                          text: 'View',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => viewBtnOnTap(index),
-                        ),
-                      ),
-                      Visibility(
-                        visible: announcementsModels[index].announcementStatusType.translate() !=
-                                AnnouncementStatusType.inProgress.translate() &&
-                            announcementsModels[index].announcementStatusType.translate() !=
-                                AnnouncementStatusType.approved.translate(),
-                        child: Expanded(
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Visibility(
+                    visible: !ResponsiveWidget.isSmallScreen(context),
+                    child: Row(
+                      children: [
+                        Expanded(
                           child: Button(
-                            text: 'In progress',
+                            text: 'View',
                             textColor: active,
                             borderRadius: 20,
                             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                             borderColor: active,
-                            onTap: () => inProgressBtnOnTap(index),
+                            onTap: () => viewBtnOnTap(index),
                           ),
                         ),
-                      ),
-                      Visibility(
-                        visible: announcementsModels[index].announcementStatusType.translate() ==
-                                AnnouncementStatusType.inProgress.translate() ||
-                            announcementsModels[index].announcementStatusType.translate() ==
-                                AnnouncementStatusType.declined.translate(),
-                        child: Expanded(
-                          child: Button(
-                            text: 'Done',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                            borderColor: active,
-                            onTap: () => doneBtnOnTap(index),
+                        Visibility(
+                          visible: announcementsModels[index].announcementStatusType.translate() !=
+                                  AnnouncementStatusType.inProgress.translate() &&
+                              announcementsModels[index].announcementStatusType.translate() !=
+                                  AnnouncementStatusType.approved.translate(),
+                          child: Expanded(
+                            child: Button(
+                              text: 'In progress',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              borderColor: active,
+                              onTap: () => inProgressBtnOnTap(index),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Visibility(
+                          visible: announcementsModels[index].announcementStatusType.translate() ==
+                                  AnnouncementStatusType.inProgress.translate() ||
+                              announcementsModels[index].announcementStatusType.translate() ==
+                                  AnnouncementStatusType.declined.translate(),
+                          child: Expanded(
+                            child: Button(
+                              text: 'Done',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                              borderColor: active,
+                              onTap: () => doneBtnOnTap(index),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

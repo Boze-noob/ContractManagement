@@ -60,6 +60,7 @@ class ListOfContracts extends StatelessWidget {
                               builder: (context) => Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 50),
                                 child: CustomDialog(
+                                  title: 'Pick company to which you want to send contract',
                                   child: BlocProvider(
                                     create: (context) =>
                                         SendContractRequestBloc(contractsRepo: context.serviceProvider.contractsRepo),
@@ -91,15 +92,6 @@ class ListOfContracts extends StatelessWidget {
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: [
-                                                    CustomText(
-                                                      text: 'Pick company to which you want to send contract',
-                                                      size: context.textSizeL,
-                                                      weight: FontWeight.bold,
-                                                      color: Colors.black,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 15,
-                                                    ),
                                                     ListView.builder(
                                                       shrinkWrap: true,
                                                       itemCount: companiesState.companies.length,

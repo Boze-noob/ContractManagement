@@ -82,6 +82,7 @@ class OrderDataTableWidget extends StatelessWidget {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 600,
+        dataRowHeight: context.screenHeight / 13,
         columns: [
           DataColumn2(
             label: Text(firstColumnName),
@@ -132,51 +133,54 @@ class OrderDataTableWidget extends StatelessWidget {
               DataCell((() {
                 if (isSent[index].translate() == OrderStatusType.waiting.translate() &&
                     context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate()) {
-                  return Visibility(
-                    visible: ResponsiveWidget.isLargeScreen(context),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Button(
-                            text: 'Send',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                            borderColor: active,
-                            onTap: () => sendBtnOnTap(index),
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Visibility(
+                      visible: ResponsiveWidget.isLargeScreen(context),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Button(
+                              text: 'Send',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                              borderColor: active,
+                              onTap: () => sendBtnOnTap(index),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Button(
-                            text: 'View',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                            borderColor: active,
-                            onTap: () => viewBtnOnTap(index),
+                          Expanded(
+                            child: Button(
+                              text: 'View',
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                              borderColor: active,
+                              onTap: () => viewBtnOnTap(index),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Button(
-                            text: 'Edit',
-                            textColor: Colors.lightBlueAccent,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                            borderColor: active,
-                            onTap: () => editBtnOnTap(index),
+                          Expanded(
+                            child: Button(
+                              text: 'Edit',
+                              textColor: Colors.lightBlueAccent,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                              borderColor: active,
+                              onTap: () => editBtnOnTap(index),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Button(
-                            text: 'Delete',
-                            textColor: Colors.red.withOpacity(0.5),
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                            borderColor: active,
-                            onTap: () => deleteBtnOnTap(index),
+                          Expanded(
+                            child: Button(
+                              text: 'Delete',
+                              textColor: Colors.red.withOpacity(0.5),
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                              borderColor: active,
+                              onTap: () => deleteBtnOnTap(index),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 } else if (isSent[index].translate() != OrderStatusType.waiting.translate())

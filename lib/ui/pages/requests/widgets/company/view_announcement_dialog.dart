@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class CompanyViewAnnouncementDialog extends StatelessWidget {
   AnnouncementModel announcementModel;
-  CompanyViewAnnouncementDialog({Key? key, required this.announcementModel})
-      : super(key: key);
+  CompanyViewAnnouncementDialog({Key? key, required this.announcementModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
       buttonText: 'Close',
+      title: 'Announcement details',
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -18,19 +18,6 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: CustomText(
-                  text: 'Announcement details',
-                  weight: FontWeight.bold,
-                  size: context.textSizeXL,
-                  color: Colors.black,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                height: 18,
-              ),
               CustomText(
                 text: 'Id: ${announcementModel.id.value}',
                 weight: FontWeight.normal,
@@ -64,8 +51,7 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
+                text: 'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -73,8 +59,7 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Completion date time: ${announcementModel.completionDateTime.formatDDMMYY().value}',
+                text: 'Completion date time: ${announcementModel.completionDateTime.formatDDMMYY().value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -90,8 +75,7 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text:
-                    'Status type: ${announcementModel.announcementStatusType.translate()}',
+                text: 'Status type: ${announcementModel.announcementStatusType.translate()}',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),
@@ -99,8 +83,7 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               (() {
-                if (announcementModel.announcementStatusType.translate() ==
-                    AnnouncementStatusType.declined.translate())
+                if (announcementModel.announcementStatusType.translate() == AnnouncementStatusType.declined.translate())
                   return CustomText(
                     text: 'Comment: ${announcementModel.declineComment.value}',
                     weight: FontWeight.normal,
@@ -121,8 +104,7 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                 itemCount: announcementModel.contractItems.length,
                 itemBuilder: (context, i) {
                   return ListTile(
-                    title: Text(
-                        ' - ' + announcementModel.contractItems[i].translate()),
+                    title: Text(' - ' + announcementModel.contractItems[i].translate()),
                   );
                 },
               ),

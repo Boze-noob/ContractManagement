@@ -57,6 +57,7 @@ class AnnouncementDataTableWidget extends StatelessWidget {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 600,
+        dataRowHeight: context.screenHeight / 13,
         columns: [
           DataColumn2(
             label: Text('Order id'),
@@ -118,75 +119,79 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Visibility(
-                  visible: ResponsiveWidget.isLargeScreen(context),
-                  child: Row(
-                    children: [
-                      (() {
-                        if (announcementsModels[index].announcementStatusType.translate() ==
-                            AnnouncementStatusType.done.translate())
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Visibility(
+                    visible: ResponsiveWidget.isLargeScreen(context),
+                    child: Row(
+                      children: [
+                        (() {
+                          if (announcementsModels[index].announcementStatusType.translate() ==
+                              AnnouncementStatusType.done.translate())
+                            return Expanded(
+                              child: Button(
+                                text: 'Inspect',
+                                textSize: 13,
+                                textColor: active,
+                                borderRadius: 20,
+                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
+                                borderColor: active,
+                                onTap: () => inspectOnTap(index),
+                              ),
+                            );
                           return Expanded(
                             child: Button(
-                              text: 'Inspect',
+                              text: 'View',
                               textSize: 13,
                               textColor: active,
                               borderRadius: 20,
                               padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
                               borderColor: active,
-                              onTap: () => inspectOnTap(index),
+                              onTap: () => viewBtnOnTap(index),
+                              shrinkWrap: true,
                             ),
                           );
-                        return Expanded(
-                          child: Button(
-                            text: 'View',
-                            textSize: 13,
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                            borderColor: active,
-                            onTap: () => viewBtnOnTap(index),
-                            shrinkWrap: true,
-                          ),
-                        );
-                      }()),
-                      Visibility(
-                        visible: announcementsModels[index].announcementStatusType.translate() ==
-                                AnnouncementStatusType.waiting.translate() &&
-                            context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate(),
-                        child: Expanded(
-                          child: Button(
-                            text: 'Send',
-                            textSize: 13,
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                            borderColor: active,
-                            onTap: () => sendBtnOnTap(index),
-                            shrinkWrap: true,
+                        }()),
+                        Visibility(
+                          visible: announcementsModels[index].announcementStatusType.translate() ==
+                                  AnnouncementStatusType.waiting.translate() &&
+                              context.currentUserBloc.state.userModel!.role !=
+                                  RoleType.announcementEmployer.translate(),
+                          child: Expanded(
+                            child: Button(
+                              text: 'Send',
+                              textSize: 13,
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
+                              borderColor: active,
+                              onTap: () => sendBtnOnTap(index),
+                              shrinkWrap: true,
+                            ),
                           ),
                         ),
-                      ),
-                      Visibility(
-                        visible: announcementsModels[index].announcementStatusType.translate() ==
-                                AnnouncementStatusType.waiting.translate() ||
-                            announcementsModels[index].announcementStatusType.translate() ==
-                                AnnouncementStatusType.approved.translate() ||
-                            announcementsModels[index].announcementStatusType.translate() ==
-                                AnnouncementStatusType.declined.translate(),
-                        child: Expanded(
-                          child: Button(
-                            text: 'Delete',
-                            textSize: 13,
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                            borderColor: active,
-                            onTap: () => deleteBtnOnTap(index),
-                            shrinkWrap: true,
+                        Visibility(
+                          visible: announcementsModels[index].announcementStatusType.translate() ==
+                                  AnnouncementStatusType.waiting.translate() ||
+                              announcementsModels[index].announcementStatusType.translate() ==
+                                  AnnouncementStatusType.approved.translate() ||
+                              announcementsModels[index].announcementStatusType.translate() ==
+                                  AnnouncementStatusType.declined.translate(),
+                          child: Expanded(
+                            child: Button(
+                              text: 'Delete',
+                              textSize: 13,
+                              textColor: active,
+                              borderRadius: 20,
+                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
+                              borderColor: active,
+                              onTap: () => deleteBtnOnTap(index),
+                              shrinkWrap: true,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

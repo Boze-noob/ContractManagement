@@ -73,6 +73,7 @@ class RequestsDataTableWidget extends StatelessWidget {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 600,
+        dataRowHeight: context.screenHeight / 13,
         columns: [
           DataColumn2(
             label: Text(firstColumnName),
@@ -112,29 +113,32 @@ class RequestsDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Visibility(
-                  visible: ResponsiveWidget.isLargeScreen(context),
-                  child: Row(
-                    children: [
-                      Button(
-                        text: 'View',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        //TOD add func
-                        onTap: () => viewOnTap(index),
-                      ),
-                      Button(
-                        text: actionBtnTxt ?? 'Action',
-                        textColor: active,
-                        borderRadius: 20,
-                        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        borderColor: active,
-                        //TOD add func
-                        onTap: () => createOnTap(index),
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Visibility(
+                    visible: ResponsiveWidget.isLargeScreen(context),
+                    child: Row(
+                      children: [
+                        Button(
+                          text: 'View',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          //TOD add func
+                          onTap: () => viewOnTap(index),
+                        ),
+                        Button(
+                          text: actionBtnTxt ?? 'Action',
+                          textColor: active,
+                          borderRadius: 20,
+                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          borderColor: active,
+                          //TOD add func
+                          onTap: () => createOnTap(index),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

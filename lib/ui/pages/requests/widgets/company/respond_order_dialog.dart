@@ -10,25 +10,13 @@ class CompanyRespondDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
+      title: 'Pick the option',
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: CustomText(
-                text: 'Pick the option',
-                weight: FontWeight.bold,
-                size: context.textSizeXL,
-                color: Colors.black,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(
-              height: 18,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,

@@ -10,6 +10,7 @@ class CompanyViewOrderDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomDialog(
       buttonText: 'Close',
+      title: 'Order details',
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -17,19 +18,6 @@ class CompanyViewOrderDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: CustomText(
-                  text: 'Order details',
-                  weight: FontWeight.bold,
-                  size: context.textSizeXL,
-                  color: Colors.black,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                height: 18,
-              ),
               CustomText(
                 text: 'Sender name: ${orderModel.senderName.value}',
                 weight: FontWeight.normal,

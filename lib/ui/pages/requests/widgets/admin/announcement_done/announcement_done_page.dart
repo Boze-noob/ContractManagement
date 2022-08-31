@@ -83,19 +83,12 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                       onButtonPressed: () async {
                         widget.announcementDeclineOnTap(declineTextEditingController.text.value);
                       },
+                      title: 'Enter a comment',
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CustomText(
-                              text: 'Enter a comment',
-                              size: context.textSizeXL,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
                             SizedBox(
                               width: 350,
                               child: TextFormField(
@@ -135,19 +128,12 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                               );
                               Get.back();
                             },
+                            title: 'Enter profit',
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  CustomText(
-                                    text: 'Enter profit',
-                                    size: context.textSizeXL,
-                                    color: Colors.black,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
                                   SizedBox(
                                     width: 350,
                                     child: TextFormField(

@@ -10,12 +10,17 @@ class ClientRequestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ClientRequestBloc(clientsRepo: context.serviceProvider.clientsRepo),
+      create: (context) {
+        UserModel currentUser = context.currentUserBloc.state.userModel!;
+        return ClientRequestBloc(clientsRepo: context.serviceProvider.clientsRepo)
+          ..add(ClientRequestInitUserDataEvent(phoneNumber: currentUser.phoneNumber, location: currentUser.location));
+      },
       child: BlocListener<ClientRequestBloc, ClientRequestState>(
         listener: (context, state) {
           if (state.status == ClientRequestStateStatus.error)
             showInfoMessage(state.errorMessage ?? 'Error happen', context);
-          else if (state.status == ClientRequestStateStatus.submittedSuccessfully) showInfoMessage('You have successfully created request', context, duration: 4);
+          else if (state.status == ClientRequestStateStatus.submittedSuccessfully)
+            showInfoMessage('You have successfully created request', context, duration: 4);
         },
         child: Column(
           children: [
@@ -66,7 +71,7 @@ class ClientRequestPage extends StatelessWidget {
                                   height: 20,
                                 ),
                                 CustomText(
-                                  text: 'Create request',
+                                  text: 'Fill all fields',
                                   size: context.textSizeL,
                                   color: Colors.black,
                                   weight: FontWeight.bold,
@@ -83,6 +88,10 @@ class ClientRequestPage extends StatelessWidget {
                                   height: 15,
                                 ),
                                 _LocationWidget(),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                _PhoneNumberWidget(),
                                 SizedBox(
                                   height: 30,
                                 ),
@@ -144,7 +153,8 @@ class _RequestTypeWidgetState extends State<_RequestTypeWidget> {
             onChanged: (RequestType? pickedValue) {
               setState(() {
                 dropdownValue = pickedValue!;
-                context.clientRequestBloc.add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(requestType: pickedValue)));
+                context.clientRequestBloc.add(ClientRequestUpdateEvent(
+                    clientRequestModel: state.requestModel.copyWith(requestType: pickedValue)));
               });
             },
             items: RequestType.values.map<DropdownMenuItem<RequestType>>((RequestType value) {
@@ -190,7 +200,8 @@ class _DescriptionWidget extends StatelessWidget {
               return TextFormField(
                 initialValue: state.requestModel.description,
                 // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
-                onChanged: (text) => context.clientRequestBloc.add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(description: text))),
+                onChanged: (text) => context.clientRequestBloc
+                    .add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(description: text))),
                 style: TextStyle(
                   fontFamily: AppFonts.quicksandBold,
                   fontSize: 14,
@@ -239,9 +250,9 @@ class _LocationWidget extends StatelessWidget {
           child: BlocBuilder<ClientRequestBloc, ClientRequestState>(
             builder: (context, state) {
               return TextFormField(
-                initialValue: state.requestModel.location,
-                // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
-                onChanged: (text) => context.clientRequestBloc.add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(location: text))),
+                initialValue: context.currentUserBloc.state.userModel!.location,
+                onChanged: (text) => context.clientRequestBloc
+                    .add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(location: text))),
                 style: TextStyle(
                   fontFamily: AppFonts.quicksandBold,
                   fontSize: 14,
@@ -249,6 +260,56 @@ class _LocationWidget extends StatelessWidget {
                 ),
                 decoration: InputDecoration(
                   labelText: 'Location',
+                  labelStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontFamily: AppFonts.quicksandRegular,
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PhoneNumberWidget extends StatelessWidget {
+  const _PhoneNumberWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 10,
+        ),
+        Container(
+          width: 100,
+          child: CustomText(
+            text: 'Phone number:',
+            size: context.textSizeM,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        Expanded(
+          child: BlocBuilder<ClientRequestBloc, ClientRequestState>(
+            builder: (context, state) {
+              return TextFormField(
+                initialValue: context.currentUserBloc.state.userModel!.phoneNumber,
+                onChanged: (text) => context.clientRequestBloc
+                    .add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(phoneNumber: text))),
+                style: TextStyle(
+                  fontFamily: AppFonts.quicksandBold,
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Phone number',
                   labelStyle: const TextStyle(
                     color: Colors.grey,
                     fontFamily: AppFonts.quicksandRegular,
@@ -300,7 +361,9 @@ class _ButtonRowWidget extends StatelessWidget {
                 borderRadius: 20,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                 onTap: () {
-                  context.clientRequestBloc.add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(displayName: context.currentUserBloc.state.userModel!.displayName)));
+                  context.clientRequestBloc.add(ClientRequestUpdateEvent(
+                      clientRequestModel: state.requestModel
+                          .copyWith(displayName: context.currentUserBloc.state.userModel!.displayName)));
                   context.clientRequestBloc.add(ClientRequestSubmitEvent());
                 });
           },

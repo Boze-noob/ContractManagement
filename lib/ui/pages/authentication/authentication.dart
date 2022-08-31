@@ -57,7 +57,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 Row(
                   children: [
                     CustomText(
-                      text: "Welcome back to the admin panel.",
+                      text: "Welcome back !",
                       color: lightGrey,
                     ),
                   ],

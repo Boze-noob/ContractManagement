@@ -71,10 +71,16 @@ class OverviewPage extends StatelessWidget {
                                 OverviewCardsSmallScreen(
                                   model: state.contractsCounterModel,
                                 ),
+                              /*
                               if (!ResponsiveWidget.isSmallScreen(context))
                                 RevenueSectionLarge(revenueState.revenueModel)
                               else
                                 RevenueSectionSmall(revenueState.revenueModel),
+
+                               */
+                              SizedBox(
+                                height: 30,
+                              ),
                               OverviewRequestsDataTableWidget(),
                             ],
                           );

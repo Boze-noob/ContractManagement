@@ -2,10 +2,12 @@ import 'package:contract_management/_all.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   final IOrder orderRepo;
+
   OrderBloc({
     required this.orderRepo,
   }) : super(initialState()) {
     on<OrderInitEvent>(_init);
+    on<OrderInitClientDataEvent>(_initClientData);
     on<OrderGetEvent>(_get);
     on<OrderUpdateEvent>(_update);
     on<OrderCreateEvent>(_create);
@@ -40,6 +42,15 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(state.copyWith(status: OrderStateStatus.loading));
     await Future.delayed(Duration(seconds: 1));
     emit(state.copyWith(orderModel: event.orderModel, status: OrderStateStatus.init));
+  }
+
+  Future<void> _initClientData(OrderInitClientDataEvent event, Emitter<OrderState> emit) async {
+    emit(
+      state.copyWith(
+        orderModel: state.orderModel.copyWith(
+            senderName: event.senderName, employerName: event.employerName, orderLocation: event.orderLocation),
+      ),
+    );
   }
 
   Future<void> _get(OrderGetEvent event, Emitter<OrderState> emit) async {

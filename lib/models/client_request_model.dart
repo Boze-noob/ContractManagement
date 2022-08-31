@@ -9,6 +9,7 @@ class ClientRequestModel {
   final String description;
   final String location;
   final DateTime createdDateTime;
+  final String? phoneNumber;
 
   ClientRequestModel({
     required this.id,
@@ -19,6 +20,7 @@ class ClientRequestModel {
     required this.description,
     required this.location,
     required this.createdDateTime,
+    this.phoneNumber,
   });
 
   ClientRequestModel copyWith({
@@ -30,6 +32,7 @@ class ClientRequestModel {
     String? description,
     String? location,
     DateTime? createdDateTime,
+    String? phoneNumber,
   }) =>
       ClientRequestModel(
         id: id ?? this.id,
@@ -40,6 +43,7 @@ class ClientRequestModel {
         description: description ?? this.description,
         location: location ?? this.location,
         createdDateTime: createdDateTime ?? this.createdDateTime,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
       );
 
   Map<String, dynamic> toMap() {
@@ -52,6 +56,7 @@ class ClientRequestModel {
       'description': description,
       'location': location,
       'createdDateTime': createdDateTime.toUtc().toString(),
+      'phoneNumber': phoneNumber
     };
   }
 
@@ -65,6 +70,7 @@ class ClientRequestModel {
       description: map['description'] ?? null,
       location: map['location'],
       createdDateTime: DateTime.parse(map['createdDateTime']),
+      phoneNumber: map['phoneNumber'],
     );
   }
 }

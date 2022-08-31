@@ -16,6 +16,7 @@ class CreateAnnouncementDialog extends StatelessWidget {
     return CustomDialog(
       buttonText: 'Create',
       onButtonPressed: () => createOnTap(),
+      title: 'Announcement details',
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -23,19 +24,6 @@ class CreateAnnouncementDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: CustomText(
-                  text: 'Announcement details',
-                  weight: FontWeight.bold,
-                  size: context.textSizeXL,
-                  color: Colors.black,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                height: 18,
-              ),
               CustomText(
                 text: 'Order id: ${orderModel.id}',
                 weight: FontWeight.normal,

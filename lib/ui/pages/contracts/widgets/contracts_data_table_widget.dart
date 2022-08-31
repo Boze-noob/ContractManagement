@@ -47,6 +47,7 @@ class ContractsDataTableWidget extends StatelessWidget {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 600,
+        dataRowHeight: context.screenHeight / 13,
         columns: [
           DataColumn2(
             label: Text(firstColumnName),
@@ -86,19 +87,22 @@ class ContractsDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                GestureDetector(
-                  onTap: () => onTap(contractsState.contracts[index]),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: light,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: active, width: .5),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    child: CustomText(
-                      text: action,
-                      color: active.withOpacity(.7),
-                      weight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: GestureDetector(
+                    onTap: () => onTap(contractsState.contracts[index]),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: light,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: active, width: .5),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      child: CustomText(
+                        text: action,
+                        color: active.withOpacity(.7),
+                        weight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

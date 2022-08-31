@@ -53,6 +53,7 @@ class _EditOrderDialogState extends State<EditOrderDialog> {
                     //This should be done via listener when edit is successful
                     widget.orderEdited();
                   },
+                  title: '',
                   child: Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),

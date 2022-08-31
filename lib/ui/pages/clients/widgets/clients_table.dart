@@ -30,6 +30,7 @@ class Clientstable extends StatelessWidget {
               columnSpacing: 12,
               horizontalMargin: 12,
               minWidth: 700,
+              dataRowHeight: context.screenHeight / 13,
               columns: [
                 DataColumn2(
                   label: Text("Name"),
@@ -75,81 +76,77 @@ class Clientstable extends StatelessWidget {
                       ),
                     ),
                     DataCell(
-                      Row(
-                        children: [
-                          Button(
-                            child: CustomText(
-                              text: 'View',
-                            ),
-                            textColor: black,
-                            shrinkWrap: true,
-                            borderRadius: 40,
-                            onTap: () => showDialog(
-                              context: context,
-                              builder: (context) => CustomDialog(
-                                buttonText: 'Close',
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CustomText(
-                                        text: 'Client details',
-                                        size: context.textSizeXL,
-                                        weight: FontWeight.bold,
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      CustomText(
-                                        text: 'Display name: ' + state.clients[index].displayName,
-                                        size: context.textSizeM,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomText(
-                                        text: 'Email: ' + state.clients[index].email,
-                                        size: context.textSizeM,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomText(
-                                        text: 'Role: ' + state.clients[index].role,
-                                        size: context.textSizeM,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomText(
-                                        text: 'Phone number: ',
-                                        size: context.textSizeM,
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                    ],
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+                          children: [
+                            Button(
+                              child: CustomText(
+                                text: 'View',
+                              ),
+                              textColor: black,
+                              shrinkWrap: true,
+                              borderRadius: 40,
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => CustomDialog(
+                                  buttonText: 'Close',
+                                  title: 'Client details',
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CustomText(
+                                          text: 'Display name: ' + state.clients[index].displayName,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomText(
+                                          text: 'Email: ' + state.clients[index].email,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomText(
+                                          text: 'Role: ' + state.clients[index].role,
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomText(
+                                          text: 'Phone number: ',
+                                          size: context.textSizeM,
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Button(
-                            child: CustomText(
-                              text: 'Delete',
-                              color: delete,
+                            SizedBox(
+                              width: 10,
                             ),
-                            shrinkWrap: true,
-                            borderRadius: 40,
-                            onTap: () => context.clientsBloc.add(
-                              ClientsDeleteEvent(clientId: state.clients[index].id),
+                            Button(
+                              child: CustomText(
+                                text: 'Delete',
+                                color: delete,
+                              ),
+                              shrinkWrap: true,
+                              borderRadius: 40,
+                              onTap: () => context.clientsBloc.add(
+                                ClientsDeleteEvent(clientId: state.clients[index].id),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

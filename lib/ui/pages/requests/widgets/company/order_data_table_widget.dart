@@ -53,6 +53,7 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 600,
+        dataRowHeight: context.screenHeight / 13,
         columns: [
           DataColumn2(
             label: Text('Employer name'),
@@ -103,37 +104,40 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Visibility(
-                  visible: !ResponsiveWidget.isSmallScreen(context),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Button(
-                          text: 'View',
-                          textColor: active,
-                          borderRadius: 20,
-                          padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                          borderColor: active,
-                          onTap: () => viewBtnOnTap(index),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Visibility(
+                    visible: !ResponsiveWidget.isSmallScreen(context),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Button(
+                            text: 'View',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => viewBtnOnTap(index),
+                          ),
                         ),
-                      ),
-                      (() {
-                        if (orderModels[index].orderStatusType.translate() == OrderStatusType.declined.translate() ||
-                            orderModels[index].orderStatusType.translate() == OrderStatusType.accepted.translate())
-                          return SizedBox();
-                        else
-                          return Expanded(
-                            child: Button(
-                              text: 'Response',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                              borderColor: active,
-                              onTap: () => respondBtnOnTap(index),
-                            ),
-                          );
-                      }())
-                    ],
+                        (() {
+                          if (orderModels[index].orderStatusType.translate() == OrderStatusType.declined.translate() ||
+                              orderModels[index].orderStatusType.translate() == OrderStatusType.accepted.translate())
+                            return SizedBox();
+                          else
+                            return Expanded(
+                              child: Button(
+                                text: 'Response',
+                                textColor: active,
+                                borderRadius: 20,
+                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                                borderColor: active,
+                                onTap: () => respondBtnOnTap(index),
+                              ),
+                            );
+                        }())
+                      ],
+                    ),
                   ),
                 ),
               ),

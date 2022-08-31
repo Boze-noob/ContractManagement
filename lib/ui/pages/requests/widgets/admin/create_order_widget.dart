@@ -34,14 +34,25 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
       secondColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.email).toList(),
       thirdColumnValue: widget.requestState.clientRequestModel.map((clientModel) => clientModel.location).toList(),
       fourthColumnValue: widget.requestState.clientRequestModel
-          .map((clientModel) => clientModel.createdDateTime.toLocal().toString())
+          .map((clientModel) => clientModel.createdDateTime.formatDDMMYYHHMMSS())
           .toList(),
       createOnTap: (index) => showDialog(
         context: context,
         builder: (context) => BlocProvider(
           create: (context) => RequestsBloc(companyRequest: context.serviceProvider.companyRequestRepo),
           child: BlocProvider(
-            create: (context) => OrderBloc(orderRepo: context.serviceProvider.orderRepo),
+            create: (context) {
+              UserModel currentUser = context.currentUserBloc.state.userModel!;
+              ClientRequestModel clientRequestModel = widget.requestState.clientRequestModel[index];
+              return OrderBloc(orderRepo: context.serviceProvider.orderRepo)
+                ..add(
+                  OrderInitClientDataEvent(
+                    employerName: currentUser.displayName,
+                    senderName: clientRequestModel.displayName,
+                    orderLocation: clientRequestModel.location,
+                  ),
+                );
+            },
             child: Builder(builder: (context) {
               return CustomDialog(
                 buttonText: 'Create',
@@ -58,48 +69,34 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                   widget.onCreate();
                   selectedContractItemsIndex = List.empty();
                 },
-                child: StatefulBuilder(builder: (context, setState) {
-                  return Container(
-                    child: Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: BlocBuilder<OrderBloc, OrderState>(
-                          builder: (context, state) {
-                            context.orderBloc.add(OrderUpdateEvent(
-                                orderModel: state.orderModel
-                                    .copyWith(employerName: context.currentUserBloc.state.userModel!.displayName)));
-                            return ListView(
+                title: 'Create order',
+                child: Expanded(
+                  child: StatefulBuilder(builder: (context, setState) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: BlocBuilder<OrderBloc, OrderState>(
+                        builder: (context, state) {
+                          ClientRequestModel clientRequestModel = widget.requestState.clientRequestModel[index];
+                          return Container(
+                            height: context.screenHeight / 1.5,
+                            child: ListView(
                               shrinkWrap: true,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomText(
-                                      text: 'Fill order fields',
-                                      weight: FontWeight.bold,
-                                      color: Colors.black,
-                                      paddingAllValue: 20,
-                                      size: context.textSizeXL,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
                                 TextFormField(
+                                  initialValue: clientRequestModel.displayName,
                                   onChanged: (text) => context.orderBloc
                                       .add(OrderUpdateEvent(orderModel: state.orderModel.copyWith(senderName: text))),
                                   decoration: const InputDecoration(
                                     border: UnderlineInputBorder(),
-                                    labelText: 'Enter sender name',
+                                    labelText: 'Enter client name',
                                   ),
                                   maxLines: 1,
                                 ),
                                 SizedBox(
                                   height: 5,
                                 ),
-                                TextField(
+                                TextFormField(
+                                  initialValue: clientRequestModel.location,
                                   onChanged: (text) => context.orderBloc.add(
                                       OrderUpdateEvent(orderModel: state.orderModel.copyWith(orderLocation: text))),
                                   decoration: const InputDecoration(
@@ -140,9 +137,6 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                       },
                                     ),
                                   ],
-                                ),
-                                SizedBox(
-                                  height: 10,
                                 ),
                                 TextField(
                                   onChanged: (text) => context.orderBloc
@@ -240,7 +234,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                   enabled: false,
                                   decoration: InputDecoration(
                                     border: UnderlineInputBorder(),
-                                    labelText: 'Enter employer name',
+                                    labelText: 'Employer name',
                                   ),
                                   initialValue: context.currentUserBloc.state.userModel!.displayName,
                                   style: TextStyle(
@@ -249,13 +243,13 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                   maxLines: 1,
                                 ),
                               ],
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               );
             }),
           ),
@@ -265,6 +259,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
         context: context,
         builder: (context) => CustomDialog(
           buttonText: 'Close',
+          title: 'Request details',
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 15,
@@ -274,35 +269,35 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
-                  text: 'Request details',
-                  size: context.textSizeXL,
-                  color: Colors.black,
-                  textAlign: TextAlign.center,
-                  weight: FontWeight.bold,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Client email : ' + widget.requestState.clientRequestModel[index].email,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
                   text: 'Display name : ' + widget.requestState.clientRequestModel[index].displayName,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
+                  text: 'Phone number : ' + widget.requestState.clientRequestModel[index].phoneNumber.value,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: 'Email : ' + widget.requestState.clientRequestModel[index].email,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomText(
                   text: 'Request type : ' + widget.requestState.clientRequestModel[index].requestType.translate(),
+                  size: 18,
+                  weight: FontWeight.bold,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 CustomText(
                   text: 'Description : ' + widget.requestState.clientRequestModel[index].description.value,
+                  size: 18,
+                  weight: FontWeight.bold,
                 ),
                 SizedBox(
                   height: 10,
@@ -314,8 +309,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                   height: 10,
                 ),
                 CustomText(
-                  text:
-                      'Created date time : ' + widget.requestState.clientRequestModel[index].createdDateTime.toString(),
+                  text: 'Created date time : ' +
+                      widget.requestState.clientRequestModel[index].createdDateTime.formatDDMMYYHHMMSS(),
                 ),
                 SizedBox(
                   height: 10,
@@ -340,6 +335,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
 class _DatePickerWidget extends StatefulWidget {
   final void Function(DateTime dateTime) onDateSelected;
   final DateTime lastDateTime;
+
   _DatePickerWidget({required this.onDateSelected, required this.lastDateTime}) : super();
 
   @override

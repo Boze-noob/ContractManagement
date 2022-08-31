@@ -19,6 +19,7 @@ class SendOrderDialog extends StatelessWidget {
           if (orderState.status == OrderStateStatus.loading)
             return CustomDialog(
               buttonText: 'Close',
+              title: '',
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                 child: Loader(
@@ -31,6 +32,7 @@ class SendOrderDialog extends StatelessWidget {
           else if (orderState.companiesForOrder.isEmpty)
             return CustomDialog(
               buttonText: 'Close',
+              title: '',
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
                 child: CustomText(
@@ -45,6 +47,7 @@ class SendOrderDialog extends StatelessWidget {
           List<String> companiesNames = orderState.companiesForOrder['companiesName'];
           return CustomDialog(
             buttonText: 'Close',
+            title: 'Select company to send order',
             child: Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -52,19 +55,6 @@ class SendOrderDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: CustomText(
-                        text: 'Select company to send order',
-                        weight: FontWeight.bold,
-                        size: context.textSizeXL,
-                        color: Colors.black,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 18,
-                    ),
                     DropdownButton(
                       value: companiesNames[0],
                       icon: const Icon(Icons.keyboard_arrow_down),

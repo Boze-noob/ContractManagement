@@ -11,6 +11,7 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
     on<ClientRequestInitEvent>(_init);
     on<ClientRequestUpdateEvent>(_updateState);
     on<ClientRequestSubmitEvent>(_submit);
+    on<ClientRequestInitUserDataEvent>(_initUserData);
   }
 
   static ClientRequestState initialState() => ClientRequestState(
@@ -33,6 +34,14 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
       Duration(milliseconds: 10),
     );
     emit(initialState());
+  }
+
+  void _initUserData(ClientRequestInitUserDataEvent event, Emitter<ClientRequestState> emit) async {
+    emit(
+      state.copyWith(
+        requestModel: state.requestModel.copyWith(location: event.location, phoneNumber: event.phoneNumber),
+      ),
+    );
   }
 
   void _updateState(ClientRequestUpdateEvent event, Emitter<ClientRequestState> emit) async {

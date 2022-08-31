@@ -19,6 +19,7 @@ class ChangeProjectNameDialog extends StatelessWidget {
     return CustomDialog(
       buttonText: 'Change',
       onButtonPressed: () => onEditTap(textEditingController.text),
+      title: 'Edit project name',
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -26,25 +27,11 @@ class ChangeProjectNameDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: CustomText(
-                  text: 'Edit project name',
-                  weight: FontWeight.bold,
-                  size: context.textSizeXL,
-                  color: Colors.black,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(
-                height: 18,
-              ),
               TextFormField(
                 initialValue: currentProjectName,
                 controller: textEditingController,
                 style: TextFormFieldStyle.inputFieldTextStyle(),
-                decoration:
-                    TextFormFieldStyle.inputDecoration('Current project name'),
+                decoration: TextFormFieldStyle.inputDecoration('Current project name'),
               ),
               SizedBox(
                 height: 10,

@@ -53,93 +53,83 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                       showDialog(
                         context: context,
                         builder: (context) => CustomDialog(
-                            buttonText: 'Create account',
-                            child: Container(
-                              width: context.screenWidth / 2,
-                              child: Form(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                                  child: BlocBuilder<CreateUserBloc, CreateUserState>(
-                                    builder: (context, state) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                            height: 16,
+                          buttonText: 'Create account',
+                          child: Container(
+                            width: context.screenWidth / 2,
+                            child: Form(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                child: BlocBuilder<CreateUserBloc, CreateUserState>(
+                                  builder: (context, state) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          decoration: InputDecoration(
+                                            icon: const Icon(Icons.email),
+                                            hintText: 'Enter email',
+                                            labelText: 'Email',
+                                            fillColor: active,
                                           ),
-                                          CustomText(
-                                            text: 'ADD NEW USER',
-                                            size: 22,
-                                            weight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(
-                                            height: 16,
-                                          ),
-                                          TextFormField(
-                                            decoration: InputDecoration(
-                                              icon: const Icon(Icons.email),
-                                              hintText: 'Enter email',
-                                              labelText: 'Email',
-                                              fillColor: active,
-                                            ),
-                                            onChanged: (text) => context.createUserBloc.add(
-                                              CreateUserUpdateModelEvent(
-                                                userModel: state.userModel.copyWith(email: text),
-                                              ),
+                                          onChanged: (text) => context.createUserBloc.add(
+                                            CreateUserUpdateModelEvent(
+                                              userModel: state.userModel.copyWith(email: text),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 10,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextFormField(
+                                          obscureText: true,
+                                          decoration: const InputDecoration(
+                                            icon: const Icon(Icons.password),
+                                            hintText: 'Enter password',
+                                            labelText: 'Password',
                                           ),
-                                          TextFormField(
-                                            obscureText: true,
-                                            decoration: const InputDecoration(
-                                              icon: const Icon(Icons.password),
-                                              hintText: 'Enter password',
-                                              labelText: 'Password',
-                                            ),
-                                            onChanged: (text) => context.createUserBloc.add(
-                                              CreateUserUpdateModelEvent(
-                                                userModel: state.userModel.copyWith(password: text),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          TextFormField(
-                                            decoration: InputDecoration(
-                                              icon: const Icon(Icons.email),
-                                              hintText: 'Enter display name',
-                                              labelText: 'Display name',
-                                              fillColor: active,
-                                            ),
-                                            onChanged: (text) => context.createUserBloc.add(
-                                              CreateUserUpdateModelEvent(
-                                                userModel: state.userModel.copyWith(displayName: text),
-                                              ),
+                                          onChanged: (text) => context.createUserBloc.add(
+                                            CreateUserUpdateModelEvent(
+                                              userModel: state.userModel.copyWith(password: text),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 10,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextFormField(
+                                          decoration: InputDecoration(
+                                            icon: const Icon(Icons.email),
+                                            hintText: 'Enter display name',
+                                            labelText: 'Display name',
+                                            fillColor: active,
                                           ),
-                                          _RoleWidget(),
-                                          SizedBox(
-                                            height: 30,
+                                          onChanged: (text) => context.createUserBloc.add(
+                                            CreateUserUpdateModelEvent(
+                                              userModel: state.userModel.copyWith(displayName: text),
+                                            ),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        _RoleWidget(),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                            onButtonPressed: () {
-                              context.createUserBloc.add(
-                                CreateUserSubmitEvent(),
-                              );
-                            }),
+                          ),
+                          onButtonPressed: () {
+                            context.createUserBloc.add(
+                              CreateUserSubmitEvent(),
+                            );
+                          },
+                          title: 'ADD NEW USER',
+                        ),
                       );
                     }),
               ),
@@ -401,89 +391,91 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
       return Positioned(
           right: 70,
           top: 50,
-          child: Container(
-              width: 300,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: active,
+          child: Material(
+            child: Container(
+                width: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: active,
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-              child: (() {
-                if (state.model.length == 0)
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    child: Column(
-                      children: [
-                        CustomText(
-                          text: 'No notifications',
-                          textAlign: TextAlign.center,
-                          weight: FontWeight.bold,
-                          size: context.textSizeL,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Button(
-                          child: CustomText(
-                            text: 'Close',
-                            size: 16,
-                            color: active,
+                child: (() {
+                  if (state.model.length == 0)
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                      child: Column(
+                        children: [
+                          CustomText(
+                            text: 'No notifications',
+                            textAlign: TextAlign.center,
+                            weight: FontWeight.bold,
+                            size: context.textSizeL,
                           ),
-                          textColor: active,
-                          shrinkWrap: true,
-                          onTap: () => overlayEntry.remove(),
-                          color: Colors.transparent,
-                        )
-                      ],
-                    ),
-                  );
-                else
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Builder(
-                          builder: (context) {
-                            return Button(
-                              child: CustomText(
-                                text: 'Clean and close',
-                                size: 16,
-                                color: active,
-                              ),
-                              textColor: active,
-                              shrinkWrap: true,
-                              onTap: () {
-                                onCloseDialog();
-                                overlayEntry.remove();
-                              },
-                              color: Colors.transparent,
-                            );
-                          },
-                        ),
-                        ListView.builder(
-                            itemCount: state.model.length,
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Button(
+                            child: CustomText(
+                              text: 'Close',
+                              size: 16,
+                              color: active,
+                            ),
+                            textColor: active,
                             shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Material(
-                                child: ListTile(
-                                  leading: Icon(Icons.notifications),
-                                  title: CustomText(
-                                    text: state.model[index].message,
-                                    color: Colors.black,
-                                    weight: FontWeight.normal,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  minLeadingWidth: 10,
+                            onTap: () => overlayEntry.remove(),
+                            color: Colors.transparent,
+                          )
+                        ],
+                      ),
+                    );
+                  else
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Builder(
+                            builder: (context) {
+                              return Button(
+                                child: CustomText(
+                                  text: 'Clean and close',
+                                  size: 16,
+                                  color: active,
                                 ),
+                                textColor: active,
+                                shrinkWrap: true,
+                                onTap: () {
+                                  onCloseDialog();
+                                  overlayEntry.remove();
+                                },
+                                color: Colors.transparent,
                               );
-                            }),
-                      ],
-                    ),
-                  );
-              }())));
+                            },
+                          ),
+                          ListView.builder(
+                              itemCount: state.model.length,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Material(
+                                  child: ListTile(
+                                    leading: Icon(Icons.notifications),
+                                    title: CustomText(
+                                      text: state.model[index].message,
+                                      color: Colors.black,
+                                      weight: FontWeight.normal,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    minLeadingWidth: 10,
+                                  ),
+                                );
+                              }),
+                        ],
+                      ),
+                    );
+                }())),
+          ));
     });
 
     // Inserting the OverlayEntry into the Overlay

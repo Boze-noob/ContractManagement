@@ -40,6 +40,7 @@ class CompaniesTable extends StatelessWidget {
                     columnSpacing: 12,
                     horizontalMargin: 12,
                     minWidth: 700,
+                    dataRowHeight: context.screenHeight / 13,
                     columns: [
                       DataColumn2(
                         label: Text("Name"),
@@ -83,88 +84,83 @@ class CompaniesTable extends StatelessWidget {
                             )
                           ],
                         )),
-                        DataCell(Row(
-                          children: [
-                            Button(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                              child: CustomText(
-                                text: 'View',
-                              ),
-                              textColor: black,
-                              shrinkWrap: true,
-                              borderRadius: 40,
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => CustomDialog(
-                                  buttonText: 'Close',
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          text: 'Company details',
-                                          size: context.textSizeXL,
-                                          weight: FontWeight.bold,
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        CustomText(
-                                          text: 'Display name: ' + state.companies[index].displayName,
-                                          size: context.textSizeM,
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        CustomText(
-                                          text: 'Email: ' + state.companies[index].email,
-                                          size: context.textSizeM,
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        CustomText(
-                                          text: 'Role: ' + state.companies[index].role,
-                                          size: context.textSizeM,
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        CustomText(
-                                          text: 'Phone number: ' + state.companies[index].phoneNumber.value,
-                                          size: context.textSizeM,
-                                        ),
-                                        CustomText(
-                                          text: 'Signed contract: ' + state.companies[index].contractId.value,
-                                          size: context.textSizeM,
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                      ],
+                        DataCell(Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            children: [
+                              Button(
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                                child: CustomText(
+                                  text: 'View',
+                                ),
+                                textColor: black,
+                                shrinkWrap: true,
+                                borderRadius: 40,
+                                onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => CustomDialog(
+                                    buttonText: 'Close',
+                                    title: 'Company details',
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 55),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CustomText(
+                                            text: 'Display name: ' + state.companies[index].displayName,
+                                            size: context.textSizeM,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          CustomText(
+                                            text: 'Email: ' + state.companies[index].email,
+                                            size: context.textSizeM,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          CustomText(
+                                            text: 'Role: ' + state.companies[index].role,
+                                            size: context.textSizeM,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          CustomText(
+                                            text: 'Phone number: ' + state.companies[index].phoneNumber.value,
+                                            size: context.textSizeM,
+                                          ),
+                                          CustomText(
+                                            text: 'Signed contract: ' + state.companies[index].contractId.value,
+                                            size: context.textSizeM,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Button(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                              child: CustomText(
-                                text: 'Edit',
-                                color: active,
-                              ),
-                              shrinkWrap: true,
-                              borderRadius: 40,
-                              onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => BlocProvider(
-                                  create: (context) =>
-                                      CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)
-                                        ..add(CompanyEditInitEvent(companyModel: state.companies[index])),
-                                  child: Builder(
-                                    builder: (context) {
-                                      return CustomDialog(
+                              Button(
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                                child: CustomText(
+                                  text: 'Edit',
+                                  color: active,
+                                ),
+                                shrinkWrap: true,
+                                borderRadius: 40,
+                                onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => BlocProvider(
+                                    create: (context) =>
+                                        CompanyEditBloc(companiesRepo: context.serviceProvider.companiesRepo)
+                                          ..add(CompanyEditInitEvent(companyModel: state.companies[index])),
+                                    child: Builder(
+                                      builder: (context) {
+                                        return CustomDialog(
                                           buttonText: 'Save',
                                           child: Container(
                                             width: context.screenWidth / 2,
@@ -192,18 +188,6 @@ class CompaniesTable extends StatelessWidget {
                                                       return Column(
                                                         mainAxisSize: MainAxisSize.min,
                                                         children: [
-                                                          SizedBox(
-                                                            height: 16,
-                                                          ),
-                                                          CustomText(
-                                                            text: 'Edit company parameters',
-                                                            size: 22,
-                                                            weight: FontWeight.bold,
-                                                            color: Colors.black,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 16,
-                                                          ),
                                                           TextFormField(
                                                             initialValue: state.companyModel.displayName,
                                                             decoration: InputDecoration(
@@ -259,25 +243,28 @@ class CompaniesTable extends StatelessWidget {
                                           ),
                                           onButtonPressed: () {
                                             context.companyEditBloc.add(CompanyEditSubmitEvent());
-                                          });
-                                    },
+                                          },
+                                          title: 'Edit company parameters',
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Button(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                              child: CustomText(
-                                text: 'Delete',
-                                color: delete,
+                              Button(
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                                child: CustomText(
+                                  text: 'Delete',
+                                  color: delete,
+                                ),
+                                shrinkWrap: true,
+                                borderRadius: 40,
+                                onTap: () => context.companiesBloc.add(
+                                  CompaniesDeleteEvent(companyId: state.companies[index].id),
+                                ),
                               ),
-                              shrinkWrap: true,
-                              borderRadius: 40,
-                              onTap: () => context.companiesBloc.add(
-                                CompaniesDeleteEvent(companyId: state.companies[index].id),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         )),
                       ]),
                     ),

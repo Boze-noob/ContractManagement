@@ -75,9 +75,7 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                 currentUserState.userModel!.role == RoleType.orderEmployer.translate())
                               return BlocBuilder<RequestsBloc, RequestsState>(
                                 builder: (context, requestsState) {
-                                  print("State status is" + requestsState.status.toString());
                                   if (requestsState.status == RequestsStateStatus.loading) {
-                                    print("we enter into loader");
                                     return Loader(
                                       width: 100,
                                       height: 100,
