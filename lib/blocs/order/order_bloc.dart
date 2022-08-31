@@ -81,10 +81,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(
       state.copyWith(
         status: OrderStateStatus.loading,
-        orderModel: state.orderModel.copyWith(
-          id: generateRandomId(),
-          clientName: event.clientName,
-        ),
+        orderModel: state.orderModel
+            .copyWith(id: generateRandomId(), clientName: event.clientName, description: event.description),
       ),
     );
     final result = await orderRepo.createOrder(state.orderModel);

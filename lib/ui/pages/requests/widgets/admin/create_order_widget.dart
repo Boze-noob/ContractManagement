@@ -143,6 +143,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                   decoration: const InputDecoration(
                                     border: UnderlineInputBorder(),
                                     labelText: 'Enter price',
+                                    suffixText: "KM",
                                   ),
                                   keyboardType: TextInputType.number,
                                   maxLines: 1,
