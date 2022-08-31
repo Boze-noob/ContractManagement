@@ -64,7 +64,6 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                       description: widget.requestState.clientRequestModel[index].description,
                     ),
                   );
-                  //This should be done via listener
                   await Future.delayed(Duration(milliseconds: 500));
                   widget.onCreate();
                   selectedContractItemsIndex = List.empty();

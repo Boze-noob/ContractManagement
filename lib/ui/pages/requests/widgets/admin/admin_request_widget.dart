@@ -109,9 +109,9 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                   else
                                     return CreateOrderWidget(
                                         requestState: requestsState,
-                                        //not good practice but context of CreateOrderWidget is not in scope of adminRequest in widget tree(not its parent cuz Custom dialog I think), so I use callback function
                                         onCreate: () {
                                           context.orderBloc.add(OrderGetEvent());
+                                          context.requestsBloc.add(RequestsLoadEvent());
                                         });
                                 },
                               );
@@ -157,7 +157,6 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                                           height: 100,
                                           color: active,
                                         );
-                                      //TOdo trebat ce response popravit kod action buttona
                                       return Builder(builder: (parentContext) {
                                         return OrderDataTableWidget(
                                           firstColumnName: 'Receiver name',
