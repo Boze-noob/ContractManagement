@@ -138,59 +138,52 @@ class OrderDataTableWidget extends StatelessWidget {
                     return Visibility(
                       visible: ResponsiveWidget.isLargeScreen(context),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.send,
-                                color: active,
-                              ),
-                              onPressed: () => sendBtnOnTap(index),
+                          IconButton(
+                            icon: Icon(
+                              Icons.send,
+                              color: active,
                             ),
+                            onPressed: () => sendBtnOnTap(index),
                           ),
-                          Expanded(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                              ),
-                              onPressed: () => editBtnOnTap(index),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
                             ),
+                            onPressed: () => editBtnOnTap(index),
                           ),
-                          Expanded(
-                            child: IconButton(
-                              onPressed: () => deleteBtnOnTap(index),
-                              icon: Icon(
-                                Icons.delete,
-                                color: context.appTheme.danger,
-                              ),
+                          IconButton(
+                            onPressed: () => deleteBtnOnTap(index),
+                            icon: Icon(
+                              Icons.delete,
+                              color: context.appTheme.danger,
                             ),
                           ),
                         ],
                       ),
                     );
                   } else if (isSent[index].translate() != OrderStatusType.waiting.translate())
-                    return Visibility(
-                      visible: ResponsiveWidget.isLargeScreen(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Visibility(
-                            visible: context.currentUserBloc.state.userModel!.role ==
-                                RoleType.announcementEmployer.translate(),
-                            child: Expanded(
+                    return Expanded(
+                      child: Visibility(
+                        visible: ResponsiveWidget.isLargeScreen(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                              visible: context.currentUserBloc.state.userModel!.role ==
+                                  RoleType.announcementEmployer.translate(),
                               child: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: () => createBtnOnTap(index),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: IconButton(
+                            IconButton(
                               icon: Icon(Icons.delete, color: context.appTheme.danger),
                               onPressed: () => deleteBtnOnTap(index),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   else
