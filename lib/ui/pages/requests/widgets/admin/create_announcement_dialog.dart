@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class CreateAnnouncementDialog extends StatelessWidget {
   final OrderModel orderModel;
   final void Function() createOnTap;
+
   CreateAnnouncementDialog({
     Key? key,
     required this.orderModel,
@@ -16,83 +17,102 @@ class CreateAnnouncementDialog extends StatelessWidget {
     return CustomDialog(
       buttonText: 'Create',
       onButtonPressed: () => createOnTap(),
-      title: 'Announcement details',
+      title: 'Create announcement',
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Flex(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            direction: ResponsiveWidget.isSmallScreen(context) ? Axis.vertical : Axis.horizontal,
             children: [
-              CustomText(
-                text: 'Order id: ${orderModel.id}',
-                weight: FontWeight.normal,
-                color: Colors.black,
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: 'Receiver name: ${orderModel.receiverName.value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Payment type: ${orderModel.paymentType.translate()}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Price: ${orderModel.price.value} KM',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Employer created order: ${orderModel.employerName}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Receiver id: ${orderModel.receiverId.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Receiver name: ${orderModel.receiverName.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Price: ${orderModel.price.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Created date time: ${orderModel.createdDateTime.formatDDMMYY().value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Completion date time: ${orderModel.completionDateTime.formatDDMMYY().value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                color: Colors.black12.withOpacity(0.6),
-              ),
-              CustomText(text: 'Contract items:'),
-              SizedBox(
-                height: 5,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: orderModel.contractItems.length,
-                itemBuilder: (context, i) {
-                  return ListTile(
-                    title: Text(' - ' + orderModel.contractItems[i].translate()),
-                  );
-                },
-              ),
-              Divider(
-                color: Colors.black12.withOpacity(0.6),
-              ),
-              SizedBox(
-                height: 10,
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomText(
+                      text: 'Created date time: ${orderModel.createdDateTime.formatDDMMYY().value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Completion date time: ${orderModel.completionDateTime.formatDDMMYY().value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Contract items:',
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: orderModel.contractItems.length,
+                      itemBuilder: (context, i) {
+                        return ListTile(
+                          title: CustomText(
+                            text: ' - ' + orderModel.contractItems[i].translate(),
+                            size: 18,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

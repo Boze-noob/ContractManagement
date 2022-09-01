@@ -97,9 +97,11 @@ class OrderDataTableWidget extends StatelessWidget {
           ),
           DataColumn(
             label: Text(fourthColumnName),
+            tooltip: 'Order status type',
           ),
           DataColumn(
             label: Text(fifthColumnName),
+            tooltip: 'Employer which created order',
           ),
           DataColumn2(
             label: Text(sixthColumnName),
@@ -135,32 +137,34 @@ class OrderDataTableWidget extends StatelessWidget {
                 (() {
                   if (isSent[index].translate() == OrderStatusType.waiting.translate() &&
                       context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate()) {
-                    return Visibility(
-                      visible: ResponsiveWidget.isLargeScreen(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.send,
-                              color: active,
+                    return Expanded(
+                      child: Visibility(
+                        visible: ResponsiveWidget.isLargeScreen(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.send,
+                                color: active,
+                              ),
+                              onPressed: () => sendBtnOnTap(index),
                             ),
-                            onPressed: () => sendBtnOnTap(index),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.edit,
+                            IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                              ),
+                              onPressed: () => editBtnOnTap(index),
                             ),
-                            onPressed: () => editBtnOnTap(index),
-                          ),
-                          IconButton(
-                            onPressed: () => deleteBtnOnTap(index),
-                            icon: Icon(
-                              Icons.delete,
-                              color: context.appTheme.danger,
+                            IconButton(
+                              onPressed: () => deleteBtnOnTap(index),
+                              icon: Icon(
+                                Icons.delete,
+                                color: context.appTheme.danger,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   } else if (isSent[index].translate() != OrderStatusType.waiting.translate())

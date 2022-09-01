@@ -98,20 +98,22 @@ class OrderModel {
 
   factory OrderModel.fromMap(dynamic map) {
     return OrderModel(
-        id: map['id'],
-        senderName: map['senderName'],
-        receiverName: map['receiverName'],
-        receiverId: map['receiverId'] ?? null,
-        orderLocation: map['orderLocation'],
-        paymentType: PaymentType.getValue(map['paymentType']),
-        createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
-        completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
-        contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
-        employerName: map['employerName'],
-        orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
-        adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
-        clientName: map['clientName'],
-        price: map['price'],
-        description: map['description']);
+      id: map['id'],
+      senderName: map['senderName'],
+      receiverName: map['receiverName'],
+      receiverId: map['receiverId'] ?? null,
+      orderLocation: map['orderLocation'],
+      paymentType: PaymentType.getValue(map['paymentType']),
+      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
+      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
+      employerName: map['employerName'],
+      orderStatusType: OrderStatusType.getValue(map['orderStatusType']),
+      adminRequestType: AdminRequestType.getValue(map['adminRequestType']),
+      clientName: map['clientName'],
+      price: map['price'],
+      description: map['description'],
+      sentDateTime: map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
+    );
   }
 }

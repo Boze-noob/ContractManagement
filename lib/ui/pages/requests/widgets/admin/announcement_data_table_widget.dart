@@ -58,25 +58,31 @@ class AnnouncementDataTableWidget extends StatelessWidget {
         horizontalMargin: 12,
         minWidth: 600,
         dataRowHeight: context.screenHeight / 13,
+        showCheckboxColumn: false,
         columns: [
           DataColumn2(
-            label: Text('Order id'),
+            label: CustomText(text: 'ID'),
             size: ColumnSize.L,
+            tooltip: "Announcement id",
           ),
           DataColumn(
-            label: Text('Receiver name'),
+            label: CustomText(text: 'Receiver'),
+            tooltip: "Name of company who received announcement",
           ),
           DataColumn(
-            label: Text('Employer name'),
+            label: CustomText(text: 'Employer'),
+            tooltip: "Employer which created announcement",
           ),
           DataColumn(
-            label: Text('Price'),
+            label: CustomText(text: 'Price'),
           ),
           DataColumn(
-            label: Text('Date time'),
+            label: CustomText(text: 'Date time'),
+            tooltip: "Date when announcement is created",
           ),
           DataColumn(
-            label: Text('Status type'),
+            label: CustomText(text: 'Status'),
+            tooltip: "Status of the announcement",
           ),
           DataColumn2(
             label: Text(' '),
@@ -86,6 +92,7 @@ class AnnouncementDataTableWidget extends StatelessWidget {
         rows: List<DataRow>.generate(
           announcementsModels.length,
           (index) => DataRow(
+            onSelectChanged: (isSelected) => viewBtnOnTap(index),
             color: MaterialStateProperty.all(
               _getRowColor(
                 announcementsModels[index].announcementStatusType,
@@ -105,7 +112,7 @@ class AnnouncementDataTableWidget extends StatelessWidget {
               ),
               DataCell(
                 CustomText(
-                  text: announcementsModels[index].price + '\$',
+                  text: announcementsModels[index].price + ' KM',
                 ),
               ),
               DataCell(
@@ -119,55 +126,36 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
+                Expanded(
                   child: Visibility(
                     visible: ResponsiveWidget.isLargeScreen(context),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         (() {
                           if (announcementsModels[index].announcementStatusType.translate() ==
                               AnnouncementStatusType.done.translate())
-                            return Expanded(
-                              child: Button(
-                                text: 'Inspect',
-                                textSize: 13,
-                                textColor: active,
-                                borderRadius: 20,
-                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                                borderColor: active,
-                                onTap: () => inspectOnTap(index),
+                            return IconButton(
+                              icon: Icon(
+                                Icons.zoom_in,
+                                color: active,
                               ),
+                              onPressed: () => inspectOnTap(index),
                             );
-                          return Expanded(
-                            child: Button(
-                              text: 'View',
-                              textSize: 13,
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                              borderColor: active,
-                              onTap: () => viewBtnOnTap(index),
-                              shrinkWrap: true,
-                            ),
-                          );
+                          else
+                            return SizedBox();
                         }()),
                         Visibility(
                           visible: announcementsModels[index].announcementStatusType.translate() ==
                                   AnnouncementStatusType.waiting.translate() &&
                               context.currentUserBloc.state.userModel!.role !=
                                   RoleType.announcementEmployer.translate(),
-                          child: Expanded(
-                            child: Button(
-                              text: 'Send',
-                              textSize: 13,
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                              borderColor: active,
-                              onTap: () => sendBtnOnTap(index),
-                              shrinkWrap: true,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.send,
+                              color: active,
                             ),
+                            onPressed: () => sendBtnOnTap(index),
                           ),
                         ),
                         Visibility(
@@ -177,17 +165,12 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                                   AnnouncementStatusType.approved.translate() ||
                               announcementsModels[index].announcementStatusType.translate() ==
                                   AnnouncementStatusType.declined.translate(),
-                          child: Expanded(
-                            child: Button(
-                              text: 'Delete',
-                              textSize: 13,
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 7),
-                              borderColor: active,
-                              onTap: () => deleteBtnOnTap(index),
-                              shrinkWrap: true,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: context.appTheme.danger,
                             ),
+                            onPressed: () => deleteBtnOnTap(index),
                           ),
                         ),
                       ],
