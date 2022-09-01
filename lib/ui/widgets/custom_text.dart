@@ -30,6 +30,7 @@ class CustomText extends StatelessWidget {
           fontWeight: weight ?? FontWeight.normal,
         ),
         textAlign: textAlign,
+        overflow: TextOverflow.visible,
       ),
     );
   }

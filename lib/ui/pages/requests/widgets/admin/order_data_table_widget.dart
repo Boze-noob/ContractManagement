@@ -172,31 +172,22 @@ class OrderDataTableWidget extends StatelessWidget {
                     return Visibility(
                       visible: ResponsiveWidget.isLargeScreen(context),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Visibility(
                             visible: context.currentUserBloc.state.userModel!.role ==
                                 RoleType.announcementEmployer.translate(),
                             child: Expanded(
-                              child: Button(
-                                text: 'Create',
-                                textColor: active,
-                                borderRadius: 20,
-                                padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                                borderColor: active,
-                                //TOD add func
-                                onTap: () => createBtnOnTap(index),
+                              child: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => createBtnOnTap(index),
                               ),
                             ),
                           ),
                           Expanded(
-                            child: Button(
-                              text: 'Delete',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                              borderColor: active,
-                              //TOD add func
-                              onTap: () => deleteBtnOnTap(index),
+                            child: IconButton(
+                              icon: Icon(Icons.delete, color: context.appTheme.danger),
+                              onPressed: () => deleteBtnOnTap(index),
                             ),
                           ),
                         ],

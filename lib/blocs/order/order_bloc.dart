@@ -1,4 +1,5 @@
 import 'package:contract_management/_all.dart';
+import 'package:contract_management/common/_all.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   final IOrder orderRepo;
@@ -98,11 +99,14 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     ));
     final result = await orderRepo.sendOrder(event.orderId, event.receiverId, event.receiverName);
     if (result == null) {
+      List<OrderModel> orders = state.orderModels;
+      int orderIndex = orders.indexWhere((order) => order.id == event.orderId);
+      orders[orderIndex].copyWith(orderStatusType: OrderStatusType.sent);
       emit(state.copyWith(
         status: OrderStateStatus.submitSuccessful,
         message: 'Submitted successfully',
+        orderModels: orders,
       ));
-      //emit(initialState());
     } else
       emit(state.copyWith(status: OrderStateStatus.error, message: result));
   }

@@ -199,7 +199,6 @@ class _DescriptionWidget extends StatelessWidget {
             builder: (context, state) {
               return TextFormField(
                 initialValue: state.requestModel.description,
-                // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
                 onChanged: (text) => context.clientRequestBloc
                     .add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(description: text))),
                 style: TextStyle(
@@ -215,7 +214,7 @@ class _DescriptionWidget extends StatelessWidget {
                   ),
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 8,
+                maxLines: 7,
               );
             },
           ),
@@ -251,6 +250,7 @@ class _LocationWidget extends StatelessWidget {
             builder: (context, state) {
               return TextFormField(
                 initialValue: context.currentUserBloc.state.userModel!.location,
+                maxLength: 30,
                 onChanged: (text) => context.clientRequestBloc
                     .add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(location: text))),
                 style: TextStyle(
@@ -301,6 +301,7 @@ class _PhoneNumberWidget extends StatelessWidget {
             builder: (context, state) {
               return TextFormField(
                 initialValue: context.currentUserBloc.state.userModel!.phoneNumber,
+                maxLength: 16,
                 onChanged: (text) => context.clientRequestBloc
                     .add(ClientRequestUpdateEvent(clientRequestModel: state.requestModel.copyWith(phoneNumber: text))),
                 style: TextStyle(

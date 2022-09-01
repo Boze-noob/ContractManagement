@@ -154,67 +154,73 @@ class OverviewRequestsDataTableWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               direction: ResponsiveWidget.isSmallScreen(context) ? Axis.vertical : Axis.horizontal,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomText(
-                      text: 'Display name : ' + clientRequestModel.displayName,
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomText(
-                      text: 'Phone number : ' + clientRequestModel.phoneNumber.value,
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomText(
-                      text: 'Email : ' + clientRequestModel.email,
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomText(
-                      text: 'Location : ' + clientRequestModel.location,
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                  ],
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomText(
+                        text: 'Display name : ' + clientRequestModel.displayName,
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CustomText(
+                        text: 'Phone number : ' + clientRequestModel.phoneNumber.value,
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CustomText(
+                        text: 'Email : ' + clientRequestModel.email,
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CustomText(
+                        text: 'Location : ' + clientRequestModel.location,
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                    ],
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomText(
-                      text: 'Description : ' + clientRequestModel.description.value,
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomText(
-                      text: 'Request type : ' + clientRequestModel.requestType.translate(),
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomText(
-                      text: 'Created date time : ' + clientRequestModel.createdDateTime.formatDDMMYYHHMMSS(),
-                      size: 18,
-                      weight: FontWeight.normal,
-                    ),
-                  ],
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomText(
+                        text: 'Description : ' + clientRequestModel.description.value,
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CustomText(
+                        text: 'Request type : ' + clientRequestModel.requestType.translate(),
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CustomText(
+                        text: 'Created date time : ' + clientRequestModel.createdDateTime.formatDDMMYYHHMMSS(),
+                        size: 18,
+                        weight: FontWeight.normal,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

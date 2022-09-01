@@ -260,62 +260,74 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
         builder: (context) => CustomDialog(
           buttonText: 'Close',
           title: 'Request details',
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CustomText(
-                  text: 'Display name : ' + widget.requestState.clientRequestModel[index].displayName,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Phone number : ' + widget.requestState.clientRequestModel[index].phoneNumber.value,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Email : ' + widget.requestState.clientRequestModel[index].email,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Request type : ' + widget.requestState.clientRequestModel[index].requestType.translate(),
-                  size: 18,
-                  weight: FontWeight.bold,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Description : ' + widget.requestState.clientRequestModel[index].description.value,
-                  size: 18,
-                  weight: FontWeight.bold,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Location : ' + widget.requestState.clientRequestModel[index].location,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomText(
-                  text: 'Created date time : ' +
-                      widget.requestState.clientRequestModel[index].createdDateTime.formatDDMMYYHHMMSS(),
-                ),
-                SizedBox(
-                  height: 10,
-                )
-              ],
+          child: Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 15,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: 'Display name : ' + widget.requestState.clientRequestModel[index].displayName,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomText(
+                            text: 'Phone number : ' + widget.requestState.clientRequestModel[index].phoneNumber.value,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomText(
+                            text: 'Email : ' + widget.requestState.clientRequestModel[index].email,
+                          ),
+                        ],
+                      )),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text:
+                              'Request type : ' + widget.requestState.clientRequestModel[index].requestType.translate(),
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomText(
+                          text: 'Description : ' + widget.requestState.clientRequestModel[index].description.value,
+                          size: 18,
+                          weight: FontWeight.bold,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomText(
+                          text: 'Location : ' + widget.requestState.clientRequestModel[index].location,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomText(
+                          text: 'Created date time : ' +
+                              widget.requestState.clientRequestModel[index].createdDateTime.formatDDMMYYHHMMSS(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
