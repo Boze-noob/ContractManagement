@@ -12,11 +12,11 @@ class RequestType {
   String translate() {
     switch (index) {
       case 0:
-        return "activate";
+        return "Activate";
       case 1:
-        return "interference";
+        return "Interference";
       case 2:
-        return "repair";
+        return "Repair";
       default:
         return " ";
     }

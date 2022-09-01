@@ -12,11 +12,11 @@ class PaymentType {
   String translate() {
     switch (index) {
       case 0:
-        return "cash";
+        return "Cash";
       case 1:
-        return "creditCard";
+        return "Credit card";
       case 2:
-        return "checks";
+        return "Checks";
       default:
         return " ";
     }

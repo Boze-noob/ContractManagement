@@ -13,6 +13,7 @@ class AdminRequestWidget extends StatefulWidget {
 }
 
 class _AdminRequestWidgetState extends State<AdminRequestWidget> {
+  SortType clientRequestsSortType = SortType.oldest;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -59,12 +60,39 @@ class _AdminRequestWidgetState extends State<AdminRequestWidget> {
                     builder: (context, currentUserState) {
                       return ListView(
                         children: [
-                          CustomText(
-                            text: 'Clients requests list',
-                            color: Colors.black,
-                            weight: FontWeight.bold,
-                            size: context.textSizeXL,
-                            textAlign: TextAlign.center,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                text: 'Clients requests list',
+                                color: Colors.black,
+                                weight: FontWeight.bold,
+                                size: context.textSizeXL,
+                                textAlign: TextAlign.center,
+                              ),
+                              DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  icon: Icon(Icons.sort),
+                                  iconSize: 28,
+                                  style: TextStyle(fontSize: 16),
+                                  value: clientRequestsSortType,
+                                  items: SortType.values.map((sortType) {
+                                    return DropdownMenuItem(
+                                      value: sortType,
+                                      child: Text(sortType.translate()),
+                                    );
+                                  }).toList(),
+                                  onChanged: (SortType? newValue) {
+                                    if (newValue != null) {
+                                      setState(() {
+                                        clientRequestsSortType = newValue;
+                                      });
+                                      context.requestsBloc.add(RequestsSortEvent(sortType: newValue));
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 8,

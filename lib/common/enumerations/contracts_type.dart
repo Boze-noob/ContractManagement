@@ -14,13 +14,13 @@ class ContractType {
   String translate() {
     switch (index) {
       case 0:
-        return "active";
+        return "Active";
       case 1:
-        return "completed";
+        return "Completed";
       case 2:
-        return "terminated";
+        return "Terminated";
       case 3:
-        return "request";
+        return "Request";
       default:
         return " ";
     }

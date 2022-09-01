@@ -6,3 +6,4 @@ export 'order_status_type.dart';
 export 'payment_type.dart';
 export 'request_type.dart';
 export 'role_type.dart';
+export 'sort_type.dart';

@@ -10,9 +10,9 @@ class AdminRequestType {
   String translate() {
     switch (index) {
       case 0:
-        return "order";
+        return "Order";
       case 1:
-        return "announcement";
+        return "Announcement";
       default:
         return " ";
     }

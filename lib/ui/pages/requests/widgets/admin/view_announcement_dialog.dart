@@ -19,30 +19,6 @@ class ViewAnnouncementDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: 'Id: ${announcementModel.id.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Order id: ${announcementModel.orderId.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
-                text: 'Receiver id: ${announcementModel.receiverId.value}',
-                weight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomText(
                 text: 'Receiver name: ${announcementModel.receiverName.value}',
                 weight: FontWeight.normal,
                 color: Colors.black,
@@ -67,7 +43,7 @@ class ViewAnnouncementDialog extends StatelessWidget {
                 height: 10,
               ),
               CustomText(
-                text: 'Price: ${announcementModel.price.value}',
+                text: 'Price: ${announcementModel.price.value} KM',
                 weight: FontWeight.normal,
                 color: Colors.black,
               ),

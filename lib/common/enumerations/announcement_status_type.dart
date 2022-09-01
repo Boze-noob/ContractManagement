@@ -17,17 +17,17 @@ class AnnouncementStatusType {
   String translate() {
     switch (index) {
       case 0:
-        return "waiting";
+        return "Waiting";
       case 1:
-        return "sent";
+        return "Sent";
       case 2:
-        return "in progress";
+        return "In progress";
       case 3:
-        return "done";
+        return "Done";
       case 4:
-        return "approved";
+        return "Approved";
       case 5:
-        return "declined";
+        return "Declined";
       default:
         return " ";
     }

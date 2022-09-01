@@ -14,13 +14,13 @@ class OrderStatusType {
   String translate() {
     switch (index) {
       case 0:
-        return "waiting";
+        return "Waiting";
       case 1:
-        return "declined";
+        return "Declined";
       case 2:
-        return "sent";
+        return "Sent";
       case 3:
-        return "accepted";
+        return "Accepted";
       default:
         return " ";
     }

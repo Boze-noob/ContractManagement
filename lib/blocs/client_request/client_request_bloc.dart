@@ -54,16 +54,18 @@ class ClientRequestBloc extends Bloc<ClientRequestEvent, ClientRequestState> {
     emit(
       state.copyWith(status: ClientRequestStateStatus.submitting),
     );
-
     final result = await clientsRepo.sendClientRequest(state.requestModel.copyWith(id: generateRandomId()));
     if (result) {
       emit(
         state.copyWith(status: ClientRequestStateStatus.submittedSuccessfully),
       );
-      initialState();
-    } else
+    } else {
       emit(
         state.copyWith(status: ClientRequestStateStatus.error, errorMessage: 'Error happen'),
       );
+    }
+    emit(
+      state.copyWith(status: ClientRequestStateStatus.init),
+    );
   }
 }
