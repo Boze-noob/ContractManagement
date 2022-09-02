@@ -10,7 +10,6 @@ class CompaniesPage extends StatefulWidget {
 }
 
 class _CompaniesPageState extends State<CompaniesPage> {
-  //TODO potrebno validaciju odradit
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -83,5 +82,11 @@ class _CompaniesPageState extends State<CompaniesPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.contractsBloc.add(ContractsLoadEvent(contractType: ContractType.active));
   }
 }

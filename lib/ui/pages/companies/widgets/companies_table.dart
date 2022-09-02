@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:contract_management/_all.dart';
@@ -88,15 +89,12 @@ class CompaniesTable extends StatelessWidget {
                           padding: const EdgeInsets.all(5.0),
                           child: Row(
                             children: [
-                              Button(
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                                child: CustomText(
-                                  text: 'View',
+                              IconButton(
+                                icon: Icon(
+                                  Icons.visibility,
+                                  color: active,
                                 ),
-                                textColor: black,
-                                shrinkWrap: true,
-                                borderRadius: 40,
-                                onTap: () => showDialog(
+                                onPressed: () => showDialog(
                                   context: context,
                                   builder: (context) => CustomDialog(
                                     buttonText: 'Close',
@@ -108,32 +106,35 @@ class CompaniesTable extends StatelessWidget {
                                         children: [
                                           CustomText(
                                             text: 'Display name: ' + state.companies[index].displayName,
-                                            size: context.textSizeM,
+                                            size: context.textSizeL,
                                           ),
                                           SizedBox(
                                             height: 15,
                                           ),
                                           CustomText(
                                             text: 'Email: ' + state.companies[index].email,
-                                            size: context.textSizeM,
+                                            size: context.textSizeL,
                                           ),
                                           SizedBox(
                                             height: 15,
                                           ),
                                           CustomText(
                                             text: 'Role: ' + state.companies[index].role,
-                                            size: context.textSizeM,
+                                            size: context.textSizeL,
                                           ),
                                           SizedBox(
                                             height: 15,
                                           ),
                                           CustomText(
                                             text: 'Phone number: ' + state.companies[index].phoneNumber.value,
-                                            size: context.textSizeM,
+                                            size: context.textSizeL,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
                                           ),
                                           CustomText(
                                             text: 'Signed contract: ' + state.companies[index].contractId.value,
-                                            size: context.textSizeM,
+                                            size: context.textSizeL,
                                           ),
                                           SizedBox(
                                             height: 15,
@@ -144,15 +145,9 @@ class CompaniesTable extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Button(
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                                child: CustomText(
-                                  text: 'Edit',
-                                  color: active,
-                                ),
-                                shrinkWrap: true,
-                                borderRadius: 40,
-                                onTap: () => showDialog(
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => showDialog(
                                   context: context,
                                   builder: (context) => BlocProvider(
                                     create: (context) =>
@@ -251,18 +246,41 @@ class CompaniesTable extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Button(
-                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-                                child: CustomText(
-                                  text: 'Delete',
-                                  color: delete,
+                              IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: context.appTheme.danger,
                                 ),
-                                shrinkWrap: true,
-                                borderRadius: 40,
-                                onTap: () => context.companiesBloc.add(
+                                onPressed: () => context.companiesBloc.add(
                                   CompaniesDeleteEvent(companyId: state.companies[index].id),
                                 ),
                               ),
+                              BlocBuilder<ContractsBloc, ContractsState>(
+                                builder: (context, contractsState) {
+                                  print("Company id is" + state.companies[index].id.toString());
+                                  print(contractsState.status.toString());
+                                  print(contractsState.contracts.toString());
+                                  contractsState.contracts.forEach((contract) {
+                                    print("Contract is " + contract.companyId);
+                                  });
+                                  ContractModel? contractModel = contractsState.contracts.firstWhereOrNull(
+                                    (contract) => contract.companyId == state.companies[index].id,
+                                  );
+                                  return IconButton(
+                                    icon: Icon(Icons.description),
+                                    onPressed: () => contractModel == null
+                                        ? showInfoMessage("Company did not sign contract yet", context)
+                                        : showDialog(
+                                            context: context,
+                                            builder: (context) => ContractDialog(
+                                              createContractModel: contractsState.templates.firstWhere((template) =>
+                                                  template.contractName == contractModel.contractTemplateId),
+                                              contractModel: contractModel,
+                                            ),
+                                          ),
+                                  );
+                                },
+                              )
                             ],
                           ),
                         )),

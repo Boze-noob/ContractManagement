@@ -1,5 +1,6 @@
 export 'alerts.dart';
 export 'button.dart';
+export 'contract_dialog.dart';
 export 'custom_text.dart';
 export 'custom_dialog.dart';
 export 'horizontal_menu_item.dart';

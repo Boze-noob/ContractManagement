@@ -15,6 +15,7 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
   static ContractsState initialState() => ContractsState(
         status: ContractsStateStatus.init,
         contracts: List.empty(),
+        templates: [],
       );
 
   void _init(ContractsInitEvent event, Emitter<ContractsState> emit) {
@@ -30,8 +31,9 @@ class ContractsBloc extends Bloc<ContractsEvent, ContractsState> {
       event.contractType,
     );
     if (contracts != null) {
+      final templates = await contractsRepo.loadContractsTemplates();
       emit(
-        state.copyWith(status: ContractsStateStatus.loaded, contracts: contracts),
+        state.copyWith(status: ContractsStateStatus.loaded, contracts: contracts, templates: templates),
       );
     } else {
       emit(
