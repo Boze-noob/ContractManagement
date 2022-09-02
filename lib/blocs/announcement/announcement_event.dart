@@ -43,3 +43,11 @@ class AnnouncementDeclineEvent extends AnnouncementEvent {
     this.declineMessage,
   });
 }
+
+class AnnouncementSortEvent extends AnnouncementEvent {
+  final AnnouncementSortType announcementSortType;
+
+  AnnouncementSortEvent({
+    required this.announcementSortType,
+  });
+}

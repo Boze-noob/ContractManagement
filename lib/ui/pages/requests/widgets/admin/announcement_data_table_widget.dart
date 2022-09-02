@@ -61,12 +61,8 @@ class AnnouncementDataTableWidget extends StatelessWidget {
         showCheckboxColumn: false,
         columns: [
           DataColumn2(
-            label: CustomText(text: 'ID'),
-            size: ColumnSize.L,
-            tooltip: "Announcement id",
-          ),
-          DataColumn(
             label: CustomText(text: 'Receiver'),
+            size: ColumnSize.L,
             tooltip: "Name of company who received announcement",
           ),
           DataColumn(
@@ -99,9 +95,6 @@ class AnnouncementDataTableWidget extends StatelessWidget {
               ),
             ),
             cells: [
-              DataCell(
-                CustomText(text: announcementsModels[index].orderId),
-              ),
               DataCell(
                 CustomText(text: announcementsModels[index].receiverName),
               ),

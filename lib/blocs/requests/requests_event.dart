@@ -12,8 +12,8 @@ class RequestsDeleteEvent extends RequestsEvent {
   RequestsDeleteEvent({required this.id});
 }
 
-class RequestsSortEvent extends RequestsEvent {
-  final SortType sortType;
+class RequestsSortClientRequestsEvent extends RequestsEvent {
+  final ClientRequestSortType sortType;
 
-  RequestsSortEvent({required this.sortType});
+  RequestsSortClientRequestsEvent({required this.sortType});
 }

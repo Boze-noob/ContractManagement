@@ -52,3 +52,9 @@ class OrderGetCompaniesForOrderEvent extends OrderEvent {
 
   OrderGetCompaniesForOrderEvent({required this.contractItems});
 }
+
+class OrderSortEvent extends OrderEvent {
+  final OrderSortType orderSortType;
+
+  OrderSortEvent({required this.orderSortType});
+}

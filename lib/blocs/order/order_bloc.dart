@@ -15,6 +15,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderDeleteEvent>(_delete);
     on<OrderSubmitUpdateEvent>(_submitUpdate);
     on<OrderGetCompaniesForOrderEvent>(_getCompanies);
+    on<OrderSortEvent>(_sort);
   }
 
   static OrderState initialState() => OrderState(
@@ -122,5 +123,35 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(state.copyWith(status: OrderStateStatus.loaded, companiesForOrder: result));
     else
       emit(state.copyWith(status: OrderStateStatus.error, message: 'Error happen'));
+  }
+
+  Future<void> _sort(OrderSortEvent event, Emitter<OrderState> emit) async {
+    emit(state.copyWith(status: OrderStateStatus.loading));
+    List<OrderModel> orders = state.orderModels;
+    if (event.orderSortType == OrderSortType.newest || event.orderSortType == OrderSortType.oldest) {
+      orders.sort((a, b) => a.createdDateTime.compareTo(b.createdDateTime));
+      if (event.orderSortType == OrderSortType.newest) orders = orders.reversed.toList();
+      emit(
+        state.copyWith(
+          status: OrderStateStatus.loaded,
+          orderModels: orders,
+        ),
+      );
+    } else {
+      List<OrderModel> sortedOrders = [];
+      orders.forEach((order) {
+        if (order.orderStatusType.translate() == event.orderSortType.translate()) {
+          sortedOrders..insert(0, order);
+        } else {
+          sortedOrders..add(order);
+        }
+      });
+      emit(
+        state.copyWith(
+          status: OrderStateStatus.loaded,
+          orderModels: sortedOrders,
+        ),
+      );
+    }
   }
 }

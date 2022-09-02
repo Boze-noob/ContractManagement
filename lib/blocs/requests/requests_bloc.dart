@@ -7,7 +7,7 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
     on<RequestsInitEvent>(_init);
     on<RequestsLoadEvent>(_load);
     on<RequestsDeleteEvent>(_delete);
-    on<RequestsSortEvent>(_sort);
+    on<RequestsSortClientRequestsEvent>(_sortClientRequests);
   }
 
   static RequestsState initialState() => RequestsState(
@@ -40,11 +40,11 @@ class RequestsBloc extends Bloc<RequestsEvent, RequestsState> {
     emit(state.copyWith(status: RequestsStateStatus.loaded, clientRequestModel: requests));
   }
 
-  void _sort(RequestsSortEvent event, Emitter<RequestsState> emit) {
+  void _sortClientRequests(RequestsSortClientRequestsEvent event, Emitter<RequestsState> emit) {
     emit(state.copyWith(status: RequestsStateStatus.loading));
     List<ClientRequestModel> requests = List.from(state.clientRequestModel);
     requests.sort((a, b) => a.createdDateTime.compareTo(b.createdDateTime));
-    if (event.sortType == SortType.newest) requests = requests.reversed.toList();
+    if (event.sortType == ClientRequestSortType.newest) requests = requests.reversed.toList();
     emit(
       state.copyWith(
         status: RequestsStateStatus.loaded,
