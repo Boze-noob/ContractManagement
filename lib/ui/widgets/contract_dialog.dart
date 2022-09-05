@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class ContractDialog extends StatelessWidget {
   CreateContractModel createContractModel;
-  ContractModel contractModel;
+  ContractModel? contractModel;
 
   ContractDialog({
     Key? key,
-    required this.contractModel,
     required this.createContractModel,
+    this.contractModel,
   }) : super(key: key);
 
   @override
@@ -77,21 +77,22 @@ class ContractDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomText(
-                      text: "Company name: " + contractModel.companyName,
+                      text: "Company name: " + (contractModel?.companyName ?? " - "),
                       size: 18,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     CustomText(
-                      text: "Completion date time: " + contractModel.completionDateTime.formatDDMMYYHHMMSS(),
+                      text:
+                          "Completion date time: " + (contractModel?.completionDateTime.formatDDMMYYHHMMSS() ?? " - "),
                       size: 18,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     CustomText(
-                      text: "Contract status: " + contractModel.contractStatus.translate(),
+                      text: "Contract status: " + (contractModel?.contractStatus.translate() ?? " - "),
                       size: 18,
                     ),
                   ],

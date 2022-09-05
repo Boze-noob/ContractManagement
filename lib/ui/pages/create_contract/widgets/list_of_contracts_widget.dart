@@ -40,15 +40,22 @@ class ListOfContracts extends StatelessWidget {
                   itemCount: state.createContractModel.length,
                   itemBuilder: (context, i) {
                     return ListTile(
-                      title: Text(state.createContractModel[i].contractName),
+                      title: CustomText(
+                        text: state.createContractModel[i].contractName,
+                        size: 20,
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                             icon: Icon(Icons.remove_red_eye),
                             onPressed: () {
-                              context.createContractBloc
-                                  .add(CreateContractUpdateEvent(createContractModel: state.createContractModel[i]));
+                              showDialog(
+                                context: context,
+                                builder: (context) => ContractDialog(
+                                  createContractModel: state.createContractModel[i],
+                                ),
+                              );
                             },
                           ),
                           SizedBox(

@@ -48,6 +48,7 @@ class ContractsDataTableWidget extends StatelessWidget {
         horizontalMargin: 12,
         minWidth: 600,
         dataRowHeight: context.screenHeight / 13,
+        showCheckboxColumn: false,
         columns: [
           DataColumn2(
             label: Text(firstColumnName),
@@ -69,6 +70,13 @@ class ContractsDataTableWidget extends StatelessWidget {
         rows: List<DataRow>.generate(
           contractsState.contracts.length,
           (index) => DataRow(
+            onSelectChanged: (isSelected) => showDialog(
+              context: context,
+              builder: (context) => ContractDialog(
+                createContractModel: contractsState.templates[index],
+                contractModel: contractsState.contracts[index],
+              ),
+            ),
             cells: [
               DataCell(
                 CustomText(text: contractsState.contracts[index].companyName),
