@@ -56,6 +56,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
         horizontalMargin: 12,
         minWidth: 600,
         dataRowHeight: context.screenHeight / 13,
+        showCheckboxColumn: false,
         columns: [
           DataColumn2(
             label: Text('Order id'),
@@ -81,6 +82,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
         rows: List<DataRow>.generate(
           announcementsModels.length,
           (index) => DataRow(
+            onSelectChanged: (isSelected) => viewBtnOnTap(index),
             color: MaterialStateProperty.all(announcementsModels[index].announcementStatusType.translate() ==
                     AnnouncementStatusType.declined.translate()
                 ? Colors.red
@@ -116,16 +118,6 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                     visible: !ResponsiveWidget.isSmallScreen(context),
                     child: Row(
                       children: [
-                        Expanded(
-                          child: Button(
-                            text: 'View',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                            borderColor: active,
-                            onTap: () => viewBtnOnTap(index),
-                          ),
-                        ),
                         Visibility(
                           visible: announcementsModels[index].announcementStatusType.translate() !=
                                   AnnouncementStatusType.inProgress.translate() &&

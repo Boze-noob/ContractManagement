@@ -54,6 +54,7 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
         horizontalMargin: 12,
         minWidth: 600,
         dataRowHeight: context.screenHeight / 13,
+        showCheckboxColumn: false,
         columns: [
           DataColumn2(
             label: Text('Employer name'),
@@ -79,6 +80,7 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
         rows: List<DataRow>.generate(
           orderModels.length,
           (index) => DataRow(
+            onSelectChanged: (isSelected) => viewBtnOnTap(index),
             cells: [
               DataCell(
                 CustomText(text: orderModels[index].employerName),
@@ -110,16 +112,6 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
                     visible: !ResponsiveWidget.isSmallScreen(context),
                     child: Row(
                       children: [
-                        Expanded(
-                          child: Button(
-                            text: 'View',
-                            textColor: active,
-                            borderRadius: 20,
-                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                            borderColor: active,
-                            onTap: () => viewBtnOnTap(index),
-                          ),
-                        ),
                         (() {
                           if (orderModels[index].orderStatusType.translate() == OrderStatusType.declined.translate() ||
                               orderModels[index].orderStatusType.translate() == OrderStatusType.accepted.translate())

@@ -39,8 +39,9 @@ class WorkingDayModel {
   }
 
   factory WorkingDayModel.fromMap(dynamic map) {
+    print("This is working day model map" + map.toString());
     return WorkingDayModel(
-      dateTime: map['dateTime'] != null ? map['dateTime'].toDate().format() : null,
+      dateTime: map['dateTime'].toDate(),
       weather: map['weather'],
       employers: map['employers'],
       machines: map['machines'],

@@ -85,9 +85,9 @@ class WorkDiaryModel {
       interferences: map['interferences'],
       additionalRequirements: map['additionalRequirements'],
       specialCases: map['specialCases'],
-      startDate: map['startDate'] != null ? map['startDate'].toDate().format() : null,
-      endDate: map['endDate'] != null ? map['endDate'].toDate().format() : null,
-      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate().format() : null,
+      startDate: map['startDate'] != null ? map['startDate'].toDate() : null,
+      endDate: map['endDate'] != null ? map['endDate'].toDate() : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
       workingDayModels: map['workingDayModels'].map<WorkingDayModel>((item) => WorkingDayModel.fromMap(item)).toList(),
     );
   }
