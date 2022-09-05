@@ -23,7 +23,6 @@ class _WorkDiariesPageState extends State<WorkDiariesPage> {
       create: (context) => NavigatorBloc(),
       child: BlocBuilder<WorkDiariesBloc, WorkDiariesState>(
         builder: (context, workDiariesState) {
-          print("Status is this" + workDiariesState.status.toString());
           if (workDiariesState.status == WorkDiariesStateStatus.loading)
             return Center(
               child: Loader(

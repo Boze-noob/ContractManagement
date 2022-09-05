@@ -98,7 +98,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
               ),
               DataCell(
                 CustomText(
-                  text: announcementsModels[index].price + '\$',
+                  text: announcementsModels[index].price + ' KM',
                 ),
               ),
               DataCell(
