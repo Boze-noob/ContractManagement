@@ -12,6 +12,8 @@ class AnnouncementModel {
   final String employerName;
   final AnnouncementStatusType announcementStatusType;
   final String? declineComment;
+  final String? clientPhoneNumber;
+  final String clientDescription;
 
   AnnouncementModel({
     required this.id,
@@ -25,6 +27,8 @@ class AnnouncementModel {
     required this.employerName,
     required this.announcementStatusType,
     this.declineComment,
+    this.clientPhoneNumber,
+    required this.clientDescription,
   });
 
   AnnouncementModel copyWith({
@@ -40,6 +44,8 @@ class AnnouncementModel {
     String? employerName,
     AnnouncementStatusType? announcementStatusType,
     String? declineComment,
+    String? clientPhoneNumber,
+    String? clientDescription,
   }) =>
       AnnouncementModel(
         id: id ?? this.id,
@@ -51,9 +57,10 @@ class AnnouncementModel {
         createdDateTime: createdDateTime ?? this.createdDateTime,
         completionDateTime: completionDateTime ?? this.completionDateTime,
         employerName: employerName ?? this.employerName,
-        announcementStatusType:
-            announcementStatusType ?? this.announcementStatusType,
+        announcementStatusType: announcementStatusType ?? this.announcementStatusType,
         declineComment: declineComment ?? this.declineComment,
+        clientPhoneNumber: clientPhoneNumber ?? this.clientPhoneNumber,
+        clientDescription: clientDescription ?? this.clientDescription,
       );
 
   Map<String, dynamic> toMap() {
@@ -69,6 +76,8 @@ class AnnouncementModel {
       'employerName': employerName,
       'announcementStatusType': announcementStatusType.index,
       'declineComment': declineComment,
+      'clientPhoneNumber': clientPhoneNumber,
+      'clientDescription': clientDescription,
     };
   }
 
@@ -78,19 +87,15 @@ class AnnouncementModel {
       orderId: map['orderId'],
       receiverId: map['receiverId'],
       receiverName: map['receiverName'],
-      contractItems: ContractItemsType.getContractItemsFromIndexList(
-          List<int>.from(map['contractItems'])),
+      contractItems: ContractItemsType.getContractItemsFromIndexList(List<int>.from(map['contractItems'])),
       price: map['price'],
-      createdDateTime: map['createdDateTime'] != null
-          ? map['createdDateTime'].toDate()
-          : null,
-      completionDateTime: map['completionDateTime'] != null
-          ? map['completionDateTime'].toDate()
-          : null,
+      createdDateTime: map['createdDateTime'] != null ? map['createdDateTime'].toDate() : null,
+      completionDateTime: map['completionDateTime'] != null ? map['completionDateTime'].toDate() : null,
       employerName: map['employerName'],
-      announcementStatusType:
-          AnnouncementStatusType.getValue(map['announcementStatusType']),
+      announcementStatusType: AnnouncementStatusType.getValue(map['announcementStatusType']),
       declineComment: map['declineComment'] ?? null,
+      clientPhoneNumber: map['clientPhoneNumber'],
+      clientDescription: map['clientDescription'],
     );
   }
 }

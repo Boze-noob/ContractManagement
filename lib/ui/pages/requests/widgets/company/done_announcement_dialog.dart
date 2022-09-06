@@ -75,7 +75,7 @@ class _DoneAnnouncementDialogState extends State<DoneAnnouncementDialog> {
                           height: 10,
                         ),
                         CustomText(
-                          text: 'Agreed costs: ${widget.announcementModel.price}',
+                          text: 'Agreed costs: ${widget.announcementModel.price} KM',
                           size: context.textSizeM,
                           color: Colors.black,
                         ),
@@ -157,7 +157,7 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
         return Row(
           children: [
             CustomText(
-              text: 'Additional costs: ${billState.billModel.additionalReqPrice.value}',
+              text: 'Additional costs: ${billState.billModel.additionalReqPrice.value} KM',
               size: context.textSizeS,
               color: Colors.black,
             ),
@@ -221,44 +221,46 @@ class __AdditionalCostWidgetState extends State<_AdditionalCostWidget> {
             ),
             IconButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => Dialog(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                text: 'Edit price',
-                                textAlign: TextAlign.center,
-                                size: context.textSizeM,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                width: 300,
-                                child: TextFormField(
-                                  initialValue: billState.billModel.additionalReqPrice.value,
-                                  onChanged: (text) => context.billBloc.add(BillUpdateEvent(
-                                      billModel: billState.billModel.copyWith(additionalReqPrice: text))),
-                                  style: TextFormFieldStyle.inputFieldTextStyle(),
-                                  decoration: TextFormFieldStyle.inputDecoration('Additional cost'),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Button(
-                                text: 'Ok',
-                                shrinkWrap: true,
-                                color: active,
-                                onTap: () => Get.back(),
-                              )
-                            ],
+                context: context,
+                builder: (BuildContext context) => Dialog(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomText(
+                          text: 'Edit price',
+                          textAlign: TextAlign.center,
+                          size: context.textSizeL,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          width: context.screenWidth / 5,
+                          child: TextFormField(
+                            initialValue: billState.billModel.additionalReqPrice.value,
+                            maxLength: 8,
+                            onChanged: (text) => context.billBloc.add(
+                                BillUpdateEvent(billModel: billState.billModel.copyWith(additionalReqPrice: text))),
+                            style: TextFormFieldStyle.inputFieldTextStyle(),
+                            decoration: TextFormFieldStyle.inputDecoration('Additional cost'),
                           ),
                         ),
-                      )),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Button(
+                          text: 'Ok',
+                          shrinkWrap: true,
+                          color: active,
+                          onTap: () => Get.back(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               icon: Icon(
                 Icons.create,
               ),
@@ -292,7 +294,7 @@ class __TotalCostWidgetState extends State<_TotalCostWidget> {
         return Row(
           children: [
             CustomText(
-              text: 'Total: $totalPrice',
+              text: 'Total: $totalPrice KM',
               size: context.textSizeM,
               color: Colors.black,
             ),
@@ -311,21 +313,26 @@ class __TotalCostWidgetState extends State<_TotalCostWidget> {
                               CustomText(
                                 text: 'Edit price',
                                 textAlign: TextAlign.center,
+                                size: context.textSizeL,
                               ),
                               SizedBox(
                                 height: 10,
                               ),
-                              TextFormField(
-                                initialValue: totalPrice,
-                                onChanged: (text) {
-                                  setState(() {
-                                    totalPrice = text;
-                                  });
-                                  context.billBloc
-                                      .add(BillUpdateEvent(billModel: billState.billModel.copyWith(price: text)));
-                                },
-                                style: TextFormFieldStyle.inputFieldTextStyle(),
-                                decoration: TextFormFieldStyle.inputDecoration('Total price'),
+                              SizedBox(
+                                width: context.screenWidth / 5,
+                                child: TextFormField(
+                                  initialValue: totalPrice,
+                                  maxLength: 8,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      totalPrice = text;
+                                    });
+                                    context.billBloc
+                                        .add(BillUpdateEvent(billModel: billState.billModel.copyWith(price: text)));
+                                  },
+                                  style: TextFormFieldStyle.inputFieldTextStyle(),
+                                  decoration: TextFormFieldStyle.inputDecoration('Total price'),
+                                ),
                               ),
                               SizedBox(
                                 height: 10,

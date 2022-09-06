@@ -49,7 +49,11 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(
       state.copyWith(
         orderModel: state.orderModel.copyWith(
-            senderName: event.senderName, employerName: event.employerName, orderLocation: event.orderLocation),
+          senderName: event.clientRequestModel.displayName,
+          employerName: event.employerName,
+          orderLocation: event.clientRequestModel.location,
+          clientPhoneNumber: event.clientRequestModel.phoneNumber,
+        ),
       ),
     );
   }

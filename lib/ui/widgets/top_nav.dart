@@ -80,19 +80,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) => A
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        TextFormField(
-                                          obscureText: true,
-                                          decoration: const InputDecoration(
-                                            icon: const Icon(Icons.password),
-                                            hintText: 'Enter password',
-                                            labelText: 'Password',
-                                          ),
-                                          onChanged: (text) => context.createUserBloc.add(
-                                            CreateUserUpdateModelEvent(
-                                              userModel: state.userModel.copyWith(password: text),
-                                            ),
-                                          ),
-                                        ),
+                                        _PasswordWidget(createUserState: state),
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -480,5 +468,42 @@ class _NotificationBellWidgetState extends State<_NotificationBellWidget> {
 
     // Inserting the OverlayEntry into the Overlay
     overlayState?.insert(overlayEntry);
+  }
+}
+
+class _PasswordWidget extends StatefulWidget {
+  CreateUserState createUserState;
+
+  _PasswordWidget({
+    Key? key,
+    required this.createUserState,
+  }) : super(key: key);
+
+  @override
+  State<_PasswordWidget> createState() => _PasswordWidgetState();
+}
+
+class _PasswordWidgetState extends State<_PasswordWidget> {
+  bool isObscureText = true;
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      obscureText: isObscureText,
+      decoration: InputDecoration(
+          icon: Icon(Icons.password),
+          hintText: 'Enter password',
+          labelText: 'Password',
+          suffixIcon: IconButton(
+            onPressed: () => setState(() {
+              isObscureText = !isObscureText;
+            }),
+            icon: Icon(isObscureText ? Icons.visibility : Icons.visibility_off),
+          )),
+      onChanged: (text) => context.createUserBloc.add(
+        CreateUserUpdateModelEvent(
+          userModel: widget.createUserState.userModel.copyWith(password: text),
+        ),
+      ),
+    );
   }
 }

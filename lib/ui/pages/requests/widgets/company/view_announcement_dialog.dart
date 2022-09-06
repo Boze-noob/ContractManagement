@@ -44,6 +44,24 @@ class CompanyViewAnnouncementDialog extends StatelessWidget {
                       height: 10,
                     ),
                     CustomText(
+                      text: 'Client phone num: ${announcementModel.clientPhoneNumber.value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Client description: ${announcementModel.clientDescription.value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
                       text: 'Create date time: ${announcementModel.createdDateTime.formatDDMMYY().value}',
                       weight: FontWeight.normal,
                       color: Colors.black,

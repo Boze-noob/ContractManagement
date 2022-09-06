@@ -79,11 +79,12 @@ class BillDataWidget extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                _dataRowWidget('Price: ' + state.billModel.price, context),
+                _dataRowWidget('Price: ' + state.billModel.price + ' KM', context),
                 SizedBox(
                   height: 10,
                 ),
-                _dataRowWidget('Additional requests price: ' + state.billModel.additionalReqPrice.value, context),
+                _dataRowWidget(
+                    'Additional requests price: ' + state.billModel.additionalReqPrice.value + ' KM', context),
                 SizedBox(
                   height: 10,
                 ),

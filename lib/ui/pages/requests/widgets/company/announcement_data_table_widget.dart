@@ -58,10 +58,6 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
         dataRowHeight: context.screenHeight / 13,
         showCheckboxColumn: false,
         columns: [
-          DataColumn2(
-            label: Text('Order id'),
-            size: ColumnSize.L,
-          ),
           DataColumn(
             label: Text('Employer name'),
           ),
@@ -69,7 +65,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
             label: Text('Price'),
           ),
           DataColumn(
-            label: Text('Date time'),
+            label: Text('Completion date'),
           ),
           DataColumn(
             label: Text('Status type'),
@@ -89,9 +85,6 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                 : Colors.transparent),
             cells: [
               DataCell(
-                CustomText(text: announcementsModels[index].orderId),
-              ),
-              DataCell(
                 CustomText(
                   text: announcementsModels[index].employerName,
                 ),
@@ -103,7 +96,7 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
               ),
               DataCell(
                 CustomText(
-                  text: announcementsModels[index].createdDateTime.toLocal().formatDDMMYY(),
+                  text: announcementsModels[index].completionDateTime.toLocal().formatDDMMYY(),
                 ),
               ),
               DataCell(

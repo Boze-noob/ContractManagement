@@ -34,6 +34,14 @@ class ViewOrderDialog extends StatelessWidget {
                           height: 10,
                         ),
                         CustomText(
+                          text: 'Client phone num: ${orderModel.clientPhoneNumber.value}',
+                          weight: FontWeight.normal,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomText(
                           text: 'Receiver name: ${orderModel.receiverName.value}',
                           weight: FontWeight.normal,
                           color: Colors.black,

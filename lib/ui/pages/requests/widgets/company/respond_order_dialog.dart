@@ -9,39 +9,41 @@ class CompanyRespondDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomDialog(
-      title: 'Pick the option',
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Button(
+    return AlertDialog(
+      title: Text('Pick the option'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: Button(
                     text: 'Accept',
                     color: Colors.green.withOpacity(0.7),
                     onTap: () {
                       acceptOnTap();
                       Get.back();
                     }),
-                SizedBox(
-                  width: 15,
-                ),
-                Button(
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Button(
                     text: 'Decline',
                     color: Colors.red.withOpacity(0.7),
                     onTap: () {
                       declineOnTap();
                       Get.back();
                     }),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

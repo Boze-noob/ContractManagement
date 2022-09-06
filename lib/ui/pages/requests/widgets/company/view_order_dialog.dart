@@ -46,6 +46,15 @@ class CompanyViewOrderDialog extends StatelessWidget {
                       height: 10,
                     ),
                     CustomText(
+                      text: 'Client phone num: ${orderModel.clientPhoneNumber.value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
                       text: 'Payment type: ${orderModel.paymentType.translate().value}',
                       weight: FontWeight.normal,
                       color: Colors.black,
@@ -70,15 +79,6 @@ class CompanyViewOrderDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
-                      text: 'Create date time: ${orderModel.createdDateTime.formatDDMMYY().value}',
-                      weight: FontWeight.normal,
-                      color: Colors.black,
-                      size: 18,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     CustomText(
                       text:
                           'Sent date time: ${orderModel.sentDateTime != null ? orderModel.sentDateTime!.formatDDMMYY().toString() : 'Not defined yet'}',
@@ -116,6 +116,15 @@ class CompanyViewOrderDialog extends StatelessWidget {
                           ),
                         );
                       },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomText(
+                      text: 'Completion date time: ${orderModel.completionDateTime.formatDDMMYY().value}',
+                      weight: FontWeight.normal,
+                      color: Colors.black,
+                      size: 18,
                     ),
                     SizedBox(
                       height: 10,

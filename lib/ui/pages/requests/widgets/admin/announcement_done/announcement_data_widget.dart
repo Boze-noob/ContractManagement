@@ -81,7 +81,7 @@ class AnnouncementDataWidget extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          _dataRowWidget('Price: ' + announcementModel.price, context),
+          _dataRowWidget('Price: ' + announcementModel.price + ' KM', context),
           SizedBox(
             height: 10,
           ),

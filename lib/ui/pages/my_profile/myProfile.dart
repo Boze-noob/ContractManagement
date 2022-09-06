@@ -163,6 +163,7 @@ class _DisplayNameWidget extends StatelessWidget {
           Expanded(
             child: TextFormField(
               initialValue: state.userModel.displayName,
+              maxLength: 20,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               onChanged: (text) => context.editProfileBloc
                   .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(displayName: text))),
@@ -212,6 +213,7 @@ class _PhoneNumberWidget extends StatelessWidget {
           Expanded(
             child: TextFormField(
               initialValue: state.userModel.phoneNumber,
+              maxLength: 20,
               // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               onChanged: (text) => context.editProfileBloc
                   .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(phoneNumber: text))),
@@ -262,6 +264,7 @@ class _EmailWidget extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 initialValue: state.userModel.email,
+                maxLength: 30,
                 // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
                 onChanged: (text) => context.editProfileBloc
                     .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(email: text))),
@@ -313,6 +316,7 @@ class _LocationWidget extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 initialValue: state.userModel.location,
+                maxLength: 40,
                 // validator: (text) => context.editUserProfileValidator.email(editUserProfileState.model.copyWith(email: Optional(text))),
                 onChanged: (text) => context.editProfileBloc
                     .add(EditProfileUpdateEvent(userModel: state.userModel.copyWith(location: text))),

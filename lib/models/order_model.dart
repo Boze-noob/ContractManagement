@@ -18,6 +18,7 @@ class OrderModel {
   final String clientName;
   final String price;
   final String description;
+  final String? clientPhoneNumber;
 
   OrderModel({
     required this.id,
@@ -36,6 +37,7 @@ class OrderModel {
     required this.clientName,
     required this.price,
     required this.description,
+    this.clientPhoneNumber,
   });
 
   OrderModel copyWith({
@@ -55,6 +57,7 @@ class OrderModel {
     String? clientName,
     String? price,
     String? description,
+    String? clientPhoneNumber,
   }) =>
       OrderModel(
         id: id ?? this.id,
@@ -73,6 +76,7 @@ class OrderModel {
         clientName: clientName ?? this.clientName,
         price: price ?? this.price,
         description: description ?? this.description,
+        clientPhoneNumber: clientPhoneNumber ?? this.clientPhoneNumber,
       );
 
   Map<String, dynamic> toMap() {
@@ -93,6 +97,7 @@ class OrderModel {
       'clientName': clientName,
       'price': price,
       'description': description,
+      'clientPhoneNumber': clientPhoneNumber,
     };
   }
 
@@ -114,6 +119,7 @@ class OrderModel {
       price: map['price'],
       description: map['description'],
       sentDateTime: map['sentDateTime'] != null ? map['sentDateTime'].toDate() : null,
+      clientPhoneNumber: map['clientPhoneNumber'],
     );
   }
 }

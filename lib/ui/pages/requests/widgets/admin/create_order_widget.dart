@@ -48,8 +48,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                 ..add(
                   OrderInitClientDataEvent(
                     employerName: currentUser.displayName,
-                    senderName: clientRequestModel.displayName,
-                    orderLocation: clientRequestModel.location,
+                    clientRequestModel: clientRequestModel,
                   ),
                 );
             },

@@ -15,6 +15,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   TextEditingController _editTextPassword = TextEditingController();
 
   bool _rememberMeCheckBox = false;
+  bool _isObscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +77,19 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                   height: 15,
                 ),
                 TextField(
-                  obscureText: true,
+                  obscureText: _isObscureText,
                   controller: _editTextPassword,
                   decoration: InputDecoration(
                     labelText: "Password",
                     hintText: "123",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(_isObscureText ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () => setState(() {
+                        _isObscureText = !_isObscureText;
+                      }),
                     ),
                   ),
                 ),

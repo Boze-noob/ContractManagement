@@ -59,7 +59,6 @@ class _WorkingDayWidgetState extends State<WorkingDayWidget> {
                 onChanged: (WorkingDayModel? pickedValue) {
                   setState(() {
                     dropdownValue = pickedValue!;
-                    print(dropdownValue.dateTime.toLocal().formatDDMMYY());
                   });
                   context.workDiariesBloc.add(
                     WorkDiariesInitEvent(

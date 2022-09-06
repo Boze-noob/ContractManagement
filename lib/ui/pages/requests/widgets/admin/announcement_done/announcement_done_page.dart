@@ -43,6 +43,9 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
           shrinkWrap: true,
           padding: EdgeInsets.symmetric(horizontal: 20),
           children: [
+            SizedBox(
+              height: 20,
+            ),
             Align(
               alignment: Alignment.center,
               child: CustomText(
@@ -84,23 +87,21 @@ class _AnnouncementDonePageState extends State<AnnouncementDonePage> {
                         widget.announcementDeclineOnTap(declineTextEditingController.text.value);
                       },
                       title: 'Enter a comment',
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              width: 350,
-                              child: TextFormField(
-                                controller: declineTextEditingController,
-                                style: TextFormFieldStyle.inputFieldTextStyle(),
-                                decoration: TextFormFieldStyle.inputDecoration('Comment'),
+                      child: Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: declineTextEditingController,
+                                  style: TextFormFieldStyle.inputFieldTextStyle(),
+                                  decoration: TextFormFieldStyle.inputDecoration('Comment'),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

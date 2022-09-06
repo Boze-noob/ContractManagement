@@ -10,10 +10,9 @@ class OrderInitEvent extends OrderEvent {
 
 class OrderInitClientDataEvent extends OrderEvent {
   final String employerName;
-  final String senderName;
-  final String orderLocation;
+  final ClientRequestModel clientRequestModel;
 
-  OrderInitClientDataEvent({required this.employerName, required this.senderName, required this.orderLocation});
+  OrderInitClientDataEvent({required this.employerName, required this.clientRequestModel});
 }
 
 class OrderGetEvent extends OrderEvent {}

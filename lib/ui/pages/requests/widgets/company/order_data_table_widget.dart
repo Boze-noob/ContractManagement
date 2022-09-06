@@ -56,10 +56,6 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
         dataRowHeight: context.screenHeight / 13,
         showCheckboxColumn: false,
         columns: [
-          DataColumn2(
-            label: Text('Employer name'),
-            size: ColumnSize.L,
-          ),
           DataColumn(
             label: Text('Location'),
           ),
@@ -70,7 +66,7 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
             label: Text('Price'),
           ),
           DataColumn(
-            label: Text('Date time'),
+            label: Text('Completion date'),
           ),
           DataColumn2(
             label: Text(' '),
@@ -83,9 +79,6 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
             onSelectChanged: (isSelected) => viewBtnOnTap(index),
             cells: [
               DataCell(
-                CustomText(text: orderModels[index].employerName),
-              ),
-              DataCell(
                 CustomText(text: orderModels[index].orderLocation),
               ),
               DataCell(
@@ -95,14 +88,12 @@ class CompanyOrderDataTableWidget extends StatelessWidget {
               ),
               DataCell(
                 CustomText(
-                  text: orderModels[index].price + '\$',
+                  text: orderModels[index].price + ' KM',
                 ),
               ),
               DataCell(
                 CustomText(
-                  text: orderModels[index].sentDateTime != null
-                      ? orderModels[index].sentDateTime!.toLocal().formatDDMMYY()
-                      : 'Not defined',
+                  text: orderModels[index].sentDateTime!.toLocal().formatDDMMYY(),
                 ),
               ),
               DataCell(
