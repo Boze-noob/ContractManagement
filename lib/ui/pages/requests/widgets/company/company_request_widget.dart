@@ -137,6 +137,7 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                                 context.companyRequestsBloc.add(CompanyEditAnnouncementRequestsEvent(
                                     announcementStatusType: AnnouncementStatusType.inProgress,
                                     announcementId: companyRequestsState.announcementsModels[index].id));
+                                List<WorkingDayModel> workingDays = [WorkingDayModel(dateTime: DateTime.now())];
                                 context.workDiariesBloc.add(
                                   WorkDiariesCreateEvent(
                                     workDiaryModel: WorkDiaryModel(
@@ -145,7 +146,7 @@ class _CompanyRequestWidgetState extends State<CompanyRequestWidget> {
                                       completionDateTime:
                                           companyRequestsState.announcementsModels[index].completionDateTime,
                                       announcementId: companyRequestsState.announcementsModels[index].id,
-                                      workingDayModels: List.empty(),
+                                      workingDayModels: workingDays,
                                       companyId:
                                           companyRequestsState.announcementsModels[index].receiverId ?? 'Not defined',
                                     ),
