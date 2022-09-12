@@ -34,7 +34,6 @@ class BillModel {
   }
 
   factory BillModel.fromMap(dynamic map) {
-    print('we enter in from map part');
     return BillModel(
       id: map['id'],
       price: map['price'],

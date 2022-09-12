@@ -69,7 +69,7 @@ class ClientRequestModel {
       requestType: RequestType.getValue(map['requestType']),
       description: map['description'] ?? null,
       location: map['location'],
-      createdDateTime: DateTime.parse(map['createdDateTime']),
+      createdDateTime: DateTime.parse(map['createdDateTime']).toLocal(),
       phoneNumber: map['phoneNumber'],
     );
   }

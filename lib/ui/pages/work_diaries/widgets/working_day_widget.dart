@@ -160,7 +160,6 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             ),
             TextFormField(
               initialValue: state.workingDayModel!.machines.value,
-              // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               onChanged: (text) => context.workDiariesBloc
                   .add(WorkDiariesUpdateEvent(workingDayModel: state.workingDayModel!.copyWith(machines: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
@@ -184,7 +183,6 @@ class __EditWorkingDayWidgetState extends State<_EditWorkingDayWidget> {
             ),
             TextFormField(
               initialValue: state.workingDayModel!.weather.value,
-              // validator: (text) => context.editUserProfileValidator.firstName(editUserProfileState.model.copyWith(firstName: Optional(text))),
               onChanged: (text) => context.workDiariesBloc
                   .add(WorkDiariesUpdateEvent(workingDayModel: state.workingDayModel!.copyWith(weather: text))),
               style: TextFormFieldStyle.inputFieldTextStyle(),
