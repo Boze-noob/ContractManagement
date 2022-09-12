@@ -116,15 +116,13 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                                   AnnouncementStatusType.inProgress.translate() &&
                               announcementsModels[index].announcementStatusType.translate() !=
                                   AnnouncementStatusType.approved.translate(),
-                          child: Expanded(
-                            child: Button(
-                              text: 'In progress',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                              borderColor: active,
-                              onTap: () => inProgressBtnOnTap(index),
-                            ),
+                          child: Button(
+                            text: 'In progress',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => inProgressBtnOnTap(index),
                           ),
                         ),
                         Visibility(
@@ -132,15 +130,13 @@ class CompanyAnnouncementDataTableWidget extends StatelessWidget {
                                   AnnouncementStatusType.inProgress.translate() ||
                               announcementsModels[index].announcementStatusType.translate() ==
                                   AnnouncementStatusType.declined.translate(),
-                          child: Expanded(
-                            child: Button(
-                              text: 'Done',
-                              textColor: active,
-                              borderRadius: 20,
-                              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                              borderColor: active,
-                              onTap: () => doneBtnOnTap(index),
-                            ),
+                          child: Button(
+                            text: 'Done',
+                            textColor: active,
+                            borderRadius: 20,
+                            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                            borderColor: active,
+                            onTap: () => doneBtnOnTap(index),
                           ),
                         ),
                       ],

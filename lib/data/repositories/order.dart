@@ -65,7 +65,6 @@ class OrderRepo implements IOrder {
       int num = 0;
       final contractTemplatesItemsType = contractTemplates.map((item) => item.contractItems).toList();
       contractTemplatesItemsType.forEach((contractTemplateItem) {
-        print(contractTemplateItem);
         if (contractItems.every((item) => contractTemplateItem.contains(item))) {
           contractTemplatesThatMatch = List.from(contractTemplatesThatMatch)..add(contractTemplates[num]);
           num++;

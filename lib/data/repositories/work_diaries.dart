@@ -35,8 +35,6 @@ class WorkDiaries implements IWorkDiaries {
 
   @override
   Future<WorkDiaryModel?> getSingleDiary(String announcementId) async {
-    print('Announcement id is');
-    print(announcementId);
     final jsonData = await firebaseFirestoreClass.getDataWithFilter('workDiaries', 'announcementId', announcementId);
     final List? result =
         jsonData != null ? jsonData.map<WorkDiaryModel>((json) => WorkDiaryModel.fromMap(json))?.toList() : null;

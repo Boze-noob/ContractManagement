@@ -137,57 +137,53 @@ class OrderDataTableWidget extends StatelessWidget {
                 (() {
                   if (isSent[index].translate() == OrderStatusType.waiting.translate() &&
                       context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate()) {
-                    return Expanded(
-                      child: Visibility(
-                        visible: ResponsiveWidget.isLargeScreen(context),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.send,
-                                color: active,
-                              ),
-                              onPressed: () => sendBtnOnTap(index),
+                    return Visibility(
+                      visible: ResponsiveWidget.isLargeScreen(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.send,
+                              color: active,
                             ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                              ),
-                              onPressed: () => editBtnOnTap(index),
+                            onPressed: () => sendBtnOnTap(index),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
                             ),
-                            IconButton(
-                              onPressed: () => deleteBtnOnTap(index),
-                              icon: Icon(
-                                Icons.delete,
-                                color: context.appTheme.danger,
-                              ),
+                            onPressed: () => editBtnOnTap(index),
+                          ),
+                          IconButton(
+                            onPressed: () => deleteBtnOnTap(index),
+                            icon: Icon(
+                              Icons.delete,
+                              color: context.appTheme.danger,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   } else if (isSent[index].translate() != OrderStatusType.waiting.translate())
-                    return Expanded(
-                      child: Visibility(
-                        visible: ResponsiveWidget.isLargeScreen(context),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: context.currentUserBloc.state.userModel!.role ==
-                                  RoleType.announcementEmployer.translate(),
-                              child: IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () => createBtnOnTap(index),
-                              ),
+                    return Visibility(
+                      visible: ResponsiveWidget.isLargeScreen(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Visibility(
+                            visible: context.currentUserBloc.state.userModel!.role ==
+                                RoleType.announcementEmployer.translate(),
+                            child: IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () => createBtnOnTap(index),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.delete, color: context.appTheme.danger),
-                              onPressed: () => deleteBtnOnTap(index),
-                            ),
-                          ],
-                        ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete, color: context.appTheme.danger),
+                            onPressed: () => deleteBtnOnTap(index),
+                          ),
+                        ],
                       ),
                     );
                   else

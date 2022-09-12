@@ -47,7 +47,7 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                     height: context.screenHeight / 2.8,
                   ),
                   CustomText(
-                    text: 'No contract request',
+                    text: 'No contract requests',
                     weight: FontWeight.bold,
                     color: Colors.black,
                     size: context.textSizeXL,
@@ -175,8 +175,10 @@ class _NewContractWidgetState extends State<NewContractWidget> {
                           companyName: context.currentUserBloc.state.userModel!.displayName,
                         ),
                       );
-                      context.deleteContractRequestBloc.add(DeleteContractRequestDeleteEvent(companyId: context.currentUserBloc.state.userModel!.id));
-                      context.notificationsBloc.add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id));
+                      context.deleteContractRequestBloc.add(
+                          DeleteContractRequestDeleteEvent(companyId: context.currentUserBloc.state.userModel!.id));
+                      context.notificationsBloc
+                          .add(NotificationsDeleteEvent(userId: context.currentUserBloc.state.userModel!.id));
                     }
                   },
                 ),

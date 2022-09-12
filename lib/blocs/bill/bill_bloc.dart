@@ -30,10 +30,8 @@ class BillBloc extends Bloc<BillEvent, BillState> {
 
   Future<void> _get(BillGetSingleEvent event, Emitter<BillState> emit) async {
     emit(state.copyWith(status: BillStateStatus.loading));
-    print('usli smo u get singel bill');
     final result = await billRepo.getBill(event.announcementId);
     if (result != null) {
-      print('result is positive');
       emit(state.copyWith(status: BillStateStatus.loaded, billModel: result.first));
     } else
       emit(state.copyWith(status: BillStateStatus.error, message: 'Could not load bill'));

@@ -119,55 +119,52 @@ class AnnouncementDataTableWidget extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Expanded(
-                  child: Visibility(
-                    visible: ResponsiveWidget.isLargeScreen(context),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        (() {
-                          if (announcementsModels[index].announcementStatusType.translate() ==
-                              AnnouncementStatusType.done.translate())
-                            return IconButton(
-                              icon: Icon(
-                                Icons.zoom_in,
-                                color: active,
-                              ),
-                              onPressed: () => inspectOnTap(index),
-                            );
-                          else
-                            return SizedBox();
-                        }()),
-                        Visibility(
-                          visible: announcementsModels[index].announcementStatusType.translate() ==
-                                  AnnouncementStatusType.waiting.translate() &&
-                              context.currentUserBloc.state.userModel!.role !=
-                                  RoleType.announcementEmployer.translate(),
-                          child: IconButton(
+                Visibility(
+                  visible: ResponsiveWidget.isLargeScreen(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      (() {
+                        if (announcementsModels[index].announcementStatusType.translate() ==
+                            AnnouncementStatusType.done.translate())
+                          return IconButton(
                             icon: Icon(
-                              Icons.send,
+                              Icons.zoom_in,
                               color: active,
                             ),
-                            onPressed: () => sendBtnOnTap(index),
+                            onPressed: () => inspectOnTap(index),
+                          );
+                        else
+                          return SizedBox();
+                      }()),
+                      Visibility(
+                        visible: announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.waiting.translate() &&
+                            context.currentUserBloc.state.userModel!.role != RoleType.announcementEmployer.translate(),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.send,
+                            color: active,
                           ),
+                          onPressed: () => sendBtnOnTap(index),
                         ),
-                        Visibility(
-                          visible: announcementsModels[index].announcementStatusType.translate() ==
-                                  AnnouncementStatusType.waiting.translate() ||
-                              announcementsModels[index].announcementStatusType.translate() ==
-                                  AnnouncementStatusType.approved.translate() ||
-                              announcementsModels[index].announcementStatusType.translate() ==
-                                  AnnouncementStatusType.declined.translate(),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: context.appTheme.danger,
-                            ),
-                            onPressed: () => deleteBtnOnTap(index),
+                      ),
+                      Visibility(
+                        visible: announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.waiting.translate() ||
+                            announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.approved.translate() ||
+                            announcementsModels[index].announcementStatusType.translate() ==
+                                AnnouncementStatusType.declined.translate(),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: context.appTheme.danger,
                           ),
+                          onPressed: () => deleteBtnOnTap(index),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
