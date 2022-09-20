@@ -1,3 +1,5 @@
+College project full of boilerplate code :)
+
 # flutter_contract_management
 
 A new Flutter project.
